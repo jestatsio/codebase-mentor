@@ -83,6 +83,21 @@ This upserts the compact mentor protocol (~2 KB — well within Codex's 32 KiB c
 curl -fsSL https://raw.githubusercontent.com/erichare/codebase-mentor/main/install.sh | bash -s -- --agent all
 ```
 
+## MCP clients
+
+Any MCP-capable client can instead run the stdio server from [`mcp/`](../mcp/) (published as `codebase-mentor-mcp`). It exposes the protocol, ONBOARDING.md discovery, and the mentor/change_guide/reconcile/scan/onboard prompts as MCP tools, prompts, and resources — the client model does the reasoning:
+
+```json
+{
+  "mcpServers": {
+    "codebase-mentor": {
+      "command": "npx",
+      "args": ["-y", "codebase-mentor-mcp"]
+    }
+  }
+}
+```
+
 ## After installing — same three steps everywhere
 
 1. If the repo has no `ONBOARDING.md`, author one from the [template](../template/ONBOARDING.md) ([authoring guide](../template/AUTHORING_GUIDE.md)) — Claude Code users can generate a draft with `/codebase-mentor:onboard`.

@@ -8,6 +8,8 @@
 #                                       adapters/copilot/copilot-instructions-snippet.md
 #   template/ONBOARDING.md           -> skills/codebase-mentor/ONBOARDING.template.md
 #   template/AUTHORING_GUIDE.md      -> skills/codebase-mentor/AUTHORING_GUIDE.md
+#   core/*.md, template/*.md         -> mcp/bundled/ (byte-identical copies the
+#                                       MCP server ships inside its npm package)
 #
 # Edit the sources, never the generated files. Usage:
 #   scripts/sync-adapters.sh          regenerate in place
@@ -26,7 +28,7 @@ if [[ "${MODE}" == "check" ]]; then
   OUT="$(mktemp -d)"
   trap 'rm -rf "${OUT}"' EXIT
   mkdir -p "${OUT}/skills/codebase-mentor" "${OUT}/adapters/agents-md" \
-    "${OUT}/adapters/cursor" "${OUT}/adapters/copilot"
+    "${OUT}/adapters/cursor" "${OUT}/adapters/copilot" "${OUT}/mcp/bundled"
 fi
 
 # Protocol body shared by SKILL.md: everything from "## Accuracy Contract" down.
@@ -107,6 +109,12 @@ EOF
 cp "${ROOT}/template/ONBOARDING.md" "${OUT}/skills/codebase-mentor/ONBOARDING.template.md"
 cp "${ROOT}/template/AUTHORING_GUIDE.md" "${OUT}/skills/codebase-mentor/AUTHORING_GUIDE.md"
 
+# --- mcp/bundled: canonical copies shipped inside the npm package ---------------
+cp "${ROOT}/core/mentor-protocol.md" "${OUT}/mcp/bundled/mentor-protocol.md"
+cp "${ROOT}/core/mentor-protocol-compact.md" "${OUT}/mcp/bundled/mentor-protocol-compact.md"
+cp "${ROOT}/template/ONBOARDING.md" "${OUT}/mcp/bundled/ONBOARDING.template.md"
+cp "${ROOT}/template/AUTHORING_GUIDE.md" "${OUT}/mcp/bundled/AUTHORING_GUIDE.md"
+
 # --- check mode ----------------------------------------------------------------
 GENERATED=(
   skills/codebase-mentor/SKILL.md
@@ -115,6 +123,10 @@ GENERATED=(
   adapters/agents-md/AGENTS-snippet.md
   adapters/cursor/codebase-mentor.mdc
   adapters/copilot/copilot-instructions-snippet.md
+  mcp/bundled/mentor-protocol.md
+  mcp/bundled/mentor-protocol-compact.md
+  mcp/bundled/ONBOARDING.template.md
+  mcp/bundled/AUTHORING_GUIDE.md
 )
 
 if [[ "${MODE}" == "check" ]]; then

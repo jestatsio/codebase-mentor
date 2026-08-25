@@ -21,6 +21,7 @@ authoritative copy — edit here, then sync outward.
 | `stargate-jsonapi/` | Stargate Data API (reference implementation) | https://github.com/stargate/jsonapi |
 | `astrapy/` | AstraPy Python client | https://github.com/datastax/astrapy |
 | `langflow/` | Langflow visual workflow builder | https://github.com/langflow-ai/langflow |
+| `docling/` | Docling document conversion library | https://github.com/docling-project/docling |
 
 ## Syncing to a repo
 

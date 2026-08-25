@@ -1,0 +1,50 @@
+{
+  "name": "codebase-mentor-mcp",
+  "version": "0.1.0",
+  "description": "MCP stdio server for the codebase-mentor protocol: bundled protocol, ONBOARDING.md discovery, and mentor prompts. Zero intelligence in the server — the client model does the reasoning.",
+  "license": "MIT",
+  "author": "Eric Hare",
+  "homepage": "https://github.com/erichare/codebase-mentor#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erichare/codebase-mentor.git",
+    "directory": "mcp"
+  },
+  "bugs": {
+    "url": "https://github.com/erichare/codebase-mentor/issues"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "agents",
+    "onboarding",
+    "codebase"
+  ],
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "codebase-mentor-mcp": "build/index.js"
+  },
+  "files": [
+    "build"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && mkdir -p build/bundled && cp bundled/*.md build/bundled/",
+    "prepack": "npm run build",
+    "test": "npm run build && node tests/smoke.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "typescript": "^7.0.2"
+  }
+}

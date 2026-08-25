@@ -7,6 +7,11 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- `mcp/` package: `codebase-mentor-mcp`, a zero-intelligence MCP stdio server exposing the bundled protocol (`codebase_mentor_get_protocol`, `codebase_mentor_get_onboarding`, `codebase_mentor_get_template` tools), the five mentor prompts (`mentor`, `change_guide`, `reconcile`, `scan`, `onboard`), and `codebase-mentor://` resources — the client model does the reasoning.
+- `scripts/sync-adapters.sh` now generates byte-identical copies of the canonical sources into `mcp/bundled/`, covered by the `--check` drift gate.
+- New example: `onboarding/docling/ONBOARDING.md` for the Docling document conversion library — a mainstream, non-DataStax codebase, authored and verified against live source.
+
 ## [1.1.1] - 2026-08-25
 
 ### Changed

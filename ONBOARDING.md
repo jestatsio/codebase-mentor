@@ -19,7 +19,7 @@ Artifacts flow through five layers, canonical first:
 | Canonical sources | The protocol and authoring kit humans edit | `core/mentor-protocol.md`, `core/mentor-protocol-compact.md`, `template/` |
 | Generator | Deterministically derives every distribution artifact | `scripts/sync-adapters.sh` |
 | Distribution artifacts | What agents actually load (never hand-edited) | `skills/*/SKILL.md`, `adapters/*` |
-| Packaging & install | How artifacts reach machines | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, `install.sh` |
+| Packaging & install | How artifacts reach machines | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, `install.sh`, `mcp/` (the `codebase-mentor-mcp` npm package) |
 | Automation | Drift protection and releases | `.github/workflows/validate.yml`, `.github/workflows/release.yml`, `examples/github-actions/` |
 
 ## 3 — Execution Lifecycle
@@ -27,7 +27,7 @@ Artifacts flow through five layers, canonical first:
 **Representative execution:** a maintainer changes the protocol wording.
 
 1. **Edit:** the maintainer edits `core/mentor-protocol.md` (full) and/or `core/mentor-protocol-compact.md` (feeds the small adapters). Generated files are never touched directly.
-2. **Regenerate:** `scripts/sync-adapters.sh` rebuilds `skills/codebase-mentor/SKILL.md` (wrapper header + core body via its `core_body()` helper), all three `adapters/` files, and the bundled template copies.
+2. **Regenerate:** `scripts/sync-adapters.sh` rebuilds `skills/codebase-mentor/SKILL.md` (wrapper header + core body via its `core_body()` helper), all three `adapters/` files, the bundled template copies, and the `mcp/bundled/` canonical copies.
 3. **Gate:** CI's `validate.yml` runs `sync-adapters.sh --check`, which regenerates into a temp dir and diffs against the committed files — any drift fails the PR.
 4. **Deliver:** merged changes reach users through three paths: the Claude Code plugin (`.claude-plugin/` manifests), `install.sh` (its `install_agent()` dispatches per `--agent`; `upsert_block()` replaces marker-fenced blocks idempotently), and `npx skills add`.
 5. **Release:** tagging `vX.Y.Z` triggers `release.yml`, which refuses to publish unless the tag matches the `version` in `.claude-plugin/plugin.json`, then publishes the matching `CHANGELOG.md` section.
@@ -79,12 +79,13 @@ Artifacts flow through five layers, canonical first:
 | "How do teams roll this out?" | `docs/TEAM_SETUP.md` |
 | "Where do the evaluation claims come from?" | `evaluation/SCORECARD.md` |
 | "What ships in the plugin?" | `.claude-plugin/plugin.json`, `skills/` |
+| "What does the MCP server expose?" | `mcp/src/index.ts`; its `mcp/bundled/` copies come from `scripts/sync-adapters.sh` |
 
 ## 7 — Known Gotchas
 
 ### Never edit generated files
 
-**Rule:** anything in `adapters/`, the protocol body of `skills/codebase-mentor/SKILL.md`, and the bundled template copies are outputs of `scripts/sync-adapters.sh`.
+**Rule:** anything in `adapters/`, the protocol body of `skills/codebase-mentor/SKILL.md`, the bundled template copies, and the `mcp/bundled/` copies are outputs of `scripts/sync-adapters.sh`.
 **Why:** the generator is the single source of truth; hand edits diverge silently.
 **What breaks:** CI's `sync-adapters.sh --check` fails the PR; if it slipped through, the next regeneration would erase the edit.
 

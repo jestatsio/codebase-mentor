@@ -1,2 +1,6 @@
 # MkDocs build output
 .site-build/
+
+# MCP server
+mcp/node_modules/
+mcp/build/

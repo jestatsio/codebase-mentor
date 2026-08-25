@@ -66,6 +66,22 @@ Target a specific agent with `--agent claude|codex|cursor|copilot|agents-md|all`
 the current repo with `--project`. The `agents-md` mode upserts a marker-fenced block into
 `AGENTS.md`, covering every agent that reads that standard. Re-running is always safe.
 
+### MCP server (any MCP client)
+
+The [`mcp/`](mcp/) package ships a stdio MCP server with the protocol, ONBOARDING.md discovery, and
+the mentor prompts — the client model does the reasoning; the server only supplies artifacts:
+
+```json
+{
+  "mcpServers": {
+    "codebase-mentor": {
+      "command": "npx",
+      "args": ["-y", "codebase-mentor-mcp"]
+    }
+  }
+}
+```
+
 Full per-agent guide: [docs/INSTALL.md](docs/INSTALL.md) · team rollout:
 [docs/TEAM_SETUP.md](docs/TEAM_SETUP.md).
 
@@ -153,6 +169,7 @@ for blind re-scoring, and independent judging has not yet been run. Full story o
 | [`skills/`](skills/) | Generated SKILL.md artifacts: the mentor + the onboard generator |
 | [`adapters/`](adapters/) | Generated AGENTS.md snippet, Cursor rule, Copilot instructions block |
 | [`scripts/`](scripts/) | `sync-adapters.sh` — regenerates all distribution artifacts; `--check` gates CI |
+| [`mcp/`](mcp/) | Stdio MCP server (`codebase-mentor-mcp` on npm): protocol, ONBOARDING.md discovery, mentor prompts |
 | [`template/`](template/) | The seven-section ONBOARDING.md template + authoring guide |
 | [`docs/`](docs/) · [`site/`](site/) | Per-agent install / team guides · the MkDocs documentation site |
 | [`examples/`](examples/) | Copy-paste GitHub Actions freshness-scan workflow |
