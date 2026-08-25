@@ -1,7 +1,7 @@
 {
   "name": "codebase-mentor",
   "description": "Source-grounded codebase mentor for any repo with an ONBOARDING.md — answers architecture questions, guides change tasks, reconciles doc claims against live source, and generates ONBOARDING.md drafts with /codebase-mentor:onboard.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": {
     "name": "Eric Hare"
   },

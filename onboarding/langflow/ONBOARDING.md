@@ -192,7 +192,7 @@ from lfx.custom.custom_component.component import Component
 Grepping for `class Component` inside `src/backend/` finds the shim. The real
 implementation — including `__init__`, all config attributes, `get_component_toolkit()`,
 and `PlaceholderGraph` — lives in `src/lfx/src/lfx/custom/custom_component/component.py`.
-**What breaks:** Editing the shim file has no effect. Bob's reconcile mode will flag the
+**What breaks:** Editing the shim file has no effect. The mentor's reconcile mode will flag the
 shim path as stale if pointed there for a behavior question.
 
 ---
