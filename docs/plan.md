@@ -1,5 +1,11 @@
 # Bob Challenge 2026 — Implementation Plan
 
+> **Historical document.** This was the build plan for the original IBM Bob Challenge 2026
+> submission, kept for provenance. It is not a live roadmap — some paths it references
+> (e.g. `data-api/ONBOARDING.md`, now at `onboarding/stargate-jsonapi/ONBOARDING.md`) have
+> moved, and its checkboxes were never the tracking mechanism. For current state, see the
+> [changelog](../CHANGELOG.md).
+
 ## Overview
 
 Build a reusable Bob skill called the **Source-Grounded Codebase Mentor** and demonstrate it on the Stargate Data API. The submission consists of five deliverables, all living in this repo:

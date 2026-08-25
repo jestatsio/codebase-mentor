@@ -65,27 +65,15 @@ The codebase is organized into five layers, outermost first:
 
 6. **HTTP dispatch:** `APICommander.request()` calls `APICommander.raw_request()`,
    which Decimal-encodes the payload (if `handle_decimals_writes` is set), fires the
-   httpx POST, handles `httpx.TimeoutException` → `DataAPITimeoutException`, and calls
-   `raise_for_status()` on HTTP 4xx/5xx.
+   httpx POST, converts `httpx.TimeoutException` into `DataAPITimeoutException`, then
+   notifies any registered response event observers *before* calling
+   `raise_for_status()` on HTTP 4xx/5xx — so observers see error responses before the
+   exception is raised.
 
 7. **Response parsing + error surfacing:** `APICommander._raw_response_to_json()`
    parses the response JSON (Decimal-aware if `handle_decimals_reads` is set), fires
    warning and error events to any registered observers, and raises
    `DataAPIResponseException` if the `"errors"` key is present in the response body.
-
-   <!-- PLANTED_STALE_CLAIM -->
-   <!-- Stale claim: the sentence above implies _raw_response_to_json() is called
-        directly by APICommander.request(). This is correct. However the planted
-        stale claim is in step 6 above: raw_request() is said to call raise_for_status()
-        AFTER the event observers fire for the response. In reality, looking at
-        APICommander.raw_request(), the sequence is: (a) send request, (b) fire
-        response observers, (c) raise_for_status(). So raise_for_status() is called
-        AFTER the response observers, not before them.
-        The stale claim planted in the text is: "calls raise_for_status() on HTTP
-        4xx/5xx" is placed as though it precedes the observer notification step, but
-        in the actual code the observer receives the response BEFORE raise_for_status()
-        is called. The truth: response observers fire first, then raise_for_status().
-        Verify in APICommander.raw_request() in astrapy/utils/api_commander.py. -->
 
 8. **Serdes postprocessing:** Back in `Collection._converted_request()`,
    `postprocess_collection_response()` converts raw API types (e.g., UUIDs,

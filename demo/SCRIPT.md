@@ -13,8 +13,8 @@ Before you hit record on any clip:
 - [ ] Terminal font size ≥ 16pt, line width ~110 chars — readable at 1080p
 - [ ] `data-api` source clone is accessible at the path Bob can read
 - [ ] `skills/codebase-mentor/SKILL.md` is installed at `~/.claude/skills/codebase-mentor/SKILL.md`
-- [ ] `data-api/ONBOARDING.md` is in scope for Clips 2 and 3 (place it at the root of the session's working directory, or point Bob to it explicitly)
-- [ ] Verify Section 3 of `data-api/ONBOARDING.md` contains the deliberately inaccurate sort-validation claim (the blockquote after the main lifecycle description) — needed for the Clip 2 refusal scene
+- [ ] `onboarding/stargate-jsonapi/ONBOARDING.md` is in scope for Clips 2 and 3 (place it at the root of the session's working directory, or point Bob to it explicitly)
+- [ ] Verify Section 3 of `onboarding/stargate-jsonapi/ONBOARDING.md` contains the deliberately inaccurate sort-validation claim (the blockquote after the main lifecycle description) — needed for the Clip 2 refusal scene
 - [ ] Microphone level tested; no background noise
 
 ## Recording-day fallback envelope
@@ -73,9 +73,9 @@ Wait for the response. Bob will recommend sharing, mention the base `Operation<S
 
 ### Setup (do not record)
 
-- Open a fresh Bob session with the codebase-mentor skill active and `data-api/ONBOARDING.md` in scope.
+- Open a fresh Bob session with the codebase-mentor skill active and `onboarding/stargate-jsonapi/ONBOARDING.md` in scope.
 - Have the `data-api` source readable.
-- Confirm the inaccurate sort-validation claim is present in Section 3 of `data-api/ONBOARDING.md` (the blockquote beginning "According to the API documentation, sort options are validated...").
+- Confirm the inaccurate sort-validation claim is present in Section 3 of `onboarding/stargate-jsonapi/ONBOARDING.md` (the blockquote beginning "According to the API documentation, sort options are validated...").
 
 ### Shot sequence
 

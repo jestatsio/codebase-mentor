@@ -7,6 +7,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+- Rewrote `README.md` around install paths, the four operating modes, and the three-arm evaluation; moved the origin-story framing to the docs site's evaluation page.
+- Removed the duplicate `data-api/ONBOARDING.md`; `onboarding/stargate-jsonapi/ONBOARDING.md` (byte-identical) is now the single home for the Stargate Data API reference implementation.
+- Removed the planted stale claims from the AstraPy and Langflow example ONBOARDING.md files (corrected against live source); the deliberate inaccuracy now lives only in the Stargate Data API example used by the demo script.
+- Moved the historical Bob Challenge build plan from `plan.md` to `docs/plan.md` with a provenance note.
+
 ## [1.1.0] - 2026-07-02
 
 ### Added
@@ -28,5 +34,6 @@ All notable changes to this project are documented here. The format follows
 - Example scheduled GitHub Action for ONBOARDING.md freshness scanning.
 - Team rollout guide (`docs/TEAM_SETUP.md`) and `install.sh` fallback installer.
 
-[Unreleased]: https://github.com/erichare/codebase-mentor/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/erichare/codebase-mentor/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/erichare/codebase-mentor/releases/tag/v1.1.0
 [1.0.0]: https://github.com/erichare/codebase-mentor/releases/tag/v1.0.0

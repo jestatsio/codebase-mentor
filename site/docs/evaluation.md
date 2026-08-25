@@ -2,7 +2,7 @@
 
 ## Origin: the IBM Bob Challenge
 
-Codebase Mentor began as Eric Hare's submission to IBM's **Bob Challenge 2026** (Bob is IBM's distribution of Claude Code). The brief: build a reusable skill and prove it on a hard, real codebase. The testbed was the [Stargate Data API](https://github.com/stargate/jsonapi) — 39 concrete command resolvers, a five-layer request pipeline, a custom task-retry framework, and no pre-existing agent documentation. The full demo script, planted-stale-claim setup, and original implementation plan remain in the repo ([`demo/`](https://github.com/erichare/codebase-mentor/tree/main/demo), [`plan.md`](https://github.com/erichare/codebase-mentor/blob/main/plan.md)).
+Codebase Mentor began as Eric Hare's submission to IBM's **Bob Challenge 2026** (Bob is IBM's distribution of Claude Code). The brief: build a reusable skill and prove it on a hard, real codebase. The testbed was the [Stargate Data API](https://github.com/stargate/jsonapi) — 39 concrete command resolvers, a five-layer request pipeline, a custom task-retry framework, and no pre-existing agent documentation. The full demo script, planted-stale-claim setup, and original implementation plan remain in the repo ([`demo/`](https://github.com/erichare/codebase-mentor/tree/main/demo), [`docs/plan.md`](https://github.com/erichare/codebase-mentor/blob/main/docs/plan.md)).
 
 ## The three-arm evaluation
 

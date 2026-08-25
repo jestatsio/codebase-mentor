@@ -58,21 +58,12 @@ The backend is organized into five layers, outermost first:
    `asyncio.Queue` are created. The event manager routes typed events (token chunks, vertex
    results, errors) to the queue for downstream consumption.
 
-5. **Execution:** `_run_graph_with_events()` (in `flow_executor.py`) calls `Graph.async_start()`
-   with the `EventManager`. `Graph.async_start()` iterates vertices in dependency order,
-   calling `Graph.build_vertex()` for each. Each vertex instantiates its `Component` subclass,
-   injects resolved input values, and calls the component's output method.
-
-   > **Note:** According to internal documentation, `Graph.prepare()` is called automatically
-   > inside `Graph.async_start()` if it has not already been called by the executor.
-
-   <!-- PLANTED_STALE_CLAIM: The note above is false. Graph.prepare() is NOT called inside
-   async_start(). In the live source, flow_executor.py calls graph.prepare() explicitly
-   before calling async_start(). If prepare() is skipped, async_start() will fail because
-   the run map and vertex structures have not been built. Verify in:
-   - lfx/graph/graph/base.py Graph.async_start() (~line 370) — no prepare() call inside it
-   - agentic/services/flow_executor.py _run_graph_with_events() — graph.prepare() is called
-     explicitly before async_start() -->
+5. **Execution:** `_run_graph_with_events()` (in `flow_executor.py`) calls
+   `graph.prepare()` to build the run map and vertex structures, then calls
+   `Graph.async_start()` with the `EventManager`. `Graph.async_start()` iterates
+   vertices in dependency order, calling `Graph.build_vertex()` for each. Each vertex
+   instantiates its `Component` subclass, injects resolved input values, and calls the
+   component's output method.
 
 6. **Output and events:** Each vertex's result is stored via `Vertex.set_result()`. The
    `EventManager.send_event()` method fires events (e.g. `token`, `vertex_build`,
