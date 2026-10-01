@@ -3,9 +3,11 @@
 <!--
   FILL-IN INSTRUCTIONS
   ────────────────────
-  Replace every [PLACEHOLDER] and <!-- TODO: ... --> marker with real content.
-  Use symbol anchors throughout — class names, method names, interface names.
-  Do NOT use line numbers; they rot with every edit. Symbol names survive.
+  Replace every [PLACEHOLDER] with verified content or a specific TODO note.
+  Use symbols with file paths, or configuration keys and document headings.
+  Do not use bare line numbers as the only anchor.
+  Read relevant bodies before describing behavior. Label proposed new names.
+  Attribute human rationale and leave unsupported context as explicit TODOs.
   Target length: 400–800 words total. Brevity beats completeness.
   See template/AUTHORING_GUIDE.md for section-by-section guidance and worked examples.
 -->
@@ -14,12 +16,12 @@
 
 ## Document Owner
 
-<!-- TODO: Name the person responsible for keeping this document accurate.
-     Include their team and a review cadence. This is non-optional.
+<!-- TODO: Confirm the person or team responsible for keeping this document accurate.
+     Include a review cadence. Do not invent an owner.
      Example: "Owner: Jane Smith (Data Platform). Reviewed every 6 months or after any
      major architectural change. Last reviewed: 2025-01." -->
 
-**Owner:** [FULL NAME] ([TEAM NAME])
+**Owner:** [RESPONSIBLE PERSON OR TEAM]
 **Review cadence:** [e.g., "every 6 months, or after any major architectural change"]
 **Last reviewed:** [YYYY-MM]
 
@@ -41,8 +43,8 @@ document-model and table-model operations on the cluster."]
 ## 2 — Layer Map
 
 <!-- TODO: List the major architectural layers in order, from the API surface inward.
-     For each layer, name the key class or interface that defines that layer's contract.
-     Use symbol anchors — class names, not file paths or line numbers. -->
+     For each responsibility, name a source symbol, configuration key, or file heading.
+     Include its file path. Adapt the structure instead of imposing artificial layers. -->
 
 The codebase is organized into the following layers, outermost first:
 
@@ -54,16 +56,17 @@ The codebase is organized into the following layers, outermost first:
 | [LAYER NAME] | [WHAT THIS LAYER DOES] | `[ClassName or InterfaceName]` |
 | [LAYER NAME] | [WHAT THIS LAYER DOES] | `[ClassName or InterfaceName]` |
 
-<!-- TODO: Add or remove rows. Five layers is typical; some codebases have three, some have seven. -->
+<!-- TODO: Add or remove rows to match this project. A flat project may need only a few. -->
 
 ---
 
 ## 3 — Execution Lifecycle
 
 <!-- TODO: Trace one representative execution path (request, job run, batch) from entry to completion.
-     Name the method and class at each hop. Do NOT paraphrase the code — name it.
+     Name the symbol and file at each hop, and explain the behavior briefly.
      A new engineer should be able to follow this walkthrough and find each step in source.
-     For a pipeline/job-based codebase, trace one full job run or one record through the stages. -->
+     For a pipeline/job-based codebase, trace one full job run or one record through the stages.
+     For documentation/configuration, trace how an edit reaches its consumer. -->
 
 **Representative execution:** [OPERATION NAME — e.g., "findOne", "daily sync run", "POST /items", "processOrder"]
 
@@ -74,7 +77,7 @@ The codebase is organized into the following layers, outermost first:
 5. **[LAYER NAME]:** `[ClassName].[methodName]()` [WHAT HAPPENS — one clause].
 6. **Response:** [WHAT IS RETURNED AND TO WHOM].
 
-<!-- TODO: Add steps as needed. Each step must name a real class and method. -->
+<!-- TODO: Add steps as needed. Each step needs an existing symbol or file/key anchor. -->
 
 ---
 
@@ -102,7 +105,8 @@ The codebase is organized into the following layers, outermost first:
 <!-- TODO: List 3–5 common change tasks. For each, provide an ordered checklist of
      classes/methods to touch, in the order they should be touched.
      Write these as imperative steps: "Add X to Y", "Implement Z in W".
-     Use symbol anchors. Do NOT explain the implementation — point to where it goes. -->
+     Cite existing examples or extension points. Label new names as proposed.
+     Put unsupported steps under unresolved questions instead of claiming they are verified. -->
 
 ### Recipe A — [TASK NAME, e.g., "Add a new command"]
 
@@ -183,6 +187,6 @@ The codebase is organized into the following layers, outermost first:
 
 ---
 
-<!-- TODO: Aim for 3–6 gotchas. If you can't think of any, interview a senior engineer
+<!-- TODO: Include the gotchas you can support. If none are known, leave a TODO and interview a senior engineer
      who has reviewed PRs on this codebase — ask "what mistakes do you keep catching in review?"
      That answer is this section. -->

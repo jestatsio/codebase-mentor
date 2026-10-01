@@ -1,50 +1,21 @@
-# Launch Post Drafts
+# Launch copy
 
-## X / Twitter (≤280 chars)
+Draft copy for review. No announcements or directory submissions have been sent.
 
-> Your onboarding doc lies to your AI agent the moment the code changes.
->
-> codebase-mentor makes agents verify every architecture claim against live source — and scan your ONBOARDING.md for drift on a schedule.
->
-> One install, works in Claude Code, Cursor, Codex, Copilot:
-> npx skills add erichare/codebase-mentor
+## Short announcement
 
-## LinkedIn
+Codebase Mentor by JEStats helps your coding agent navigate unfamiliar code: architecture explanations, change plans, and onboarding docs grounded in source reads. Native plugins for Claude Code and Codex, plus IBM Bob skills.
 
-**Your AI coding agent is only as good as its map of your codebase.**
+https://github.com/jestatsio/codebase-mentor
 
-Most teams have no ONBOARDING.md at all — and the ones that do watch it go stale within months. Stale docs are worse than none: an AI agent will confidently repeat them.
+## Longer announcement
 
-I built **codebase-mentor**, an open-source skill for AI coding agents built around one rule: *every architecture claim must be backed by a symbol read from current source, in this session.* The doc is the map; source is the truth.
+The first useful question in a new repo is usually concrete: “How does this feature work?” or “Where should I make this change?”
 
-What it does:
-- 📖 Answers "how does X work?" with symbol-anchored citations, not vibes
-- 🛠️ Turns "where do I add Y?" into an ordered checklist of real classes and methods
-- 🔍 Verifies "is it still true that Z?" against live source — and says *no* with evidence when the doc is wrong
-- 🧹 Scans your ONBOARDING.md for drift, on demand or weekly via GitHub Actions
-- ✍️ Generates a first-draft ONBOARDING.md from your source, then interviews you for the gotchas only humans know
+Codebase Mentor gives your coding agent a repeatable way to answer: read the relevant source, cite files and symbols, find the closest existing example, and make missing evidence visible.
 
-In a three-arm evaluation on the Stargate Data API, the full setup scored 4.7/5 vs 1.3/5 for a bare agent — and the sharpest win was a confident, evidenced refusal of a design change the source alone made look safe.
+An optional, short ONBOARDING.md adds the decisions and pitfalls your team knows. The companion onboard skill drafts the map from source and asks you for the human context. A freshness scan can flag claims that have drifted.
 
-Install anywhere: Claude Code plugin, Cursor rule, Copilot instructions, AGENTS.md snippet, or `npx skills add erichare/codebase-mentor` for ~70 agents at once.
+It is open source and MIT licensed, with native Claude Code and Codex plugins, IBM Bob skills, and adapters for other agents. The skills need no separate API key or service. As with any agent instructions, inspect the evidence before acting.
 
-Repo: https://github.com/erichare/codebase-mentor
-Docs: https://erichare.github.io/codebase-mentor/
-
-## Hacker News (Show HN)
-
-**Title:** Show HN: Codebase-mentor – make AI agents prove architecture claims against source
-
-**Text:**
-
-Every AI coding agent will happily explain your architecture from pre-training vibes. When it's wrong, a new engineer ships the wrong fix.
-
-codebase-mentor is a skill/ruleset with one enforced contract: every architecture or change-guidance claim must be backed by a class or method the agent actually read in the current session, cited by symbol name (never line numbers — they rot). If evidence is missing, the agent must say exactly that instead of hedging with "typically".
-
-It pairs with a 400–800-word ONBOARDING.md (template + auto-generator included) that captures what source can't show: design rationale and the gotchas senior engineers keep catching in review. The agent treats the doc as a map and the source as truth — when they disagree, it says so with the contradicting symbol, and a scheduled GitHub Action files an issue when the doc drifts.
-
-It installs into Claude Code (plugin), Codex (SKILL.md), Cursor (.mdc rule), Copilot (instructions), or anything that reads AGENTS.md — all generated from one canonical protocol doc.
-
-Honest caveat: the published evaluation (4.7/5 vs 1.3/5 baseline) was scored by me against a pre-written rubric; the raw outputs are committed so you can re-score them blind.
-
-https://github.com/erichare/codebase-mentor
+Start with one question: https://jestatsio.github.io/codebase-mentor/

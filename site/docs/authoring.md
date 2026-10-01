@@ -1,10 +1,10 @@
 # Authoring an ONBOARDING.md
 
-The ONBOARDING.md is a 400–800-word map of your codebase: seven sections, every claim anchored to a class or method name. It's the highest-leverage documentation a team can write — a first draft takes 2–4 hours by hand, or ~30 minutes of review with the generator.
+The ONBOARDING.md is a 400–800-word map of your codebase: seven sections, every claim anchored to a class or method name. Use the generator for a draft, then review the evidence and add the context your team knows.
 
 ## The fast path: generate it
 
-In Claude Code with the plugin installed, run in your repo:
+Ask your agent to use the **onboard** skill. In Claude Code with the plugin installed, run in your repo:
 
 ```
 /codebase-mentor:onboard
@@ -14,7 +14,7 @@ The skill scans your source, traces a representative execution path, drafts six 
 
 ## The manual path: the template
 
-Start from [`template/ONBOARDING.md`](https://github.com/erichare/codebase-mentor/blob/main/template/ONBOARDING.md) with [`template/AUTHORING_GUIDE.md`](https://github.com/erichare/codebase-mentor/blob/main/template/AUTHORING_GUIDE.md) beside it — the guide has worked examples for two codebase archetypes (request/response service, batch pipeline) for every section.
+Start from [`template/ONBOARDING.md`](https://github.com/jestatsio/codebase-mentor/blob/main/template/ONBOARDING.md) with [`template/AUTHORING_GUIDE.md`](https://github.com/jestatsio/codebase-mentor/blob/main/template/AUTHORING_GUIDE.md) beside it — the guide has worked examples for two codebase archetypes (request/response service, batch pipeline) for every section.
 
 The seven sections:
 
@@ -33,7 +33,7 @@ The seven sections:
 
 **Symbol anchors, not line numbers.** "See `FindOneCommandResolver.resolveCollectionCommand()`" survives every edit that doesn't rename the method. "See line 72" is wrong within weeks.
 
-**Section 7 is the payload.** Interview your senior reviewer: *"what mistakes do you keep catching in review?"* That answer is the section — the one thing source can never tell an agent, and where the evaluation showed source-only agents give confidently wrong advice.
+**Section 7 is the payload.** Interview your senior reviewer: *"what mistakes do you keep catching in review?"* That answer is the section — context that source alone may not explain.
 
 ## Keep it alive
 

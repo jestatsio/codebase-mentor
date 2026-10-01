@@ -7,33 +7,31 @@ This guide walks you through each of the seven sections in `template/ONBOARDING.
 
 Both examples use symbol anchors and follow the same seven-section structure. Pick whichever is closer to your codebase and adapt from there.
 
-**Time budget:** most teams complete a first draft in 2–4 hours. See the break-even framing below.
+The Stargate examples are historical illustrations from the original case study, not a current API reference. Check your checkout before adopting their names, counts, or behavior. The fictional ETL example illustrates the document format only.
 
 ---
 
 ## Why This Is Worth Your Time
 
-A new engineer's first real architecture question typically costs **30–60 minutes of senior-engineer interrupt time**. On most teams this happens 3–5 times per onboarding. That's 90–300 minutes of senior time per hire — just for orientation, before the new engineer has committed a single line.
+A short map gives new contributors useful starting points for recurring questions such as "where does X live?" and "what does Y mean here?" It also records rationale that would otherwise require an experienced reviewer.
 
-Writing this document takes **2–4 hours, once**. That breaks even within one to two new hires. After that it compounds: every subsequent hire, every cross-team contributor, every on-call engineer debugging something unfamiliar at midnight.
-
-The document does not replace the senior engineer. It answers the low-complexity orientation questions ("where does X live?", "what's the word for Y?") so the senior engineer is interrupted only for questions that genuinely need them.
+Start with one execution path and the changes your team makes most often. The `onboard` skill can draft the source-derived sections, then ask you for missing context. Authoring and review time depend on project size and source access. This project has not measured a general time saving or break-even point.
 
 ---
 
-## A Critical Rule Before You Start: Symbol Anchors, Not Line Numbers
+## Use Durable Anchors
 
-Throughout `template/ONBOARDING.md` you will see the instruction: **use symbol anchors (class names, method names), not line numbers**.
+Use **symbols together with file paths**. Functions, classes, methods, workflow jobs, and configuration keys all make useful anchors. For documentation, name the file and section heading.
 
-**Why this matters:** line numbers rot. Every refactor, every added import, every javadoc block shifts every line number in the file. A document that says "see line 72 of `FindOneCommandResolver.java`" is wrong within weeks. A document that says "see `FindOneCommandResolver.resolveCollectionCommand()`" survives any edit that doesn't rename the method — and if the method is renamed, the rename itself is the architectural change worth updating the document for.
+**Why this matters:** line numbers shift during routine edits. A symbol plus its file remains searchable after those shifts. Current line links are useful navigation, but do not make them the only evidence anchor.
 
 **The rule in practice:**
 - ✅ `FindOneCommandResolver.resolveCollectionCommand()` branches across four sort paths
 - ❌ `FindOneCommandResolver.java`, line 72 branches across four sort paths
-- ✅ `SortClauseUtil` is the entry point for sort dispatch detection
-- ❌ `service/resolver/query/collection/find/FindOneCommandResolver.java`
+- ✅ `deploy` in `.github/workflows/docs.yml` is the publishing job
+- ✅ `version` in `package.json` is the package version
 
-You do not need to include file paths. Class names are globally unique in a well-structured codebase and are searchable in any IDE. If a class name is ambiguous, add the package fragment: `sgv2.jsonapi.service.resolver.FindOneCommandResolver`.
+Names are often repeated across packages. Include the file path or qualified symbol needed to locate the source. A configuration-only or documentation repository does not need invented classes to fit the template.
 
 ---
 
@@ -43,7 +41,7 @@ You do not need to include file paths. Class names are globally unique in a well
 
 **Why it matters:** documents without owners drift silently. When an architectural change lands and nobody updates the ONBOARDING.md, the document becomes a trap. A named owner with a scheduled review turns maintenance into a calendar event, not a hope.
 
-**How to fill it in:** name a specific person, not a team. Teams do not review documents; people do. The review cadence should be either time-based ("every 6 months") or event-based ("after any major architectural change") — ideally both. Err toward more frequent than you think necessary; you can always push a review if nothing changed.
+**How to fill it in:** name a responsible person or an accountable team with a clear review process. Record a time-based or event-based review cadence, ideally both. Confirm ownership with the developer rather than inventing an assignment.
 
 **Worked example (Stargate Data API):**
 
@@ -169,7 +167,7 @@ Note that for a pipeline, the "layers" are execution stages rather than request-
 
 **Why it matters:** this section is where the document earns most of its value. A new engineer assigned "add a new command" or "add a new transform stage" does not need to understand the entire codebase — they need to know which files to touch, in what order, and what interface to implement. This section answers that.
 
-**How detailed to be:** imperative steps only. "Create a `[CommandName]` class implementing `[InterfaceName]`" is enough. Do not explain the implementation — point to where it goes. If a step has a non-obvious constraint, add a one-clause note.
+**How detailed to be:** use short imperative steps. Distinguish proposed new names from existing symbols, and cite the existing example or extension point supporting each step. Read relevant bodies before describing behavior. Put unsupported steps under unresolved questions. If a step has a non-obvious constraint, add a short note.
 
 **Worked example (Stargate Data API — adding a new command):**
 
@@ -293,12 +291,11 @@ What breaks: if enrichment runs before validation, `recordType` is null and the 
 
 Before committing your completed `ONBOARDING.md`, run through this checklist:
 
-- [ ] **No line numbers.** Search the document for any reference to a line number (e.g., "line 72", ":72"). Replace every one with a symbol anchor.
-- [ ] **No file paths without a symbol.** Every file path reference should name a class or method, not just a path.
-- [ ] **Every class name is real.** Open your IDE and verify every class name you wrote actually exists in current source. Fix any that don't.
-- [ ] **Every method name is real.** Same check for method names.
-- [ ] **A new engineer can follow Section 3 in an IDE.** Hand the request lifecycle trace to someone unfamiliar with the codebase and ask them to find each step. If they can't, the trace is missing a class or method name.
-- [ ] **Section 7 has at least three gotchas.** If it doesn't, interview a senior engineer before committing.
-- [ ] **The owner block names a person, not a team.** "Data Platform" is not an owner. "Jane Smith (Data Platform)" is.
-- [ ] **The review cadence is scheduled.** Add a calendar reminder now. The document is worth nothing if it drifts.
-- [ ] **No TODO markers remain.** Search for `[PLACEHOLDER]` and `<!-- TODO:`. Every one must be replaced with real content.
+- [ ] **Anchors are durable.** Cite symbols with file paths, or file headings and keys. Line links are optional navigation.
+- [ ] **Existing names and behavior are verified.** Read the relevant source, including bodies for behavioral claims.
+- [ ] **Proposed names are labeled.** Recipes point to existing examples or extension points and declare unresolved dependencies.
+- [ ] **A new engineer can follow Section 3.** Each hop is findable in source, configuration, or the build workflow.
+- [ ] **Gotchas are supported.** Attribute human rationale and check observable failure modes. Leave an explicit TODO for missing context rather than inventing a quota of gotchas.
+- [ ] **Ownership and cadence are agreed.** Record a responsible person or team and how reviews happen.
+- [ ] **Placeholders are resolved.** Replace generic placeholders with verified content or specific TODOs that remain visible for human review.
+- [ ] **Scan coverage is reported.** Separate current, stale, and unverifiable claims. Do not mark a partial check fully current.

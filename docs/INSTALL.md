@@ -1,105 +1,176 @@
-# Installing Codebase Mentor — Every Agent
+# Install Codebase Mentor
 
-The mentor protocol ships in three forms, all generated from one canonical source (`core/mentor-protocol.md`):
+Pick the agent you already use. Both skills are included: **codebase-mentor** for questions, change guidance, and scans, and **onboard** for drafting a repo map. You do not need an `ONBOARDING.md` to get started.
 
-1. **SKILL.md skills** — for agents with native skill support (Claude Code, Codex CLI, and the `skills` CLI's ~70 supported agents).
-2. **AGENTS.md snippet** — for the many agents that read the open [AGENTS.md](https://agents.md) standard.
-3. **Per-agent adapters** — Cursor rule file, GitHub Copilot instructions block.
+| Agent | Recommended setup | Where it lives |
+| --- | --- | --- |
+| Claude Code | Native plugin | Managed by Claude Code |
+| Codex | Native plugin | Managed by Codex |
+| IBM Bob | Project skills | `.bob/skills/` |
+| Cursor | Project rule | `.cursor/rules/codebase-mentor.mdc` |
+| Copilot | Repo instructions | `.github/copilot-instructions.md` |
+| Other compatible agents | Open skills or AGENTS.md | Agent-specific |
 
-## The universal one-liner (recommended)
+## Claude Code
 
-If you have Node.js, the [`skills` CLI](https://github.com/vercel-labs/skills) detects your installed agents and installs the skills into each:
+In Claude Code:
 
-```bash
-npx skills add erichare/codebase-mentor
-```
-
-Useful flags: `-g` (install user-level instead of project-level), `-a claude-code` / `-a codex` / `-a cursor` (target one agent), `-y` (skip prompts).
-
-## Claude Code (and IBM Bob)
-
-Plugin install (preferred — gets you `/codebase-mentor:onboard` and auto-updates):
-
-```
-/plugin marketplace add erichare/codebase-mentor
+```text
+/plugin marketplace add jestatsio/codebase-mentor
 /plugin install codebase-mentor@codebase-mentor
 ```
 
-No plugin support (older versions, IBM Bob):
+Or from a terminal:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/erichare/codebase-mentor/main/install.sh | bash
+claude plugin marketplace add jestatsio/codebase-mentor
+claude plugin install codebase-mentor@codebase-mentor
 ```
 
-Add `-s -- --project` to vendor the skills into the current repo's `.claude/skills/` instead. Team-wide rollout options are in [TEAM_SETUP.md](TEAM_SETUP.md).
+Start a new session if the skills do not appear. Ask an architecture question with `/codebase-mentor:codebase-mentor`, or draft a map with `/codebase-mentor:onboard`.
 
-## OpenAI Codex CLI
+For older clients or a vendored copy, use the installer below with `--agent claude --project`. This writes `.claude/skills/`. Without `--project`, it uses `~/.claude/skills/`.
 
-Codex supports the same open SKILL.md format:
+Update the marketplace and installed plugin through Claude's plugin manager. Automatic updates depend on your marketplace settings.
+
+## Codex
+
+With a Codex CLI that supports plugins:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/erichare/codebase-mentor/main/install.sh | bash -s -- --agent codex
+codex plugin marketplace add jestatsio/codebase-mentor
+codex plugin add codebase-mentor@codebase-mentor
 ```
 
-Skills land in `~/.codex/skills/` (or `.codex/skills/` with `--project`). Invoke with `$codebase-mentor`, or let Codex pick it up implicitly from the description. Codex also reads `AGENTS.md` — see the snippet option below if you prefer repo-level instructions.
+The Codex app also supports adding the GitHub marketplace from its plugin interface. Add `jestatsio/codebase-mentor`, then install **Codebase Mentor**.
 
-## Cursor
+Open a new session and select the Codebase Mentor skill, or ask “Use Codebase Mentor to explain this repository.” Ask for the **onboard** skill to draft a map.
 
-Two options:
+### Skills fallback
 
-- **AGENTS.md** (simplest — Cursor reads it natively): see the snippet section below.
-- **Project rule** (richer: agent-requested by description):
+If `codex plugin` is unavailable, install the same skills directly:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/erichare/codebase-mentor/main/install.sh | bash -s -- --agent cursor
+curl -fsSL https://raw.githubusercontent.com/jestatsio/codebase-mentor/main/install.sh | bash -s -- --agent codex --project
 ```
 
-This drops `codebase-mentor.mdc` into `.cursor/rules/`. Commit it to share with the team.
+This uses `.agents/skills/` in your current repo. Omit `--project` for `~/.agents/skills/`. Invoke `$codebase-mentor` or `$onboard` in clients that support skill mentions.
 
-## GitHub Copilot
+Earlier Codebase Mentor installers wrote to `.codex/skills/` or `~/.codex/skills/`. If switching from those to a native plugin, remove only the old `codebase-mentor` and `onboard` directories you previously installed to avoid duplicate entries. The installer leaves old locations untouched.
 
-- **Copilot coding agent**: reads `AGENTS.md` natively — use the snippet below.
-- **Copilot Chat / repo-wide custom instructions**:
+## IBM Bob
+
+Bob supports native `SKILL.md` skills. From your target repository:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/erichare/codebase-mentor/main/install.sh | bash -s -- --agent copilot
+curl -fsSL https://raw.githubusercontent.com/jestatsio/codebase-mentor/main/install.sh | bash -s -- --agent bob --project
 ```
 
-This upserts a marked block into `.github/copilot-instructions.md` (created if missing; re-runs replace the block, never duplicate it).
+The result is:
 
-## Everything that reads AGENTS.md
+```text
+.bob/skills/
+  codebase-mentor/
+    SKILL.md
+    ...bundled references
+  onboard/
+    SKILL.md
+    ...bundled references
+```
 
-Codex, Cursor, Copilot coding agent, OpenCode, Amp, Zed, Windsurf, Gemini CLI, Jules, and more all read the [AGENTS.md](https://agents.md) standard:
+Reopen your workspace if necessary. Ask Bob:
+
+```text
+Use the codebase-mentor skill to explain the main execution path in this repo.
+Read the relevant source and cite the files and symbols you used.
+```
+
+To draft a map: “Use the onboard skill to create an ONBOARDING.md. Ask me about our team's gotchas before finishing.”
+
+For a user-level install shared across repositories, omit `--project`. It writes to `~/.bob/skills/`. Bob does not need Claude's plugin commands. See [IBM's skill documentation](https://bob.ibm.com/docs/ide/features/skills).
+
+## Download and review the installer
+
+If you prefer inspecting the code before running it:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/erichare/codebase-mentor/main/install.sh | bash -s -- --agent agents-md
+git clone https://github.com/jestatsio/codebase-mentor.git
+cd codebase-mentor
+less install.sh
 ```
 
-This upserts the compact mentor protocol (~2 KB — well within Codex's 32 KiB combined-AGENTS.md budget) into your repo's `AGENTS.md` between `codebase-mentor:begin/end` markers. Commit it and every AGENTS.md-aware agent on the team follows the protocol.
-
-## Everything at once
+Then, from the repository you want to equip, run the checked-out script by its absolute path:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/erichare/codebase-mentor/main/install.sh | bash -s -- --agent all
+bash /absolute/path/to/codebase-mentor/install.sh --agent bob --project
 ```
 
-## MCP clients
+A local checkout supplies the bundled files without a download. For a reproducible install, check out a reviewed commit or release before running it. `--help` lists all options.
 
-Any MCP-capable client can instead run the stdio server from [`mcp/`](../mcp/) (published as `codebase-mentor-mcp`). It exposes the protocol, ONBOARDING.md discovery, and the mentor/change_guide/reconcile/scan/onboard prompts as MCP tools, prompts, and resources — the client model does the reasoning:
+## Other agents
 
-```json
-{
-  "mcpServers": {
-    "codebase-mentor": {
-      "command": "npx",
-      "args": ["-y", "codebase-mentor-mcp"]
-    }
-  }
-}
+### Open skills
+
+The [`skills` CLI](https://github.com/vercel-labs/skills) can install the two skills into supported agents:
+
+```bash
+npx skills add jestatsio/codebase-mentor
 ```
 
-## After installing — same three steps everywhere
+Select the agents and skills you need. This requires Node.js and network access. It is a skills installation, separate from native plugin management.
 
-1. If the repo has no `ONBOARDING.md`, author one from the [template](../template/ONBOARDING.md) ([authoring guide](../template/AUTHORING_GUIDE.md)) — Claude Code users can generate a draft with `/codebase-mentor:onboard`.
-2. Ask an architecture question: *"Where do I add X?"* — answers come with symbol-anchored citations from current source.
-3. Keep the doc fresh: ask *"has anything drifted?"*, or automate it with the [freshness-scan GitHub Action](../examples/github-actions/onboarding-freshness.yml).
+### Cursor
+
+From your target repo:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/jestatsio/codebase-mentor/main/install.sh | bash -s -- --agent cursor
+```
+
+This adds `.cursor/rules/codebase-mentor.mdc`. The rule supplies mentor instructions. For the **onboard** generator too, install the open skills using the skills CLI.
+
+### GitHub Copilot
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/jestatsio/codebase-mentor/main/install.sh | bash -s -- --agent copilot
+```
+
+This adds or replaces the Codebase Mentor block in `.github/copilot-instructions.md`, preserving text outside the marked block.
+
+### AGENTS.md
+
+For agents that read repo-level `AGENTS.md` instructions:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/jestatsio/codebase-mentor/main/install.sh | bash -s -- --agent agents-md
+```
+
+This adds or replaces a marked compact mentor block in `AGENTS.md`. Existing instructions outside the block are preserved. Commit it to share with your team. Like the Copilot adapter, this supplies the mentor protocol, not a separate onboard skill command.
+
+## Optional MCP server
+
+You do not need MCP for the native plugins or skills. For another MCP client, see the [local build and configuration guide](../mcp/README.md). The npm package is not currently published, so `npx codebase-mentor-mcp` is not a supported install path.
+
+## Confirm it works
+
+1. Open your target repository and start a fresh agent session.
+2. Ask it to use Codebase Mentor to trace a concrete feature.
+3. Check that it actually reads source and cites files plus symbols. A confident answer without reads is not evidence that the skill ran.
+4. If a map exists, ask it to verify one specific claim against source. If no map exists, it should proceed from source and explain the missing context.
+
+## Troubleshooting
+
+| Symptom | What to check |
+| --- | --- |
+| Skill does not appear | Restart the session. Verify the install directory for your agent and that it contains `SKILL.md`. For project installs, run from the target repo. |
+| `plugin` command is unknown | Update your agent, or use its direct skills fallback. |
+| Two copies of the same skill appear | Keep one installation method. Remove only the old copies you installed, or uninstall the duplicate plugin. |
+| Agent cannot verify a claim | Give it access to the relevant source. Runtime or deployment facts may still be unverifiable from code. |
+| `ONBOARDING.md` is not found | Supported locations are the repo root, `docs/`, then `doc/`. The agent can still answer from source. |
+| Download fails | Check GitHub access. Use a local checkout and run its installer. |
+
+## Update or remove
+
+For plugins, use your agent's plugin manager to update or uninstall **Codebase Mentor**. For direct skills, rerun the same installer to update. To remove, delete only its `codebase-mentor` and `onboard` directories from the chosen skills location.
+
+For Cursor, remove `codebase-mentor.mdc`. For Copilot or AGENTS.md, remove the block from `<!-- codebase-mentor:begin -->` through `<!-- codebase-mentor:end -->`, leaving your other instructions intact. Your `ONBOARDING.md` remains yours.

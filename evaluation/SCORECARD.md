@@ -1,6 +1,6 @@
 # Evaluation Scorecard — Source-Grounded Codebase Mentor
 
-> **Scope:** Stargate Data API · **Evaluation window:** Week 2–3 of challenge period
+> **Scope:** historical Stargate Data API case study · **Evaluation window:** Week 2–3 of challenge period · **Status:** author-scored, not independently reproduced
 
 ---
 
@@ -16,18 +16,18 @@ The evaluation runs every task question under three conditions:
 | **Arm 2** | Bob + codebase-mentor skill active + live source readable, **no** ONBOARDING.md provided |
 | **Arm 3** | Bob + codebase-mentor skill active + live source readable + `data-api/ONBOARDING.md` in scope |
 
-The structure matters because it isolates two distinct effects:
+The conditions support two different comparisons:
 
-- **Arm 1 → Arm 2 delta** measures the value of the skill's reasoning strategy (source tracing, evidence citation) independent of any authored doc.
-- **Arm 2 → Arm 3 delta** measures the incremental value of the ONBOARDING.md map — the artifact that costs 2–4 hours to author.
+- **Arm 1 → Arm 2** changes both source access and the skill. It does not isolate the skill's contribution. A source-capable agent without the skill would be needed for that comparison.
+- **Arm 2 → Arm 3** adds the ONBOARDING.md map while retaining the skill and source access. This is the intended comparison, with the limitations below.
 
-The arm (2) → arm (3) delta is the **primary claim under test**.
+The arm (2) → arm (3) delta was the **primary claim under test**. The recorded author scores are preserved for historical context, not presented as a general performance estimate.
 
 ### Either Outcome Is Credible
 
 If arm (2) ≈ arm (3) — the ONBOARDING.md produces little or no score lift — that is a valid and publishable result. In that case, the doc's value shifts to rationale and gotchas: non-obvious design decisions, cross-cutting invariants, and negative-space rules (things Bob cannot infer from structure alone). The submission will say so explicitly.
 
-Reporting the arm (2) → arm (3) delta is what makes the claim falsifiable. **Neither outcome is pre-judged.**
+This was the intended evaluation framing. The limitations of the recorded run prevent a causal or general effectiveness claim from these scores alone.
 
 ### Success Criteria
 
@@ -38,7 +38,16 @@ Success is defined as:
 
 Both numbers are reported. The delta is the headline claim; the absolute score is the secondary check that arm (3) is genuinely useful, not merely better than a weak baseline.
 
-> ⚠️ **Provenance note:** scores in this scorecard were assigned by the submission author (not independent judges) against the pre-written rubric below. The raw outputs for all five tasks across all three arms are captured verbatim in the Raw Outputs sections. Any reader can apply the rubric independently and compare. The "How to Run" section describes the prescribed independent-judging protocol; that protocol has not yet been executed with external judges.
+> **Provenance note:** scores were assigned by the submission author, not independent judges. The published response excerpts include symbol-name corrections disclosed in the Arm 2 and Arm 3 capture notes. They are not verbatim transcripts or complete tool traces. The response text and historical scores are preserved below. The "How to Run" section describes an independent-judging protocol that has not yet been executed with external judges.
+
+### Limits of the record
+
+- Five tasks on one codebase do not establish effectiveness across projects, agents, or models. No repeated trials or uncertainty estimates are recorded.
+- The record does not pin the model version, source commit, full prompts, complete tool reads, or per-run timing. A reader can critique the excerpts and rubric, but cannot reproduce the original sessions from this file alone or verify that the evidence protocol was followed.
+- Symbol-name normalization changes material that the file-coverage criterion scores. Preserve original transcripts in any future evaluation and score those separately from edited presentation copies.
+- The T5 rubric and scores were revised after the run. Other scoring judgments also merit review: the T3 notes treat source-edit order as mandatory without demonstrating it, and the T1 Arm 3 note claims table-path coverage absent from the published excerpt. These scores have not been retroactively recomputed.
+- The original positive-delta criterion names correctness and usefulness, while the reported table averages all three criteria. The table is retained with its stated calculation rather than represented as a preregistered analysis.
+- Timing and authoring-effort observations were informal. No measured speedup or universal authoring-time estimate is supported by this record.
 
 ---
 
@@ -254,13 +263,13 @@ Award 1–2 if the answer would leave a developer unsure which to use.
 
 ---
 
-## Raw Outputs
+## Published Response Excerpts
 
-Raw responses captured per arm per task. Judges score from these.
+Historical response excerpts, including the normalization disclosed below. These are available for inspection, but they cannot replace the original transcripts and tool traces for independent judging.
 
 ---
 
-### Arm 1 Raw Outputs (Generic Bob — no skill, no source, no ONBOARDING.md)
+### Arm 1 Response Excerpts (Generic Bob — no skill, no source, no ONBOARDING.md)
 
 > Captured: initial evaluation run. Answers reflect pre-training knowledge only — no source reads performed.
 
@@ -288,7 +297,7 @@ Raw responses captured per arm per task. Judges score from these.
 
 ---
 
-### Arm 2 Raw Outputs (Bob + skill + live source, no ONBOARDING.md)
+### Arm 2 Response Excerpts (Bob + skill + live source, no ONBOARDING.md)
 
 > Captured: live session with `skills/codebase-mentor/SKILL.md` active, workspace = `data-api` source root. No `ONBOARDING.md` provided. *Outputs lightly normalized for symbol-name accuracy (state-machine names corrected to match source); content and scores unchanged.*
 
@@ -322,7 +331,7 @@ Raw responses captured per arm per task. Judges score from these.
 
 ---
 
-### Arm 3 Raw Outputs (Bob + skill + ONBOARDING.md)
+### Arm 3 Response Excerpts (Bob + skill + ONBOARDING.md)
 
 > Captured: live session with `skills/codebase-mentor/SKILL.md` active, workspace = `bob-challenge-2026`, `data-api/ONBOARDING.md` in scope, `data-api` source accessible. *Outputs lightly normalized for symbol-name accuracy; content and scores unchanged.*
 
@@ -360,7 +369,7 @@ Raw responses captured per arm per task. Judges score from these.
 
 ## Results Table
 
-> All three arms captured and scored. Evaluation complete.
+> Historical author scores for all three arms. Independent judging and a reproducible rerun remain outstanding.
 
 Scoring: each cell is a score from 1–5 on that criterion. Task average = mean of three criteria. Arm average = mean of T1–T5 task averages.
 
@@ -376,7 +385,7 @@ Scoring: each cell is a score from 1–5 on that criterion. Task average = mean 
 
 > **Delta** = Arm 3 average − Arm 2 average. This is the primary claim under test.
 > Target: delta > 0 AND Arm 3 avg ≥ 4.0 / 5.0.
-> **Result: delta = +1.2 · Arm 3 avg = 4.7 / 5.0 — both stated criteria met (author-scored; see provenance note in Preamble).**
+> **Recorded result: delta = +1.2 · Arm 3 avg = 4.7 / 5.0**, using the three-criterion averages above. These are historical author scores subject to the provenance and analysis limitations in the Preamble.
 > *Note: T5 scores revised after rubric correction — the original criterion incorrectly penalized the more source-accurate Arm 2 answer and rewarded the oversimplified Arm 3 answer. See T5 scoring notes below.*
 
 ### Arm 2 Scoring Notes (T1–T5)
@@ -403,7 +412,7 @@ Scoring: each cell is a score from 1–5 on that criterion. Task average = mean 
 
 **T5:** File coverage 4 — cites `FindCollectionOperation`, `InsertCollectionOperation` as canonical Operation examples, `BaseTask` with state-transition enum (`UNINITIALIZED → READY → IN_PROGRESS → COMPLETED/ERROR/SKIPPED`), `TaskRetryPolicy`, and the package split. Correctness 4 *(revised from 5)* — cleanly aligns Operations with the collection path and Tasks with the table path, includes retry and state-machine dimensions; however, the "Tasks = table-path" framing is an oversimplification contradicted by `IntermediateCollectionReadTask` and the mid-migration `TaskOperation` pattern. The doc's own vocabulary entry has now been corrected to reflect this nuance. Usefulness 5 — a developer adding new collection or table behavior would still land in the right place following this guidance.
 
-**Speed observation:** Arm 3 sessions ran noticeably faster than Arm 2 sessions for T3–T5. The ONBOARDING.md's domain-vocabulary section and gotchas map allowed Bob to skip exploratory reads of `exception/`, `operation/tables/`, and `service/operation/collections/` and answer directly. This latency reduction is itself a secondary benefit of the authored doc — reducing the number of source reads Bob must perform to answer design-intent questions.
+**Informal speed observation:** the author perceived Arm 3 sessions as faster on T3–T5. No timings or complete tool-read counts were recorded, so this is an anecdote, not a measured speedup. A map may narrow the search, but the protocol still requires reading the source behind behavioral claims.
 
 ---
 
@@ -423,6 +432,8 @@ Scoring: each cell is a score from 1–5 on that criterion. Task average = mean 
 
 ## How to Run
 
+For a new evaluation, save the exact source commit, model and agent versions, skill version, prompts, configuration, and unedited response/tool transcripts. Use fresh sessions, repeat the tasks, record duration and source reads, and score blind against a frozen rubric. Include a source-capable no-skill condition if evaluating the protocol's contribution. Keep new results separate from the historical table above.
+
 ### Prerequisites
 
 - Two senior Stargate Data API engineers available as independent judges
@@ -434,7 +445,7 @@ Scoring: each cell is a score from 1–5 on that criterion. Task average = mean 
 ### Running Arm 1 — Generic Bob (no skill, no doc)
 
 1. Open a **fresh** Bob session with no skill active. Confirm the codebase-mentor skill is not loaded.
-2. Do not provide `data-api/ONBOARDING.md` or any codebase summary.
+2. To reproduce the historical Arm 1 condition, provide neither source access nor `data-api/ONBOARDING.md` nor a codebase summary. Label this condition explicitly as a no-source baseline.
 3. Ask the task question verbatim (do not rephrase).
 4. Record the full response.
 5. Score independently on all three criteria using the judging notes above.

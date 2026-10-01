@@ -2,7 +2,7 @@
 
 Apply this protocol when a developer asks about code architecture, wants to know where to make a change, asks you to verify whether a statement about the codebase is true, or asks for a freshness scan of the repo's ONBOARDING.md.
 
-The protocol applies to any repo that has an `ONBOARDING.md` at its root. The document is the map; live source is the truth.
+Use an existing `ONBOARDING.md` when available, following the discovery rules below. Without one, answer from source and identify the missing context. The document is the map. Live source is the truth.
 
 Tool wording in this document is agent-neutral: "read" means opening a file with your file-reading capability; "search" means scanning the source tree with your code-search capability (grep or equivalent).
 
@@ -16,18 +16,20 @@ Do not answer from pre-training knowledge about what a codebase "typically" look
 
 Answers are regenerated from current source, not from a persistent index. If a relevant source artifact cannot be located, say so explicitly — do not fill the gap with inference.
 
+Distinguish observed behavior from proposed changes and human-provided rationale. A proposed new name is not an existing symbol. Attribute rationale supplied by a developer or document, and do not present it as a source-verified fact. Source reads establish what the checked-out code says, not what is deployed or enabled at runtime.
+
 **Source is the truth. ONBOARDING.md is the map.**
 
 ---
 
 ## Citation Format
 
-When citing source evidence in answers, use **symbol anchors** — class names and method names — not line numbers. Line numbers rot with every commit; symbol names survive routine edits.
+Use **symbol anchors with file paths**: functions, classes, methods, workflow jobs, or configuration keys. For documents and declarative projects, cite the file and relevant heading or key. Names need not be globally unique, so include enough path context to locate the evidence.
 
 Correct citation format: "This is handled in `ResolverClass.resolveCommand()` in `path/to/ResolverClass.java`."
-Avoid: "See line 72 of `FindOneCommandResolver.java`."
+For a workflow: "The `deploy` job in `.github/workflows/docs.yml` publishes the site."
 
-If a method is long and the relevant logic is in a specific sub-section, name the local variable, block label, or inner call rather than the line number.
+Do not rely on bare line numbers as durable anchors. A current file link with a line number is useful navigation when the agent supports it, but include the symbol, heading, or key as well. If a method is long, name the relevant inner call or block.
 
 ---
 
@@ -41,9 +43,9 @@ If a method is long and the relevant logic is in a specific sub-section, name th
 
 **Steps:**
 
-1. Read `ONBOARDING.md` at the root of the repo. Identify which section — layer map, request lifecycle, domain vocabulary, or high-signal files — is most relevant to the question.
+1. Locate and read `ONBOARDING.md` using the discovery rules below. Identify which section — layer map, request lifecycle, domain vocabulary, or high-signal files — is most relevant to the question. If none exists, locate entry points directly in source.
 
-2. From the relevant ONBOARDING.md section, extract one to three symbol anchors (class names, method names) that point toward the answer.
+2. From the relevant ONBOARDING.md section, extract one to three symbol or file anchors that point toward the answer.
 
 3. Open each symbol in the live source. Read the file directly, or search for the class name if the path is unknown — whichever resolves the symbol fastest. Read the body if the question requires understanding behavior, not just structure.
 
@@ -51,8 +53,8 @@ If a method is long and the relevant logic is in a specific sub-section, name th
 
 5. Compose the answer using only what you read in steps 2–4. Structure the answer as:
    - One-paragraph plain-language explanation.
-   - Symbol-anchored evidence block: one bullet per source artifact read, with the class/method name and file path.
-   - If ONBOARDING.md had a relevant comment (rationale, gotcha, known limitation), quote it and attribute it to the doc.
+   - Evidence block: one bullet per relevant source artifact, with the symbol, heading, or key and file path.
+   - If ONBOARDING.md had relevant rationale, a gotcha, or a known limitation, summarize it and attribute it to the doc. Verify associated behavioral claims in source.
 
 6. If the question requires tracing a full request path, follow the chain: read each layer in turn, do not skip ahead from ONBOARDING.md summary to a final answer.
 
@@ -72,19 +74,20 @@ If a method is long and the relevant logic is in a specific sub-section, name th
 
 3. If no matching recipe exists in ONBOARDING.md, search the source for the nearest existing example of the same pattern. For example, if the task is "add a new command", find one existing command resolver and read it to understand the pattern.
 
-4. From the live source, identify every class and method the developer will need to create or modify. Order them by dependency: things that must exist before other things can compile or run come first.
+4. From the live source, identify the existing symbols and files the change touches and the new artifacts you propose. Order them by dependency. State the scope you checked and any unresolved dependencies instead of claiming the list is exhaustive without evidence.
 
 5. Produce the checklist in this format:
    ```
-   1. Create `NewResolver` implementing `CommandResolver<NewCommand>` in `path/to/resolvers/`
+   1. Proposed: create `NewResolver` implementing `CommandResolver<NewCommand>` in `path/to/resolvers/`
       — Model on: `ExistingResolver.resolveCollectionCommand()` in `path/to/ExistingResolver.java`
-   2. Register `NewResolver` in `ResolverRegistry.register()` in `path/to/ResolverRegistry.java`
+   2. Existing: update `ResolverRegistry.register()` in `path/to/ResolverRegistry.java`
+      — Verified registration point for the proposed resolver
    3. ...
    ```
 
 6. After the checklist, note any gotchas called out in the ONBOARDING.md "known gotchas" section that apply to this change type. If ONBOARDING.md has no entry for this change type, say so — do not invent gotchas.
 
-7. Every step in the checklist must name a real class or method you verified in live source during this session. If a step is based on ONBOARDING.md alone (not verified in source), mark it: `[from ONBOARDING.md — not verified in source]`.
+7. Anchor every actionable step to an existing symbol, file, or configuration key read this session. Label new names **Proposed** and cite the verified example or extension point that supports them. Put doc-only suggestions and missing evidence under **Unresolved questions**, not in the verified checklist. Explain what must be inspected or clarified before those steps can be recommended.
 
 ---
 
@@ -108,7 +111,7 @@ If a method is long and the relevant logic is in a specific sub-section, name th
    - **Stale:** The source contradicts the claim. State the discrepancy precisely: what the claim says vs. what the source actually does. Cite the symbol that contradicts it. Do not smooth over the contradiction.
    - **Indeterminate:** The claim is about runtime behavior or configuration that cannot be determined by reading source alone (e.g., a threading policy set at deployment time). State why the claim cannot be confirmed from source.
 
-5. If the claim is **Stale**, offer to update the ONBOARDING.md entry. Do not update it automatically.
+5. If the claim is **Stale**, propose a correction. Apply it when the developer has requested corrections, otherwise ask before changing the document.
 
 ---
 
@@ -129,7 +132,7 @@ If a method is long and the relevant logic is in a specific sub-section, name th
 4. Classify each claim:
    - ✅ **Current** — source matches the claim.
    - ⚠️ **Stale** — source contradicts or no longer contains the described construct.
-   - ❓ **Unverifiable** — claim is about runtime behavior not determinable from source.
+   - ❓ **Unverifiable** — the required source is unavailable or the claim depends on runtime state, configuration, or human context that was not established.
 
 5. Produce a scan report in this format:
    ```
@@ -137,6 +140,7 @@ If a method is long and the relevant logic is in a specific sub-section, name th
 
    **Scanned:** <date or "current session">
    **Source root:** <path>
+   **Coverage:** <claims checked / claims identified, plus any areas not inspected>
 
    ### Divergences
 
@@ -152,7 +156,7 @@ If a method is long and the relevant logic is in a specific sub-section, name th
    For each ⚠️ Stale entry, describe the corrected statement in one sentence.
    ```
 
-6. Do not update ONBOARDING.md automatically. Present the report and ask whether the developer wants corrections applied.
+6. Report incomplete coverage and unverifiable claims explicitly. Only call the scan fully current when every identified structural claim was checked and confirmed. Apply corrections when already requested by the developer, otherwise present the report and ask before editing.
 
 ---
 
@@ -171,7 +175,7 @@ Report the discrepancy, then proceed with the located symbol. Mark the ONBOARDIN
 > "I found `UpdatedClassName` at `new/path/UpdatedClassName.java` — the ONBOARDING.md pointer is stale. Proceeding from current source."
 
 **Step 3b — If not found anywhere in the source:**
-Stop and report honestly. Do not continue as if the claim is true.
+Report the unresolved claim honestly. Continue with other supported parts of the question, without treating the missing claim as true.
 > "I cannot find evidence for this claim in current source. The class or method may have been removed or renamed. I cannot confirm or describe this behavior without source evidence. The ONBOARDING.md entry should be reviewed."
 
 Never say "typically", "likely", "probably" or similar hedges when you mean "I have not read the source." Use the explicit evidence-missing declaration instead.
@@ -180,12 +184,14 @@ Never say "typically", "likely", "probably" or similar hedges when you mean "I h
 
 ## ONBOARDING.md Discovery
 
-If `ONBOARDING.md` is not at the project root, check these locations in order:
+Use an explicit document path supplied by the developer. Otherwise, check these locations relative to the selected project root:
 1. `./ONBOARDING.md`
 2. `./docs/ONBOARDING.md`
 3. `./doc/ONBOARDING.md`
 
-If none exist, tell the developer: "No ONBOARDING.md found. I can still answer questions from live source, but my answers will lack the rationale and gotcha context the doc would provide. Generate a draft with the companion `onboard` skill if your agent supports skills, or author one by hand from the template at https://github.com/erichare/codebase-mentor/blob/main/template/ONBOARDING.md (authoring guide alongside it)."
+If more than one exists, identify the alternatives and use the one whose scope matches the question. Ask which is authoritative if that remains unclear. Do not merge competing maps silently.
+
+If none exist, tell the developer: "No ONBOARDING.md found. I can still answer questions from live source, but the doc's rationale and gotcha context is unavailable. Generate a draft with the companion `onboard` skill if your agent supports skills, or use the template at https://github.com/jestatsio/codebase-mentor/blob/main/template/ONBOARDING.md."
 
 Proceed in source-only mode: read and search the source to explore structure before answering, and rely on ONBOARDING.md guidance only when the file exists.
 
