@@ -1,201 +1,140 @@
 <p align="center">
-  <h1 align="center">Codebase Mentor</h1>
+  <img src="site/docs/assets/logo.png" alt="Codebase Mentor: an open book, code brackets, and a guiding path" width="128">
 </p>
+
+<h1 align="center">Codebase Mentor</h1>
+
+<p align="center"><strong>Find your way through unfamiliar code.</strong><br>
+Architecture answers, change plans, and onboarding docs grounded in the source your agent actually reads.</p>
 
 <p align="center">
-  <a href="https://github.com/erichare/codebase-mentor/actions/workflows/validate.yml"><img src="https://github.com/erichare/codebase-mentor/actions/workflows/validate.yml/badge.svg" alt="CI"></a>
-  <a href="https://github.com/erichare/codebase-mentor/releases"><img src="https://img.shields.io/github/v/release/erichare/codebase-mentor" alt="Release"></a>
-  <a href="https://erichare.github.io/codebase-mentor/"><img src="https://img.shields.io/badge/docs-erichare.github.io-teal" alt="Docs"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT"></a>
+  <a href="https://github.com/jestatsio/codebase-mentor/actions/workflows/validate.yml"><img src="https://github.com/jestatsio/codebase-mentor/actions/workflows/validate.yml/badge.svg" alt="Validation"></a>
+  <a href="https://jestatsio.github.io/codebase-mentor/"><img src="https://img.shields.io/badge/docs-get_started-087f8c" alt="Documentation"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-64748b" alt="MIT license"></a>
+  <a href="https://jestats.io"><img src="https://img.shields.io/badge/by-JEStats-087f8c" alt="By JEStats"></a>
 </p>
 
-<p align="center">
-  <b>4 mentor modes · 1 onboarding generator · ~70 agents from one install · zero runtime code</b>
-</p>
+<p align="center"><a href="#install">Install</a> · <a href="#try-it">Try it</a> · <a href="docs/INSTALL.md">Setup help</a> · <a href="https://jestatsio.github.io/codebase-mentor/">Docs</a></p>
 
-<p align="center">
-  <a href="#install">Install</a> ·
-  <a href="#what-you-get">What you get</a> ·
-  <a href="#how-it-works">How it works</a> ·
-  <a href="#does-it-work">Evaluation</a> ·
-  <a href="#docs">Docs</a>
-</p>
+Give your coding agent a repeatable way to answer **“How does this work?”** and **“Where do I make this change?”** Codebase Mentor asks it to read current source, cite the relevant files and symbols, and call out missing evidence. A short `ONBOARDING.md` adds the rationale and gotchas your team knows.
 
-> **Every architecture or change-guidance claim must be backed by a symbol or file read in the
-> current session.** Missing evidence is declared, never papered over. Source is the truth;
-> `ONBOARDING.md` is the map.
-
-AI coding agents answer "how does this repo work?" with confident guesses. Codebase Mentor pairs a
-short, human-owned `ONBOARDING.md` (the map) with an enforced evidence protocol (the truth), so any
-agent answers architecture questions with symbol-anchored citations from your *current* source — or
-says plainly that it can't. It's a prompt artifact, not a service: nothing to run, nothing to host.
-
-<p align="center">
-  <img src="site/docs/assets/demo.svg" alt="Scripted demo: install, ask an architecture question, get a symbol-cited answer with a gotcha from ONBOARDING.md" width="92%">
-</p>
+**Start in any repo.** An onboarding doc is optional. The skills need no API key, database, background service, or separate runtime beyond your coding agent.
 
 ## Install
 
-Three ways in — pick one.
+### Claude Code
 
-### Universal installer (~70 agents)
+Run in Claude Code:
 
-```bash
-npx skills add erichare/codebase-mentor
-```
-
-Claude Code, Cursor, Codex, Copilot, OpenCode, and everything else the
-[`skills`](https://github.com/vercel-labs/skills) CLI supports.
-
-### Claude Code plugin
-
-```
-/plugin marketplace add erichare/codebase-mentor
+```text
+/plugin marketplace add jestatsio/codebase-mentor
 /plugin install codebase-mentor@codebase-mentor
 ```
 
-Adds `/codebase-mentor:onboard` and auto-updates with the marketplace.
+### Codex
 
-### curl fallback (no npm, CI, air-gapped)
+Run in your terminal with a current Codex CLI:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/erichare/codebase-mentor/main/install.sh | bash
+codex plugin marketplace add jestatsio/codebase-mentor
+codex plugin add codebase-mentor@codebase-mentor
 ```
 
-Target a specific agent with `--agent claude|codex|cursor|copilot|agents-md|all`, or install into
-the current repo with `--project`. The `agents-md` mode upserts a marker-fenced block into
-`AGENTS.md`, covering every agent that reads that standard. Re-running is always safe.
+In the Codex app, add `jestatsio/codebase-mentor` as a plugin marketplace and install **Codebase Mentor**. If your version does not support plugins, use the [skills fallback](docs/INSTALL.md#codex).
 
-### MCP server (any MCP client)
+### IBM Bob
 
-The [`mcp/`](mcp/) package ships a stdio MCP server with the protocol, ONBOARDING.md discovery, and
-the mentor prompts — the client model does the reasoning; the server only supplies artifacts:
+From the repository you want to understand:
 
-```json
-{
-  "mcpServers": {
-    "codebase-mentor": {
-      "command": "npx",
-      "args": ["-y", "codebase-mentor-mcp"]
-    }
-  }
-}
+```bash
+curl -fsSL https://raw.githubusercontent.com/jestatsio/codebase-mentor/main/install.sh | bash -s -- --agent bob --project
 ```
 
-Full per-agent guide: [docs/INSTALL.md](docs/INSTALL.md) · team rollout:
-[docs/TEAM_SETUP.md](docs/TEAM_SETUP.md).
+This installs both skills in `.bob/skills/`. Reopen your workspace if they do not appear, then ask Bob to use Codebase Mentor. See [Bob setup and troubleshooting](docs/INSTALL.md#ibm-bob) for a download-and-review alternative.
 
-## What you get
+**Other agents:** `npx skills add jestatsio/codebase-mentor` installs the open skills format. [Cursor, Copilot, AGENTS.md, and all installation options →](docs/INSTALL.md)
 
-| Mode | Ask | Answer |
-| --- | --- | --- |
-| **Mentor** | *"How does X work?"* | Explanation from ONBOARDING.md anchors verified in live source, cited as `ClassName.methodName()` — never line numbers, which rot |
-| **Change guide** | *"Where do I add Y?"* | Ordered checklist of real classes and methods, modeled on the nearest existing example in source |
-| **Reconcile** | *"Is it still true that Z?"* | **Confirmed / Stale / Indeterminate** with the deciding symbol. The confident, evidenced *no* is the feature |
-| **Scan** | *"Is our doc still accurate?"* | Every structural claim in ONBOARDING.md verified against current source — on demand, or [weekly in CI](examples/github-actions/onboarding-freshness.yml) |
-| **Onboard** | *"This repo has no map"* | `/codebase-mentor:onboard` drafts the doc from live source and interviews you only for what source can't show — 2–4 hours of authoring becomes a ~30-minute review |
+## Try it
 
-## Getting started in a repo
+Open a repo in your agent and paste:
 
-1. **No ONBOARDING.md?** Run `/codebase-mentor:onboard`, or author from the
-   [template](template/ONBOARDING.md) with the [authoring guide](template/AUTHORING_GUIDE.md).
-   This repo [dogfoods its own](ONBOARDING.md).
-2. **Ask:** *"Where do I add X?"*
-3. **Keep it fresh:** copy the [freshness-scan workflow](examples/github-actions/onboarding-freshness.yml)
-   into `.github/workflows/` — drift files an issue instead of misleading the next engineer.
-
-## How it works
-
-One canonical protocol; every agent artifact is generated from it and drift-checked in CI.
-
-```mermaid
-flowchart LR
-    A["core/mentor-protocol.md<br/>(canonical)"] --> B["scripts/sync-adapters.sh"]
-    B --> C["skills/<br/>SKILL.md files"]
-    B --> D["adapters/<br/>AGENTS.md · Cursor · Copilot"]
-    C --> E["Your agent"]
-    D --> E
-    F["ONBOARDING.md<br/>(your repo's map)"] --> E
-    E --> G["Answers with symbol-anchored citations<br/>or an explicit 'I can't verify that'"]
+```text
+Use Codebase Mentor to trace one important execution path in this repo.
+Explain it to a new contributor. Cite the files and symbols you read,
+and flag anything you cannot verify.
 ```
 
-- **The protocol** ([`core/mentor-protocol.md`](core/mentor-protocol.md)) defines the accuracy
-  contract, the four operating modes, and the evidence-missing protocol. A ~2 KB
-  [compact variant](core/mentor-protocol-compact.md) fits agents with tight instruction budgets.
-- **The generator** ([`scripts/sync-adapters.sh`](scripts/sync-adapters.sh)) splices the protocol
-  into each agent's native format. `--check` mode runs in CI, so generated files can never drift
-  from the canonical source.
-- **The doc** ([`template/ONBOARDING.md`](template/ONBOARDING.md)) is 400–800 words, seven
-  sections: purpose, layer map, execution lifecycle, domain vocabulary, change recipes,
-  high-signal files, known gotchas. Humans own it; agents are required to verify it.
+Then put it to work:
 
-## Does it work?
-
-In a three-arm evaluation on the [Stargate Data API](https://github.com/stargate/jsonapi)
-(39 command resolvers, five-layer pipeline):
-
-| Setup | Avg. score (1–5) |
+| You want to… | Ask your agent |
 | --- | --- |
-| Bare agent, source access only | 1.3 |
-| Agent + ONBOARDING.md, no evidence protocol | 3.5 |
-| **Agent + ONBOARDING.md + evidence protocol** | **4.7** |
+| Understand an unfamiliar feature | “Use Codebase Mentor: how does authentication work here?” |
+| Plan a change | “Where would I add a new API endpoint? Find the closest existing example and the tests to run.” |
+| Check an assumption | “Our docs say validation happens before dispatch. Is that still true?” |
+| Catch stale documentation | “Scan ONBOARDING.md against current source. Show what changed and what you could not verify.” |
+| Create a map for your team | “Use the onboard skill to draft ONBOARDING.md. Ask me about the gotchas source cannot explain.” |
 
-The sharpest win: asked whether collection and table logic could share an implementation, the
-source-only arm *recommended it* — the mentored arm refused, citing the precise failure modes in
-`DocumentShredder.shred()`.
+In Claude Code, invoke the generator directly with `/codebase-mentor:onboard`. In other agents, select **onboard** from their skills menu or ask for it by name.
 
-Scores are author-assigned against pre-written rubrics; [all raw outputs are published](evaluation/SCORECARD.md)
-for blind re-scoring, and independent judging has not yet been run. Full story on the
-[evaluation page](https://erichare.github.io/codebase-mentor/evaluation/).
+An answer should make its evidence inspectable. For example, in **this repository**:
 
-## Docs
+> **Where do I change the mentor’s behavior?** Edit `core/mentor-protocol.md`, then run `scripts/sync-adapters.sh` to regenerate the distributed copies. Update `core/mentor-protocol-compact.md` when the rule also applies to compact adapters. Run `scripts/sync-adapters.sh --check` to check for drift.
+>
+> **Evidence:** the full and compact protocol files, plus the generation and check paths in `scripts/sync-adapters.sh`.
 
-| Guide | |
+The protocol is an instruction set, not a correctness guarantee. Results depend on your agent and its source access. Review its evidence before acting.
+
+## A map your team can maintain
+
+`ONBOARDING.md` is a short, human-owned guide: purpose, layers, execution path, vocabulary, change recipes, useful files, and known gotchas. The agent uses it to find the code, then checks what the code actually does.
+
+1. **Draft:** use the onboard skill, or start with the [template](template/ONBOARDING.md).
+2. **Review:** add the design decisions and pitfalls only your team knows.
+3. **Share:** commit it alongside your code. Follow the [team setup guide](docs/TEAM_SETUP.md).
+4. **Maintain:** ask for a freshness scan after refactors, or opt into the [scheduled scan](examples/github-actions/onboarding-freshness.yml).
+
+Browse [real example maps](onboarding/) for Python libraries, Java services, and a Python/React application. Examples are snapshots, so verify their anchors against the version you use.
+
+## Evidence and limitations
+
+The project began with a five-task, author-scored case study on the Stargate Data API:
+
+| Setup | Average score (1–5) |
 | --- | --- |
-| [Documentation site](https://erichare.github.io/codebase-mentor/) | The full docs, rendered |
-| [Per-agent install](docs/INSTALL.md) | Every supported agent, step by step |
-| [Team rollout](docs/TEAM_SETUP.md) | Adopting ONBOARDING.md across a team |
-| [Authoring guide](template/AUTHORING_GUIDE.md) | Write a great ONBOARDING.md, with worked examples |
-| [Example ONBOARDING.md files](onboarding/) | Stargate Data API, AstraPy, Langflow — real docs, real anchors |
-| [Freshness scan in CI](examples/github-actions/onboarding-freshness.yml) | Copy-paste weekly drift check |
-| [Evaluation scorecard](evaluation/SCORECARD.md) | Three-arm design, rubrics, raw outputs |
-| [Changelog](CHANGELOG.md) | Release history |
+| No skill, no source access, no onboarding doc | 1.3 |
+| Skill + live source, no onboarding doc | 3.5 |
+| Skill + live source + onboarding doc | 4.7 |
 
-## What's in this repo
+This is an exploratory case study, not an independent benchmark. The first comparison changes both source access and instructions. Published responses include normalized excerpts, and independent judging has not been completed. [Read the design, rubrics, responses, and limitations](evaluation/SCORECARD.md).
 
-| Area | Contents |
+## Go further
+
+| Guide | What you’ll find |
 | --- | --- |
-| [`core/`](core/) | The canonical mentor protocol (full + compact) — everything else is generated from it |
-| [`skills/`](skills/) | Generated SKILL.md artifacts: the mentor + the onboard generator |
-| [`adapters/`](adapters/) | Generated AGENTS.md snippet, Cursor rule, Copilot instructions block |
-| [`scripts/`](scripts/) | `sync-adapters.sh` — regenerates all distribution artifacts; `--check` gates CI |
-| [`mcp/`](mcp/) | Stdio MCP server (`codebase-mentor-mcp` on npm): protocol, ONBOARDING.md discovery, mentor prompts |
-| [`template/`](template/) | The seven-section ONBOARDING.md template + authoring guide |
-| [`docs/`](docs/) · [`site/`](site/) | Per-agent install / team guides · the MkDocs documentation site |
-| [`examples/`](examples/) | Copy-paste GitHub Actions freshness-scan workflow |
-| [`onboarding/`](onboarding/) | Real example ONBOARDING.md files |
-| [`evaluation/`](evaluation/) | The three-arm evaluation scorecard |
+| [Install and troubleshoot](docs/INSTALL.md) | Native plugins, Bob skills, other agents, updates, and removal |
+| [Roll out to a team](docs/TEAM_SETUP.md) | Share skills and a reviewed repo map |
+| [Write a useful map](template/AUTHORING_GUIDE.md) | Seven sections with worked examples |
+| [Optional MCP server](mcp/) | A local stdio bridge for MCP clients, built from this checkout |
+| [Contribute](CONTRIBUTING.md) | Protocol changes, new adapters, examples, and checks |
+
+The MCP package is not currently published to npm. Use its documented local build. Native plugin and skill installs do not need it.
 
 <details>
-<summary><b>Development</b> — contributing, releasing</summary>
+<summary><strong>Repository layout</strong></summary>
 
-<br>
-
-Edit canonical sources (`core/`, `template/`), never generated files, then regenerate:
-
-```bash
-scripts/sync-adapters.sh          # regenerate skills/ and adapters/
-scripts/sync-adapters.sh --check  # what CI runs
-```
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow and release process, and
-[SECURITY.md](SECURITY.md) for reporting vulnerabilities. Adapter contributions for new agents are
-especially welcome.
+| Path | Purpose |
+| --- | --- |
+| `core/` | Canonical full and compact mentor protocols |
+| `skills/` | Mentor skill, onboard generator, and bundled reference files |
+| `adapters/` | Generated AGENTS.md, Cursor, and Copilot instructions |
+| `template/` | Canonical onboarding template and authoring guide |
+| `scripts/` | Artifact generation and validation |
+| `mcp/` | Optional TypeScript MCP server |
+| `site/` | Documentation site and brand assets |
+| `onboarding/`, `evaluation/` | Example maps and the original case study |
 
 </details>
 
 ---
 
-<p align="center">
-  <sub>MIT © <a href="https://github.com/erichare">Eric Hare</a> — for people who'd rather their agent cite the code than improvise it.</sub>
-</p>
+<p align="center">Built by <a href="https://jestats.io">JEStats</a> · Created by <a href="https://github.com/erichare">Eric Hare</a> · <a href="LICENSE">MIT licensed</a></p>

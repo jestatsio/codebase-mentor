@@ -1,54 +1,25 @@
-# Listing Submissions — Ready-to-Paste
+# Distribution checklist
 
-Everything needed to list codebase-mentor in the major directories. Items marked
-**(you)** need to be done from your own GitHub account / browser; this session's
-GitHub access is scoped to this repo only.
+The repository ships its own Claude Code and Codex marketplaces. Third-party directory acceptance is separate from plugin installation. No external listing or approval is implied by these files.
 
-## 0. skills.sh — nothing to do ✅
+## Reusable listing copy
 
-Listing is automatic: skills.sh indexes public repos with valid SKILL.md files and
-ranks by `npx skills add` install telemetry. The listing appears/climbs as installs accrue.
+- **Name:** Codebase Mentor
+- **Publisher:** JEStats
+- **Repository:** https://github.com/jestatsio/codebase-mentor
+- **Documentation:** https://jestatsio.github.io/codebase-mentor/
+- **Description:** Architecture answers, change plans, and onboarding docs grounded in the source your coding agent reads. Claude Code and Codex plugins, IBM Bob skills, and open agent adapters.
+- **License:** MIT
+- **Category:** Developer tools / documentation / onboarding
+- **Logo:** `site/docs/assets/logo.png` (see `docs/BRAND.md`)
 
-Verified: the skills CLI discovers both skills from this repo's layout and installs
-them (`Found 2 skills → ✓ codebase-mentor, ✓ onboard → .claude/skills/`). The test ran
-against a local checkout because this CI container's git proxy blocks direct
-`https://github.com/...` clones — on a normal machine `npx skills add
-erichare/codebase-mentor` performs the same discovery after cloning. Requires the
-repo to be public.
+## Before announcing a release
 
-## 1. Anthropic official plugin directory (you)
+1. Verify native plugin installs against the public default branch.
+2. Verify the Bob project installer from a clean directory.
+3. Verify the documentation site and repository homepage after ownership or URL changes.
+4. Check manifest versions, release notes, and generated artifacts.
+5. If publishing the optional MCP package, separately verify npm ownership, package contents, and an actual registry install. It is currently unpublished.
+6. Record external directory submissions and their outcomes separately. Check each directory's current submission requirements before submitting.
 
-- **Where:** submission form at https://clau.de/plugin-directory-submission
-- **Requirements:** valid `.claude-plugin/plugin.json` (✅ — CI-validated), passes their quality/security review.
-- **Paste-ready fields:**
-  - Plugin name: `codebase-mentor`
-  - Marketplace repo: `https://github.com/erichare/codebase-mentor`
-  - Description: *Source-grounded codebase mentor for any repo with an ONBOARDING.md — answers architecture questions, guides change tasks, and freshness-scans your onboarding doc, with every claim backed by a symbol read from current source.*
-  - Categories: developer tools / documentation / onboarding
-  - Docs: `https://erichare.github.io/codebase-mentor/`
-
-## 2. hesreallyhim/awesome-claude-code (you)
-
-- **Where:** https://github.com/hesreallyhim/awesome-claude-code → Issues → "Recommend a new resource" issue form (no direct PRs — an automated pipeline adds accepted entries).
-- **Paste-ready fields:**
-  - Resource name: `Codebase Mentor`
-  - Category: Plugins (or Skills)
-  - Link: `https://github.com/erichare/codebase-mentor`
-  - One-liner: *Turns any repo with a short ONBOARDING.md into a source-grounded mentor — evidence-cited architecture answers, change checklists, and doc-drift scans; installs as a plugin, SKILL.md, or AGENTS.md snippet.*
-
-## 3. ccplugins/awesome-claude-code-plugins (you, or a future session with cross-repo access)
-
-- **Where:** https://github.com/ccplugins/awesome-claude-code-plugins → fork → add entry → PR.
-- **Paste-ready entry (match the list's surrounding format):**
-
-  ```markdown
-  - [codebase-mentor](https://github.com/erichare/codebase-mentor) — Source-grounded
-    codebase mentor: evidence-cited architecture answers, guided change checklists,
-    and ONBOARDING.md freshness scans. `/plugin marketplace add erichare/codebase-mentor`
-  ```
-
-## 4. GitHub repo metadata (you, if the API attempt failed)
-
-- **Description:** `Source-grounded codebase mentor for AI coding agents — evidence-cited architecture answers, change guidance, and ONBOARDING.md freshness scans. Claude Code plugin + Cursor/Copilot/Codex/AGENTS.md adapters.`
-- **Homepage:** `https://erichare.github.io/codebase-mentor/`
-- **Topics:** `claude-code` `claude-plugin` `agent-skills` `agents-md` `cursor` `github-copilot` `codex` `onboarding` `developer-tools` `documentation` `ai-agents`
+Skills CLI discovery, GitHub Releases, documentation deployment, marketplace acceptance, and npm publication are independent results.

@@ -1,11 +1,9 @@
 {
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "codebase-mentor",
-  "description": "Understand unfamiliar code, plan your next change, and keep onboarding docs current with source-grounded guidance.",
   "version": "1.2.0",
-  "author": {
-    "name": "JEStats",
-    "url": "https://jestats.io"
-  },
+  "description": "Understand unfamiliar code, plan your next change, and keep onboarding docs current with source-grounded guidance.",
+  "author": { "name": "JEStats", "url": "https://jestats.io" },
   "homepage": "https://github.com/jestatsio/codebase-mentor",
   "repository": "https://github.com/jestatsio/codebase-mentor",
   "license": "MIT",

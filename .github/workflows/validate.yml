@@ -1,4 +1,4 @@
-# Repo self-validation: manifests, generated-file drift, shell hygiene, links.
+# Distribution validation: native manifests, installer behavior, shell hygiene, links.
 name: Validate
 
 on:
@@ -15,11 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Manifests parse
-        run: jq . .claude-plugin/plugin.json .claude-plugin/marketplace.json > /dev/null
-
-      - name: Generated files in sync
-        run: bash scripts/sync-adapters.sh --check
+      - name: Package contracts and generated files
+        run: bash scripts/validate-package.sh
 
       - name: Shellcheck
         run: shellcheck install.sh scripts/*.sh
@@ -36,10 +33,22 @@ jobs:
       - name: Claude plugin validate
         run: |
           npm install -g @anthropic-ai/claude-code
-          claude plugin validate .
+          claude plugin validate --strict .
+          claude plugin validate --strict .claude-plugin/plugin.json
+          claude plugin validate --strict skills
 
       - name: Internal link check
         uses: lycheeverse/lychee-action@v2
         with:
           args: --offline --no-progress --include-fragments "**/*.md"
           fail: true
+
+  installer:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Installer integration checks
+        run: bash scripts/test-install.sh

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
 
@@ -8,8 +8,39 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 
+import { directoryPath, findOnboarding } from "./onboarding.js";
+
 const require = createRequire(import.meta.url);
 const { version } = require("../package.json") as { version: string };
+
+function projectRoot(args: string[]): string {
+  if (args.length === 1 && ["--help", "-h"].includes(args[0])) {
+    console.log("Usage: codebase-mentor-mcp [--root /absolute/path/to/project]\n\n" +
+      "Read-only MCP server for Codebase Mentor by JEStats.\n" +
+      "--root PATH  Default project directory (otherwise the working directory).\n" +
+      "--version    Print the server version.\n" +
+      "--help       Show this help.");
+    process.exit(0);
+  }
+  if (args.length === 1 && args[0] === "--version") {
+    console.log(version);
+    process.exit(0);
+  }
+  if (args.length !== 0 && (args.length !== 2 || args[0] !== "--root" || args[1].startsWith("--"))) {
+    throw new Error("Expected --root PATH, --help, or --version. Run with --help for usage.");
+  }
+  return directoryPath(args[1] ?? process.cwd());
+}
+
+let defaultRoot: string;
+try {
+  defaultRoot = projectRoot(process.argv.slice(2));
+} catch (error) {
+  console.error(`codebase-mentor-mcp: ${error instanceof Error ? error.message : String(error)}`);
+  process.exit(1);
+}
+
+const READ_ONLY = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false };
 
 // Bundled canonical artifacts, copied into build/bundled by `npm run build`.
 // Byte-identical to the canonical sources in the repo (core/, template/) —
@@ -20,32 +51,6 @@ function bundled(name: string): string {
 
 function protocolText(compact: boolean): string {
   return bundled(compact ? "mentor-protocol-compact.md" : "mentor-protocol.md");
-}
-
-interface OnboardingHit {
-  path: string;
-  content: string;
-}
-
-// Search dir/ONBOARDING.md, then walk up parent directories. Stop after
-// checking the directory containing `.git` (the repo boundary), and never
-// walk past the filesystem root.
-function findOnboarding(startDir: string): OnboardingHit | null {
-  let dir = path.resolve(startDir);
-  for (;;) {
-    const candidate = path.join(dir, "ONBOARDING.md");
-    if (existsSync(candidate)) {
-      return { path: candidate, content: readFileSync(candidate, "utf8") };
-    }
-    if (existsSync(path.join(dir, ".git"))) {
-      return null;
-    }
-    const parent = path.dirname(dir);
-    if (parent === dir) {
-      return null;
-    }
-    dir = parent;
-  }
 }
 
 const NOT_FOUND_MESSAGE =
@@ -64,6 +69,7 @@ server.registerTool(
   "codebase_mentor_get_protocol",
   {
     title: "Get Mentor Protocol",
+    annotations: READ_ONLY,
     description:
       "Return the codebase-mentor protocol text (the accuracy contract and operating modes). " +
       "Pass compact: true for the ~2 KB condensed variant.",
@@ -81,6 +87,7 @@ server.registerTool(
   "codebase_mentor_get_onboarding",
   {
     title: "Get Project ONBOARDING.md",
+    annotations: READ_ONLY,
     description:
       "Locate and return the project's ONBOARDING.md by searching root, then walking up " +
       "parent directories (stopping after the directory containing .git). Returns the file " +
@@ -88,12 +95,13 @@ server.registerTool(
     inputSchema: {
       root: z
         .string()
+        .min(1)
         .optional()
-        .describe("Directory to start the search from. Defaults to the server's working directory.")
+        .describe("Existing directory to search from. Relative paths and the default use the server's --root directory, or its working directory if unset.")
     }
   },
   async ({ root }) => {
-    const hit = findOnboarding(root ?? process.cwd());
+    const hit = findOnboarding(path.resolve(defaultRoot, root ?? "."));
     if (!hit) {
       return textContent(NOT_FOUND_MESSAGE);
     }
@@ -105,6 +113,7 @@ server.registerTool(
   "codebase_mentor_get_template",
   {
     title: "Get ONBOARDING.md Template and Authoring Guide",
+    annotations: READ_ONLY,
     description:
       "Return the bundled ONBOARDING.md template and authoring guide for writing a new " +
       "ONBOARDING.md from scratch."
@@ -125,7 +134,8 @@ const LOCATE_AND_VERIFY =
   "codebase_mentor_get_onboarding tool, or use your own file tools to find " +
   "ONBOARDING.md at or above the project root. Then follow the accuracy " +
   "contract: every claim backed by a symbol or file read in this session, " +
-  "symbol anchors (never line numbers), and missing evidence declared explicitly.";
+  "symbol, heading, or key anchors with file paths (current line links may aid navigation), " +
+  "and missing evidence declared explicitly.";
 
 function mentorMessage(task: string): string {
   return `${protocolText(false)}${LOCATE_AND_VERIFY}\n\n${task}`;
@@ -184,13 +194,14 @@ server.registerPrompt(
     argsSchema: {
       root: z
         .string()
+        .min(1)
         .optional()
-        .describe("Project root to onboard. Defaults to the current working directory.")
+        .describe("Project root to onboard. Defaults to the server's configured project directory.")
     }
   },
   ({ root }) =>
     userMessage(
-      `Generate a draft ONBOARDING.md for the project at ${root ?? "the current working directory"}.\n\n` +
+      `Generate a draft ONBOARDING.md for the project at ${path.resolve(defaultRoot, root ?? ".")}.\n\n` +
         "Use this template as the structure:\n\n" +
         bundled("ONBOARDING.template.md") +
         "\n\nAuthoring guide:\n\n" +
@@ -221,11 +232,11 @@ server.registerResource(
   "codebase-mentor://onboarding",
   {
     title: "Project ONBOARDING.md",
-    description: "The current project's ONBOARDING.md, discovered by walking up from the working directory.",
+    description: "The current project's ONBOARDING.md, discovered by walking up from the configured project directory.",
     mimeType: "text/markdown"
   },
   async (uri) => {
-    const hit = findOnboarding(process.cwd());
+    const hit = findOnboarding(defaultRoot);
     return {
       contents: [
         {

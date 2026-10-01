@@ -1,30 +1,31 @@
-# Evaluation & Origin Story
+# The original case study
 
-## Origin: the IBM Bob Challenge
+Codebase Mentor began as Eric Hare's submission to IBM's Bob Challenge 2026. The testbed was the [Stargate Data API](https://github.com/stargate/jsonapi), a Java service with a layered request pipeline. The [original plan](https://github.com/jestatsio/codebase-mentor/blob/main/docs/plan.md) and [demo script](https://github.com/jestatsio/codebase-mentor/tree/main/demo) remain available as historical material.
 
-Codebase Mentor began as Eric Hare's submission to IBM's **Bob Challenge 2026** (Bob is IBM's distribution of Claude Code). The brief: build a reusable skill and prove it on a hard, real codebase. The testbed was the [Stargate Data API](https://github.com/stargate/jsonapi) — 39 concrete command resolvers, a five-layer request pipeline, a custom task-retry framework, and no pre-existing agent documentation. The full demo script, planted-stale-claim setup, and original implementation plan remain in the repo ([`demo/`](https://github.com/erichare/codebase-mentor/tree/main/demo), [`docs/plan.md`](https://github.com/erichare/codebase-mentor/blob/main/docs/plan.md)).
+## What was compared
 
-## The three-arm evaluation
+Five tasks covered adding a sort type, explaining a resolver, adding an error code, a design-intent gotcha, and a task-versus-operation architecture question.
 
-Five tasks (add a sort type, explain a four-path resolver, add an error code, a design-intent gotcha, a task-vs-operation architecture question) were run under three conditions:
+| Arm | Condition | Average score (1–5) |
+| --- | --- | --- |
+| 1 | No skill, no source access, no onboarding doc | 1.3 |
+| 2 | Skill + live source, no onboarding doc | 3.5 |
+| 3 | Skill + live source + onboarding doc | 4.7 |
 
-| Arm | Condition | Avg score |
-|---|---|---|
-| 1 | Bare agent — no skill, no source access | **1.3 / 5** |
-| 2 | Agent + skill + live source, no ONBOARDING.md | **3.5 / 5** |
-| 3 | Agent + skill + live source + ONBOARDING.md | **4.7 / 5** |
+The author assigned scores for file coverage, correctness, and usefulness using task-specific rubrics. Read the [scorecard and published response excerpts](https://github.com/jestatsio/codebase-mentor/blob/main/evaluation/SCORECARD.md).
 
-Each response was scored 1–5 on file coverage, correctness, and usefulness against pre-written per-task rubrics. Full rubrics, scores, and **all raw outputs** are committed in [`evaluation/SCORECARD.md`](https://github.com/erichare/codebase-mentor/blob/main/evaluation/SCORECARD.md).
+## How to interpret it
 
-!!! warning "Provenance"
-    Scores were assigned by the submission author against pre-written rubric criteria, not by independent judges. The raw outputs are published precisely so anyone can re-score them blind. Treat the deltas, not the absolute numbers, as the signal.
+This is a small exploratory case study, not a controlled or independently validated benchmark. The first comparison changes both source access and instructions, so it cannot isolate the protocol's effect. The second comparison explores the added value of an authored map in this particular setting.
 
-## The two results worth knowing
+Published responses include normalization of symbol names. They are not complete unmodified execution traces. The repository does not provide a fully reproducible benchmark with pinned model and source versions, repeated trials, independent judging, or measured time savings. Treat the scores as historical observations and try the workflow on your own codebase.
 
-**The design-intent gotcha (T4).** Asked whether collection and table operation logic should be shared, the source-only arm *recommended sharing it* — the code structure makes it look safe. The ONBOARDING.md arm refused, citing the doc's gotcha section: collections use a shredded denormalized schema, tables map one-to-one to CQL, and sharing concrete operation code breaks both. This is the class of knowledge only an authored doc can carry — source alone actively misleads.
+## What motivated the product
 
-**The evidenced refusal.** A stale claim was deliberately planted in the ONBOARDING.md (a validation-order statement contradicted by the source). Asked to verify it, the agent read `FindOneCommandResolver.resolveCollectionCommand()`, declared the doc claim **Stale**, and cited the contradicting method. A doc that an agent confidently *corrects* is safer than a doc it confidently repeats.
+One task asked whether collection and table operation logic should be shared. The response without the map recommended sharing. The response with the map cited a documented distinction between collection and table storage semantics and argued against that change. The example illustrates the value of recording rationale that is hard to recover from structure alone.
 
-## Secondary observation
+A separate demonstration deliberately planted a stale validation-order claim. The agent was asked to read the relevant resolver, compare the claim with its implementation, and report the mismatch. The desired behavior is an evidence-backed correction when the map and code disagree.
 
-Arm 3 sessions were also faster: the domain-vocabulary section and gotcha map let the agent skip exploratory reads and answer design-intent questions directly. The map pays for itself in read operations, not just accuracy.
+## Try a small evaluation in your own repo
+
+Pick three real questions: one execution path, one upcoming change, and one known gotcha. Record the agent and model, source commit, prompts, source reads, and complete responses. Have a teammate score correctness without knowing which setup produced each answer. Report failures as well as successes, and keep source access equal when measuring the protocol itself.

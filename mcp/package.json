@@ -1,24 +1,27 @@
 {
   "name": "codebase-mentor-mcp",
-  "version": "0.1.0",
-  "description": "MCP stdio server for the codebase-mentor protocol: bundled protocol, ONBOARDING.md discovery, and mentor prompts. Zero intelligence in the server — the client model does the reasoning.",
+  "version": "0.2.0",
+  "description": "Source-grounded codebase onboarding for MCP clients. Read-only project discovery, architecture prompts, and reusable templates. By JEStats.",
   "license": "MIT",
-  "author": "Eric Hare",
-  "homepage": "https://github.com/erichare/codebase-mentor#readme",
+  "author": "Eric Hare (JEStats)",
+  "homepage": "https://github.com/jestatsio/codebase-mentor#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/erichare/codebase-mentor.git",
+    "url": "git+https://github.com/jestatsio/codebase-mentor.git",
     "directory": "mcp"
   },
   "bugs": {
-    "url": "https://github.com/erichare/codebase-mentor/issues"
+    "url": "https://github.com/jestatsio/codebase-mentor/issues"
   },
   "keywords": [
     "mcp",
     "model-context-protocol",
     "agents",
     "onboarding",
-    "codebase"
+    "codebase",
+    "developer-tools",
+    "architecture",
+    "jestats"
   ],
   "type": "module",
   "engines": {
@@ -34,13 +37,13 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json && mkdir -p build/bundled && cp bundled/*.md build/bundled/",
+    "build": "tsc -p tsconfig.json && node scripts/copy-bundled.mjs",
     "prepack": "npm run build",
     "test": "npm run build && node tests/smoke.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.30.0",
+    "@modelcontextprotocol/sdk": "^1.31.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {

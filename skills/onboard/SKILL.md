@@ -1,61 +1,53 @@
 ---
 name: onboard
-description: Generate a draft ONBOARDING.md for the current repo by scanning live source, then interviewing the developer for the context source can't provide (gotchas, ownership). Use when asked to create, generate, or bootstrap an ONBOARDING.md, or to onboard a codebase into the codebase-mentor skill.
-argument-hint: "[source-root]"
+description: Generate a draft ONBOARDING.md by reading current source and asking the developer for missing rationale, gotchas, and ownership. Use when asked to create, generate, or bootstrap an onboarding map for a codebase.
 ---
 
 # Generate an ONBOARDING.md Draft
 
-Produce a complete, symbol-anchored `ONBOARDING.md` at the root of the current repo. Most of the document is drafted from live source; the parts source cannot provide — known gotchas, document ownership — come from a short interview with the developer.
+Create a concise map of the selected project, with source evidence for its structure and behavior. Read the three files bundled beside this SKILL.md before drafting: `ONBOARDING.template.md`, `AUTHORING_GUIDE.md`, and `mentor-protocol.md`. This skill can be installed independently of the mentor skill.
 
-The section structure and fill-in rules are defined in the bundled template `ONBOARDING.template.md`, with section-by-section guidance in `AUTHORING_GUIDE.md`. Both live in the `codebase-mentor` skill directory that sits next to this one (`${CLAUDE_PLUGIN_ROOT}/skills/codebase-mentor/` in a plugin install). Read both before drafting.
-
-If an `ONBOARDING.md` already exists at the repo root, stop and ask whether to regenerate it or run a freshness scan instead (Mode 4 of the codebase-mentor skill). Never overwrite it without confirmation.
-
-If the developer passed an argument, treat it as the source root to scan; otherwise use the repo root.
-
----
+Use the source root specified by the developer, otherwise the current repository root. Check `ONBOARDING.md`, `docs/ONBOARDING.md`, and `doc/ONBOARDING.md` within that root, as well as any document path the developer supplied. If a map exists, identify it and ask whether to revise it or run a freshness scan unless the developer already made that choice. Preserve the existing location. Do not create a competing root map or overwrite human edits silently.
 
 ## Rules
 
-All rules of the codebase-mentor skill apply here, most importantly:
+- **Read before claiming:** read every named source artifact this session. For behavioral claims, read the relevant body or configuration, not only search matches.
+- **Use durable anchors:** include symbols with file paths, or file headings and configuration keys where there are no functions or classes.
+- **Separate facts and proposals:** verify existing anchors. Label proposed new names and cite the existing example or extension point behind the recipe.
+- **Keep it short:** aim for 400–800 words. Use fewer vocabulary entries and recipes when the project is small.
+- **Declare gaps:** leave an explicit `<!-- TODO: what is missing -->` for unsupported content. Attribute human-provided rationale. Do not turn it into a claim that source established.
 
-- **Accuracy contract:** every class, method, or file named in the draft must have been read or grepped in this session. Never fill a section from what codebases "typically" look like.
-- **Symbol anchors, not line numbers:** cite `ClassName.methodName()`, never line numbers.
-- **Target length 400–800 words.** Brevity beats completeness — this is a map, not a manual.
-- Never invent content for sections the interview or source cannot support. Leave an explicit `<!-- TODO -->` with a note instead.
+## Step 1 — Read the project
 
----
+1. Identify the project type from build files, configuration, and directory layout.
+2. Find its entry points: a function, route, CLI command, workflow job, or build step.
+3. Trace one representative execution path through current source, reading each hop. For a documentation or configuration project, trace how an edit reaches its consumer.
+4. Identify the responsibilities along that path and the source anchors that define them. Do not impose layers that the project does not have.
+5. Read existing examples of common changes. Use them to propose recipes, with unresolved dependencies called out.
 
-## Step 1 — Scan the repo
+## Step 2 — Draft from evidence
 
-1. Identify the project type from build/config files (`pom.xml`, `package.json`, `pyproject.toml`, `go.mod`, etc.) and the directory layout.
-2. Find the entry points: `main` functions, HTTP route registrations, CLI definitions, job schedulers — whatever starts execution.
-3. Trace **one representative execution path** end-to-end through live source, reading each class/function at each hop. Pick the path a new engineer is most likely to ask about (the most common request, the core job run).
-4. Identify the architectural layers the trace passed through, and the key symbol that defines each layer's contract.
-5. Note recurring patterns a change would follow (e.g., "every command has a resolver registered in X") — these become change recipes.
+Follow the bundled template:
 
-## Step 2 — Draft the source-derived sections
+- **Purpose:** who uses the project, what it does, and what it produces.
+- **Layer map:** the main responsibilities and a source anchor for each.
+- **Execution lifecycle:** the traced path, with one verified anchor per hop.
+- **Domain vocabulary:** the project-specific terms needed to follow the path.
+- **Common change recipes:** a few ordered checklists grounded in existing examples.
+- **High-signal files:** the best starting points for likely questions.
 
-Using the template's section structure, draft from what you read in Step 1:
+## Step 3 — Fill the human context
 
-- **Section 1 — Codebase Purpose:** one to three sentences; who calls it, what it returns.
-- **Section 2 — Layer Map:** table of layers, outermost first, one key symbol each.
-- **Section 3 — Execution Lifecycle:** the traced path, one numbered step per hop, each naming a real `Class.method()`.
-- **Section 4 — Domain Vocabulary:** 5–10 project-specific terms found in the source, each with the key class that embodies it where one exists.
-- **Section 5 — Common Change Recipes:** 3–5 recipes derived from the patterns found in Step 1.5, each an ordered checklist of symbols to touch. Verify every step against an existing example in source.
-- **Section 6 — High-Signal Files:** the best one or two entry-point symbols per likely question type.
+Use the agent's available question tool or plain conversation. Ask only for information not already supplied, grouping the questions when practical:
 
-## Step 3 — Interview the developer
+1. **Gotchas:** what mistakes recur in review, why the rules exist, and what breaks when violated. Include source-observable failure modes only after checking them. If none are known, leave a TODO for a senior reviewer.
+2. **Ownership:** the person or team responsible, review cadence, and review date.
+3. **Representative path:** whether the traced path is the one a new engineer most needs. Trace a different path if requested.
 
-Ask the developer for what source cannot provide. Use the AskUserQuestion tool where available; otherwise ask in plain conversation. Keep it to three questions:
+If the developer asks for a draft without an interview, keep missing context as TODOs rather than blocking or inventing answers.
 
-1. **Known gotchas (Section 7):** "What mistakes do senior engineers keep catching in code review on this repo? What invariants aren't visible from reading the source?" For each answer, capture rule / why / what breaks. If the developer has none, leave Section 7 with a `<!-- TODO: interview a senior reviewer -->` marker — do not invent gotchas.
-2. **Document owner:** name, team, and review cadence for the owner block.
-3. **Representative path check:** confirm the execution path you traced in Step 1 is the one a new engineer most needs; re-trace a different one if not.
+## Step 4 — Write and verify
 
-## Step 4 — Write and self-verify
-
-1. Write the completed document to `ONBOARDING.md` at the repo root. No `[PLACEHOLDER]` markers may remain except explicit `<!-- TODO -->` notes agreed with the developer.
-2. Self-verify: run the codebase-mentor skill's **Mode 4 freshness scan** against the draft you just wrote. Every structural claim must come back ✅ Current. Fix any ⚠️ Stale entry before finishing — a freshly generated document with stale claims is a drafting error.
-3. Report to the developer: word count, sections completed, sections left as TODO, and the scan result.
+1. Write a new map to the selected project's `ONBOARDING.md`, or revise the existing map at its established location when requested. Replace template placeholders with verified content or explicit TODOs.
+2. Follow **Mode 4 — Scan** in the bundled `mentor-protocol.md`. Fix stale claims in your new draft. Report unverifiable claims and incomplete coverage, and retain human-context TODOs. Never describe an incomplete scan as fully current.
+3. Report the document path, word count, sections completed, remaining TODOs, and scan coverage. The developer owns the final review of rationale and gotchas.

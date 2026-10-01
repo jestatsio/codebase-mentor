@@ -35,7 +35,7 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           plugin_marketplaces: |
-            https://github.com/erichare/codebase-mentor.git
+            https://github.com/jestatsio/codebase-mentor.git
           plugins: |
             codebase-mentor@codebase-mentor
           prompt: |

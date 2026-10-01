@@ -2,9 +2,9 @@ site_name: Codebase Mentor
 site_description: >-
   Source-grounded codebase mentor for AI coding agents — every architecture
   claim backed by a symbol read from current source.
-site_url: https://erichare.github.io/codebase-mentor/
-repo_url: https://github.com/erichare/codebase-mentor
-repo_name: erichare/codebase-mentor
+site_url: https://jestatsio.github.io/codebase-mentor/
+repo_url: https://github.com/jestatsio/codebase-mentor
+repo_name: jestatsio/codebase-mentor
 edit_uri: edit/main/site/docs/
 
 docs_dir: site/docs
@@ -12,26 +12,36 @@ site_dir: .site-build
 
 theme:
   name: material
+  logo: assets/logo.png
+  favicon: assets/logo.png
+  font: false
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: teal
+      primary: custom
       toggle:
         icon: material/brightness-7
-        name: Switch to dark mode
+        name: Switch to light mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: teal
+      primary: custom
       toggle:
         icon: material/brightness-4
-        name: Switch to light mode
+        name: Switch to dark mode
   features:
     - navigation.sections
     - navigation.top
     - content.code.copy
     - content.tabs.link
 
+extra_css:
+  - stylesheets/extra.css
+
+copyright: Codebase Mentor by JEStats · MIT licensed
+
 markdown_extensions:
+  - attr_list
+  - md_in_html
   - admonition
   - pymdownx.superfences
   - pymdownx.tabbed:

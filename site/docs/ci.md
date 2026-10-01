@@ -4,7 +4,7 @@ Drift is the failure mode of every onboarding doc — and a stale doc that an ag
 
 ## The scheduled scan
 
-Copy [`examples/github-actions/onboarding-freshness.yml`](https://github.com/erichare/codebase-mentor/blob/main/examples/github-actions/onboarding-freshness.yml) into your repo's `.github/workflows/`. Weekly (and on demand), it:
+Copy [`examples/github-actions/onboarding-freshness.yml`](https://github.com/jestatsio/codebase-mentor/blob/main/examples/github-actions/onboarding-freshness.yml) into your repo's `.github/workflows/`. Weekly (and on demand), it:
 
 1. Installs the codebase-mentor plugin inside [`anthropics/claude-code-action`](https://github.com/anthropics/claude-code-action).
 2. Runs the Mode 4 scan: every structural claim in `ONBOARDING.md` verified against current source.

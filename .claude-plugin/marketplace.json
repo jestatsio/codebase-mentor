@@ -2,15 +2,14 @@
   "name": "codebase-mentor",
   "description": "Source-grounded codebase mentor: architecture answers, change guidance, and ONBOARDING.md generation and freshness scanning for any repo.",
   "owner": {
-    "name": "Eric Hare"
+    "name": "JEStats"
   },
   "plugins": [
     {
       "name": "codebase-mentor",
       "source": "./",
       "description": "Source-grounded codebase mentor for any repo with an ONBOARDING.md — every claim backed by a symbol or file read in that session.",
-      "version": "1.1.0",
-      "displayName": "Codebase Mentor"
+      "version": "1.2.0"
     }
   ]
 }

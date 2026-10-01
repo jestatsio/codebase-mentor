@@ -4,7 +4,7 @@ Thanks for helping make onboarding docs that AI agents can actually trust. Contr
 
 ## Ground rules
 
-- **Edit canonical sources, never generated files.** The protocol lives in `core/mentor-protocol.md` (full) and `core/mentor-protocol-compact.md` (condensed); the authoring kit lives in `template/`. Everything in `adapters/`, the protocol body of `skills/codebase-mentor/SKILL.md`, and the bundled template copies are generated. After editing a source, run:
+- **Edit canonical sources, never generated files.** The protocol lives in `core/mentor-protocol.md` (full) and `core/mentor-protocol-compact.md` (condensed). The authoring kit lives in `template/`. The onboard workflow is handwritten in `skills/onboard/SKILL.md`. The `GENERATED` array in `scripts/sync-adapters.sh` lists generated skills, adapters, and bundles. After editing a source, run:
 
   ```bash
   scripts/sync-adapters.sh
@@ -14,7 +14,9 @@ Thanks for helping make onboarding docs that AI agents can actually trust. Contr
 
 - **The accuracy contract is the product.** Changes to the protocol must preserve its core property: every architecture claim is backed by a source read in the current session, and missing evidence is declared, never papered over. PRs that weaken this will be declined.
 
-- **Keep the compact protocol compact.** `core/mentor-protocol-compact.md` feeds AGENTS.md snippets; Codex caps combined AGENTS.md content at 32 KiB per repo, so aim to keep the compact variant around 2 KB.
+- **Keep the compact protocol compact.** `core/mentor-protocol-compact.md` feeds project instruction snippets. Aim for about 2 KB so the host project's own instructions retain room in the agent's context budget.
+
+- **Keep each skill self-contained.** Onboard has adjacent copies of the template, authoring guide, and full protocol. Update their canonical sources and regenerate, so installing only that skill remains useful.
 
 ## Adding an adapter for a new agent
 
@@ -26,17 +28,32 @@ Thanks for helping make onboarding docs that AI agents can actually trust. Contr
 
 ## Contributing an example ONBOARDING.md
 
-Real-world examples live in `onboarding/<repo-name>/ONBOARDING.md`. Follow the seven-section structure from `template/ONBOARDING.md`, use symbol anchors (class/method names, never line numbers), and verify every claim against the target repo's current source before submitting. Add a row to the table in `onboarding/README.md`.
+Real-world examples live in `onboarding/<repo-name>/ONBOARDING.md`. Follow the seven-section structure from `template/ONBOARDING.md`, cite symbols with file paths or configuration/document anchors, and verify claims against the target checkout. Include the source repository and revision so readers understand the example's scope. Attribute human rationale and mark unresolved context as TODOs. Add a row to `onboarding/README.md`.
 
 ## Development checks
 
-Run what CI runs before pushing:
+For protocol and packaging changes, start with:
 
 ```bash
 scripts/sync-adapters.sh --check   # generated files up to date
+bash scripts/validate-package.sh  # plugin identities and required bundles
+bash scripts/test-install.sh      # isolated installation smoke checks
 shellcheck install.sh scripts/*.sh # shell hygiene
-jq . .claude-plugin/*.json         # manifests parse
+claude plugin validate --strict . # Claude marketplace validation
 ```
+
+For MCP changes, run `npm ci` and `npm test` in `mcp/` and verify the packed package. For site changes, run `mkdocs build --strict`. The current validation workflow is the reference for required CI checks.
+
+## Releases
+
+The plugin and optional MCP package have separate versions and delivery paths.
+
+1. Add release notes under the plugin version in `CHANGELOG.md`.
+2. Keep `.claude-plugin/plugin.json`, the plugin entry in `.claude-plugin/marketplace.json`, `.codex-plugin/plugin.json`, and root `plugin.json` at that same version. The Codex marketplace catalog points to the plugin and has no separate version field.
+3. Regenerate artifacts and pass the release checks before tagging the reviewed commit as `v<plugin-version>`. `.github/workflows/release.yml` creates the GitHub Release.
+4. If releasing the MCP package, update `mcp/package.json` and its lockfile together, test the package contents, and publish separately. Confirm the exact version in the npm registry before describing it as available.
+
+After ownership or URL changes, check the repository homepage, badges, installation links, and live documentation site. A repository redirect does not establish a working Pages site.
 
 ## Pull requests
 

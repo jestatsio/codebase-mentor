@@ -3,9 +3,22 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow
 [Semantic Versioning](https://semver.org/). The plugin version in
-`.claude-plugin/plugin.json` matches the latest release tag.
+The shipping plugin manifests share a version. The optional MCP package is versioned independently.
 
 ## [Unreleased]
+
+### Changed
+- Transferred the project to `jestatsio/codebase-mentor`, with a new Codebase Mentor logo and subtle JEStats branding.
+- Rebuilt the README and documentation around first use, native Claude Code and Codex plugins, dedicated IBM Bob skills, troubleshooting, updates, and removal.
+- Prepared plugin version 1.2.0 across the portable, Claude, and Codex manifests and marketplace entries.
+- Made the onboard skill self-contained and strengthened evidence, proposal, and existing-document handling.
+- Corrected evaluation condition labels and documented normalized excerpts, confounding, and reproducibility limitations.
+- Replaced the unpublished MCP npm install path with tested local build instructions. MCP 0.2.0 adds explicit project roots, bounded file reads, read-only tool hints, portable builds, and refreshed dependencies.
+
+### Fixed
+- Installer downloads are staged before writes, malformed marker blocks are rejected, explicit revisions are honored, and Bob/Codex skills use their native locations.
+- Added installer regression checks, native plugin validation, docs builds on pull requests, and MCP CI coverage.
+- Hardened release input handling and validated package contracts before release creation.
 
 ### Added
 - `mcp/` package: `codebase-mentor-mcp`, a zero-intelligence MCP stdio server exposing the bundled protocol (`codebase_mentor_get_protocol`, `codebase_mentor_get_onboarding`, `codebase_mentor_get_template` tools), the five mentor prompts (`mentor`, `change_guide`, `reconcile`, `scan`, `onboard`), and `codebase-mentor://` resources — the client model does the reasoning.
@@ -25,7 +38,7 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 - Agent-neutral protocol core (`core/mentor-protocol.md` + compact variant) with generated adapters for AGENTS.md, Cursor, and GitHub Copilot; `scripts/sync-adapters.sh` keeps everything in sync (CI-enforced).
-- `install.sh --agent claude|codex|cursor|copilot|agents-md|all` cross-agent installs; `npx skills add erichare/codebase-mentor` documented as the universal path.
+- `install.sh --agent claude|codex|cursor|copilot|agents-md|all` cross-agent installs; `npx skills add jestatsio/codebase-mentor` documented as the universal path.
 - Per-agent install guide (`docs/INSTALL.md`) and documentation site (MkDocs Material, deployed to GitHub Pages) with a scripted terminal demo.
 - MIT license, contributing guide, code of conduct, security policy, issue/PR templates.
 - Repo CI (plugin validation, sync drift gate, shellcheck, link check) and tag-driven release workflow.
@@ -42,7 +55,7 @@ All notable changes to this project are documented here. The format follows
 - Example scheduled GitHub Action for ONBOARDING.md freshness scanning.
 - Team rollout guide (`docs/TEAM_SETUP.md`) and `install.sh` fallback installer.
 
-[Unreleased]: https://github.com/erichare/codebase-mentor/compare/v1.1.1...HEAD
-[1.1.1]: https://github.com/erichare/codebase-mentor/releases/tag/v1.1.1
-[1.1.0]: https://github.com/erichare/codebase-mentor/releases/tag/v1.1.0
-[1.0.0]: https://github.com/erichare/codebase-mentor/releases/tag/v1.0.0
+[Unreleased]: https://github.com/jestatsio/codebase-mentor/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/jestatsio/codebase-mentor/releases/tag/v1.1.1
+[1.1.0]: https://github.com/jestatsio/codebase-mentor/releases/tag/v1.1.0
+[1.0.0]: https://github.com/jestatsio/codebase-mentor/releases/tag/v1.0.0

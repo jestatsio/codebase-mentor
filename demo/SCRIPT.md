@@ -170,7 +170,7 @@ Wait for the response. The agent will follow Recipe B from the ONBOARDING.md and
 > "Five ordered steps. Every step names the exact class and method to touch. Step 2 even notes that `FindCommandResolver` needs the same branch if the sort applies to multi-document find — not just findOne. Step 5 catches the metrics tag that's easy to forget."
 
 *Voiceover at end:*
-> "A junior developer could open those files and follow this. No architecture walkthrough required. That's the break-even: one to two new hires in, and the 2–4 hour authoring cost has paid for itself."
+> "A junior developer could open those files and follow this. No architecture walkthrough required. The useful next step is to try the checklist in your repo and review its evidence with a teammate."
 
 **[CUT]**
 
@@ -226,4 +226,4 @@ Verdict: Stale. The ONBOARDING.md claim is wrong — and the agent says so, cite
 Same question that opened the demo. Now with the skill and the ONBOARDING.md. Flat no. With the precise technical reason — shredded columns versus CQL columns. With the failure mode — ClassCastException, or a silent wrong-path CQL INSERT. A developer reading this knows exactly what would break. They don't need to go find a senior engineer. That answer is not in the source. You can read every file in the codebase and never find a comment that says "don't share this." The ONBOARDING.md is where the why lives.
 
 *[Clip 3 Part B — Change Guide T1]*
-Now a change task. A developer needs to add a new sort type. Five ordered steps. Every step names the exact class and method to touch. Step 2 even notes that FindCommandResolver needs the same branch if the sort applies to multi-document find. Step 5 catches the metrics tag that's easy to forget. A junior developer could open those files and follow this. No architecture walkthrough required. That's the break-even: one to two new hires in, and the 2–4 hour authoring cost has paid for itself.
+Now a change task. A developer needs to add a new sort type. Five ordered steps. Every step names the exact class and method to touch. Step 2 even notes that FindCommandResolver needs the same branch if the sort applies to multi-document find. Step 5 catches the metrics tag that's easy to forget. A junior developer could open those files and follow this. No architecture walkthrough required. The useful next step is to try the checklist in your repo and review its evidence with a teammate.

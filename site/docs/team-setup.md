@@ -1,10 +1,10 @@
-# Team Rollout
+# Share Codebase Mentor with your team
 
-Three ways to get the mentor in front of a whole team, most-automatic first.
+Start with one repository, one reviewed `ONBOARDING.md`, and the installation method your team already uses. Pick one method per agent to avoid duplicate skills.
 
-## Option 1 — Auto-enable via repo settings (Claude Code)
+## Claude Code: recommend the plugin in repo settings
 
-Commit to your repo's `.claude/settings.json`; everyone who trusts the workspace gets prompted once and stays auto-updated:
+Merge these keys into `.claude/settings.json`:
 
 ```json
 {
@@ -12,9 +12,8 @@ Commit to your repo's `.claude/settings.json`; everyone who trusts the workspace
     "codebase-mentor": {
       "source": {
         "source": "github",
-        "repo": "erichare/codebase-mentor"
-      },
-      "autoUpdate": true
+        "repo": "jestatsio/codebase-mentor"
+      }
     }
   },
   "enabledPlugins": {
@@ -23,37 +22,52 @@ Commit to your repo's `.claude/settings.json`; everyone who trusts the workspace
 }
 ```
 
-Merge the keys if the file already exists.
+Claude may prompt teammates to trust the workspace and install the plugin. Organization policy and client settings can affect availability and updates. Do not replace existing settings with this example.
 
-## Option 2 — Commit the artifacts into your repo (any agent)
+## Codex: use the native plugin
 
-Vendored files are auto-discovered by everyone who opens the repo, no install step:
-
-```bash
-# Claude Code project skills
-curl -fsSL https://raw.githubusercontent.com/erichare/codebase-mentor/main/install.sh | bash -s -- --project
-# AGENTS.md snippet — covers Codex, Cursor, Copilot coding agent, OpenCode, …
-curl -fsSL https://raw.githubusercontent.com/erichare/codebase-mentor/main/install.sh | bash -s -- --agent agents-md
-# Cursor rule
-curl -fsSL https://raw.githubusercontent.com/erichare/codebase-mentor/main/install.sh | bash -s -- --agent cursor
-
-git add .claude .cursor AGENTS.md && git commit -m "Add codebase-mentor"
-```
-
-You own updates — re-run the script to refresh. This is also the path for IBM Bob and CI containers without network access.
-
-## Option 3 — Everyone installs once, user-level
+Each teammate can install once:
 
 ```bash
-npx skills add erichare/codebase-mentor -g
+codex plugin marketplace add jestatsio/codebase-mentor
+codex plugin add codebase-mentor@codebase-mentor
 ```
 
-## CI / containers
+For teams that prefer committed skills, use `--agent codex --project` below. That writes `.agents/skills/`, which supported Codex clients discover in the project.
 
-Point `CLAUDE_CODE_PLUGIN_SEED_DIR` at a checkout of this repo to pre-populate the plugin without cloning at startup, or vendor with Option 2 (zero network).
+## Bob and other agents: commit project skills
 
-## After rollout
+Run from the repo you want to equip. Pick the appropriate command:
 
-1. Ensure the repo has an `ONBOARDING.md` — [generate or author one](authoring.md).
-2. Add the [scheduled freshness scan](ci.md) so the doc can't silently rot.
-3. Watch senior-engineer interrupts drop: the doc + protocol answers the orientation questions; humans keep the questions that genuinely need them.
+```bash
+# IBM Bob → .bob/skills/
+curl -fsSL https://raw.githubusercontent.com/jestatsio/codebase-mentor/main/install.sh | bash -s -- --agent bob --project
+
+# Codex → .agents/skills/
+curl -fsSL https://raw.githubusercontent.com/jestatsio/codebase-mentor/main/install.sh | bash -s -- --agent codex --project
+
+# Claude Code → .claude/skills/
+curl -fsSL https://raw.githubusercontent.com/jestatsio/codebase-mentor/main/install.sh | bash -s -- --agent claude --project
+```
+
+Review and commit the generated skill directories for the agent you chose. Teammates may need a fresh session to discover them. A vendored copy stays fixed until you rerun the installer. For reproducibility, use a reviewed checkout as described in the [install guide](install.md#download-and-review-the-installer).
+
+For mixed agents that read `AGENTS.md`, use the compact shared protocol:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/jestatsio/codebase-mentor/main/install.sh | bash -s -- --agent agents-md
+```
+
+This preserves other instructions outside the Codebase Mentor markers. The snippet supplies mentoring behavior. Install the skills separately if you want the onboard generator.
+
+## Make the first session useful
+
+1. Ask the mentor to trace a real feature or plan an upcoming change.
+2. Review the cited source together. Confirm the explanation includes the relevant tests and existing example.
+3. Generate or author an `ONBOARDING.md`, capturing team rationale and known pitfalls. Name a document owner.
+4. Add a short contributor note explaining how to ask for the mentor and how to maintain the map.
+5. Run a freshness scan after significant refactors. The [optional scheduled workflow](https://github.com/jestatsio/codebase-mentor/blob/main/examples/github-actions/onboarding-freshness.yml) requires an Anthropic API key and may incur model usage charges.
+
+## Containers and offline use
+
+Copy the reviewed skill directories into the image or checkout before going offline. Direct skills are plain Markdown and do not require a network fetch at runtime. Your coding agent may still require its own network connection. The [local installer](install.md#download-and-review-the-installer) can copy from a complete checkout without downloading the artifacts.
