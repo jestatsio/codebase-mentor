@@ -126,6 +126,8 @@ diff -ru "$TEST_ROOT/expected" "$PROJECT_DIR"
 unset MENTOR_TEST_FAIL_FILE
 env PATH="$TEST_ROOT/bin:$PATH" bash "$ROOT/install.sh" --agent bob --project --ref test-ref > "$TEST_ROOT/install.log"
 diff -ru "$TEST_ROOT/expected" "$PROJECT_DIR"
+# Exercise a real pipeline, matching the documented curl | bash installation.
+# shellcheck disable=SC2002
 cat "$ROOT/install.sh" | env PATH="$TEST_ROOT/bin:$PATH" bash -s -- --agent bob --project --ref test-ref > "$TEST_ROOT/install.log"
 diff -ru "$TEST_ROOT/expected" "$PROJECT_DIR"
 printf 'PASS: explicit refs, piped installs, failed downloads preserve working installs\n'
