@@ -1,6 +1,8 @@
 # Install Codebase Mentor
 
-Pick the agent you already use. Both skills are included: **codebase-mentor** for questions, change guidance, and scans, and **onboard** for drafting a repo map. You do not need an `ONBOARDING.md` to get started.
+Pick the agent you already use. Native plugins and direct skill installs include **codebase-mentor** for questions, change guidance, and scans, plus **onboard** for drafting a repo map. You do not need an `ONBOARDING.md` to get started.
+
+The recommended plugin source is **JEStats Plugins** (`jestats-plugins`), hosted at `jestatsio/screamingfrog-plugin`. This shared marketplace includes Codebase Mentor and other JEStats tools.
 
 | Agent | Recommended setup | Where it lives |
 | --- | --- | --- |
@@ -16,18 +18,24 @@ Pick the agent you already use. Both skills are included: **codebase-mentor** fo
 In Claude Code:
 
 ```text
-/plugin marketplace add jestatsio/codebase-mentor
-/plugin install codebase-mentor@codebase-mentor
+/plugin marketplace add jestatsio/screamingfrog-plugin
+/plugin install codebase-mentor@jestats-plugins
 ```
 
 Or from a terminal:
 
 ```bash
-claude plugin marketplace add jestatsio/codebase-mentor
-claude plugin install codebase-mentor@codebase-mentor
+claude plugin marketplace add jestatsio/screamingfrog-plugin
+claude plugin install codebase-mentor@jestats-plugins
 ```
 
-Start a new session if the skills do not appear. Ask an architecture question with `/codebase-mentor:codebase-mentor`, or draft a map with `/codebase-mentor:onboard`.
+Start a new session in the repository you want to understand. For a first question, enter:
+
+```text
+/codebase-mentor:codebase-mentor Trace one important execution path in this repo. Cite the files and symbols you read, and flag anything you cannot verify.
+```
+
+When you want a map, use `/codebase-mentor:onboard`. It reads the source and asks for team context that source cannot establish.
 
 For older clients or a vendored copy, use the installer below with `--agent claude --project`. This writes `.claude/skills/`. Without `--project`, it uses `~/.claude/skills/`.
 
@@ -38,13 +46,20 @@ Update the marketplace and installed plugin through Claude's plugin manager. Aut
 With a Codex CLI that supports plugins:
 
 ```bash
-codex plugin marketplace add jestatsio/codebase-mentor
-codex plugin add codebase-mentor@codebase-mentor
+codex plugin marketplace add jestatsio/screamingfrog-plugin
+codex plugin add codebase-mentor@jestats-plugins
 ```
 
-The Codex app also supports adding the GitHub marketplace from its plugin interface. Add `jestatsio/codebase-mentor`, then install **Codebase Mentor**.
+The Codex app also supports adding the GitHub marketplace from its plugin interface. Add `jestatsio/screamingfrog-plugin`, then install **Codebase Mentor** from **JEStats Plugins**.
 
-Open a new session and select the Codebase Mentor skill, or ask “Use Codebase Mentor to explain this repository.” Ask for the **onboard** skill to draft a map.
+Open a new session in the repository you want to understand. Select the Codebase Mentor skill, then ask:
+
+```text
+Use Codebase Mentor to trace one important execution path in this repo.
+Cite the files and symbols you read, and flag anything you cannot verify.
+```
+
+Ask for the **onboard** skill when you want to draft a map. Both skills work without a separate server or API key.
 
 ### Skills fallback
 
@@ -57,6 +72,26 @@ curl -fsSL https://raw.githubusercontent.com/jestatsio/codebase-mentor/main/inst
 This uses `.agents/skills/` in your current repo. Omit `--project` for `~/.agents/skills/`. Invoke `$codebase-mentor` or `$onboard` in clients that support skill mentions.
 
 Earlier Codebase Mentor installers wrote to `.codex/skills/` or `~/.codex/skills/`. If switching from those to a native plugin, remove only the old `codebase-mentor` and `onboard` directories you previously installed to avoid duplicate entries. The installer leaves old locations untouched.
+
+## Switching installation methods
+
+Use one installation per agent. If you already have `codebase-mentor@codebase-mentor` from the standalone marketplace, you can keep using it. To move to JEStats Plugins, uninstall that plugin through your agent's plugin manager, then follow the JEStats commands above. The installed name becomes `codebase-mentor@jestats-plugins`. Skill names and your project's `ONBOARDING.md` stay the same.
+
+If moving from direct skills, remove only the `codebase-mentor` and `onboard` directories you previously installed in that agent's skills location. Restart the session after changing methods so that old and new skills do not appear together.
+
+### Standalone marketplace alternative
+
+The repository's original marketplace remains available for teams that want only this plugin. Choose this source or JEStats Plugins:
+
+```bash
+# Claude Code
+claude plugin marketplace add jestatsio/codebase-mentor
+claude plugin install codebase-mentor@codebase-mentor
+
+# Codex
+codex plugin marketplace add jestatsio/codebase-mentor
+codex plugin add codebase-mentor@codebase-mentor
+```
 
 ## IBM Bob
 

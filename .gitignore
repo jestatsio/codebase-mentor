@@ -1,6 +1,9 @@
 # MkDocs build output
 .site-build/
 
+# Plugin release archives and checksums
+/dist/
+
 # MCP server
 mcp/node_modules/
 mcp/build/

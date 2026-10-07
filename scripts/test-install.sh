@@ -23,6 +23,8 @@ printf '# Copilot instructions\n\nKeep these too.\n' > .github/copilot-instructi
 chmod 600 AGENTS.md
 chmod 640 .github/copilot-instructions.md
 (umask 022; bash "$ROOT/install.sh" --agent all --project > "$TEST_ROOT/install.log")
+grep -q 'Use Codebase Mentor to trace one important execution path' "$TEST_ROOT/install.log"
+grep -q 'Use onboard to draft ONBOARDING.md' "$TEST_ROOT/install.log"
 assert_mode 600 AGENTS.md
 assert_mode 640 .github/copilot-instructions.md
 assert_mode 644 .bob/skills/onboard/SKILL.md
@@ -60,6 +62,20 @@ mkdir "$TEST_ROOT/private-project"
   done
 )
 printf 'PASS: existing permissions preserved, new files honor umask 022 and 077\n'
+
+# Adapter-only installs must not advertise an onboard skill they do not install.
+for agent in cursor copilot agents-md; do
+  mkdir "$TEST_ROOT/next-action-$agent"
+  (
+    cd "$TEST_ROOT/next-action-$agent"
+    bash "$ROOT/install.sh" --agent "$agent" > "$TEST_ROOT/next-action-$agent.log"
+  )
+  grep -q 'Use Codebase Mentor to trace one important execution path' "$TEST_ROOT/next-action-$agent.log"
+  if grep -q 'Use onboard' "$TEST_ROOT/next-action-$agent.log"; then
+    fail "$agent advertised an unavailable onboard skill"
+  fi
+done
+printf 'PASS: source-trace starter prompt, adapter-only guidance matches installed tools\n'
 
 for option in --agent --ref; do
   expect_failure bash "$ROOT/install.sh" "$option"

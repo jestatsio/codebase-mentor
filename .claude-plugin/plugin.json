@@ -1,13 +1,23 @@
 {
   "name": "codebase-mentor",
   "description": "Understand unfamiliar code, plan your next change, and keep onboarding docs current with source-grounded guidance.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": {
     "name": "JEStats",
     "url": "https://jestats.io"
   },
-  "homepage": "https://github.com/jestatsio/codebase-mentor",
+  "homepage": "https://jestatsio.github.io/codebase-mentor/",
   "repository": "https://github.com/jestatsio/codebase-mentor",
   "license": "MIT",
-  "keywords": ["onboarding", "architecture", "developer-tools", "documentation", "code-review"]
+  "keywords": [
+    "onboarding",
+    "architecture",
+    "developer-tools",
+    "documentation",
+    "code-review"
+  ],
+  "displayName": "Codebase Mentor",
+  "icon": "./site/docs/assets/logo.png",
+  "documentationUrl": "https://jestatsio.github.io/codebase-mentor/",
+  "supportUrl": "https://github.com/jestatsio/codebase-mentor/issues"
 }

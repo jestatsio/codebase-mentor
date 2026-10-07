@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Direct skills and adapter installer. Native Claude/Codex plugins are also
-# available from the jestatsio/codebase-mentor marketplace (see README.md).
+# available from the JEStats marketplace (see README.md).
 # Requires Bash 3.2+ and standard POSIX utilities. Remote installs need curl.
 set -euo pipefail
 
@@ -182,6 +182,11 @@ for agent in "${AGENTS[@]}"; do
 done
 
 printf '\nCodebase Mentor is ready. Start a new agent session, then ask:\n'
-printf '  "Use onboard to create an ONBOARDING.md for this repo."\n'
-printf '  "Use codebase-mentor to trace a request through this codebase."\n'
+printf '  "Use Codebase Mentor to trace one important execution path in this repo.\n'
+printf '   Cite the files and symbols you read, and flag anything you cannot verify."\n'
+case "$AGENT" in
+  claude|codex|bob|all)
+    printf '\nWhen you want an onboarding map, ask:\n'
+    printf '  "Use onboard to draft ONBOARDING.md. Ask me about the gotchas source cannot explain."\n' ;;
+esac
 printf '\nInstall guide: https://github.com/%s#install\n' "$REPO"

@@ -62,13 +62,15 @@ You can start without an `ONBOARDING.md`. The mentor works from source. When you
 
 ## Install where you already work
 
+The native plugins are available through **JEStats Plugins**, hosted at `jestatsio/screamingfrog-plugin`.
+
 === "Claude Code"
 
     Run inside Claude Code:
 
     ```text
-    /plugin marketplace add jestatsio/codebase-mentor
-    /plugin install codebase-mentor@codebase-mentor
+    /plugin marketplace add jestatsio/screamingfrog-plugin
+    /plugin install codebase-mentor@jestats-plugins
     ```
 
 === "Codex"
@@ -76,11 +78,11 @@ You can start without an `ONBOARDING.md`. The mentor works from source. When you
     Run with a current Codex CLI:
 
     ```bash
-    codex plugin marketplace add jestatsio/codebase-mentor
-    codex plugin add codebase-mentor@codebase-mentor
+    codex plugin marketplace add jestatsio/screamingfrog-plugin
+    codex plugin add codebase-mentor@jestats-plugins
     ```
 
-    Or add the GitHub marketplace in the Codex app's plugin interface.
+    Or add `jestatsio/screamingfrog-plugin` in the Codex app's plugin interface and choose **Codebase Mentor** from **JEStats Plugins**.
 
 === "IBM Bob"
 
@@ -93,6 +95,8 @@ You can start without an `ONBOARDING.md`. The mentor works from source. When you
     Installs both skills in `.bob/skills/`.
 
 [All installation options, updates, and troubleshooting →](install.md)
+
+Already using a standalone marketplace or direct skills? Follow [switching installation methods](install.md#switching-installation-methods) to keep one copy per agent.
 
 ## The doc is the map. Source is the truth.
 
