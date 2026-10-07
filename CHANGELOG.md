@@ -2,15 +2,17 @@
 
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow
-[Semantic Versioning](https://semver.org/). The plugin version in
-The shipping plugin manifests share a version. The optional MCP package is versioned independently.
+[Semantic Versioning](https://semver.org/). The shipping plugin manifests share
+a version. The optional MCP package is versioned independently.
 
-## [Unreleased]
+## [1.2.1] - 2026-10-07
 
 ### Changed
 - Transferred the project to `jestatsio/codebase-mentor`, with a new Codebase Mentor logo and subtle JEStats branding.
 - Rebuilt the README and documentation around first use, native Claude Code and Codex plugins, dedicated IBM Bob skills, troubleshooting, updates, and removal.
-- Prepared plugin version 1.2.0 across the portable, Claude, and Codex manifests and marketplace entries.
+- Updated the portable, Claude, and Codex manifests and marketplace entries to plugin version 1.2.1.
+- Added directory-ready metadata for OpenAI and Anthropic, with concise listing copy, JEStats publisher details, and source-first starter prompts.
+- Clarified that Codebase Mentor works without an existing ONBOARDING.md and gives users a first source-backed question to try.
 - Made the onboard skill self-contained and strengthened evidence, proposal, and existing-document handling.
 - Corrected evaluation condition labels and documented normalized excerpts, confounding, and reproducibility limitations.
 - Replaced the unpublished MCP npm install path with tested local build instructions. MCP 0.2.0 adds explicit project roots, bounded file reads, read-only tool hints, portable builds, and refreshed dependencies.
@@ -19,8 +21,11 @@ The shipping plugin manifests share a version. The optional MCP package is versi
 - Installer downloads are staged before writes, malformed marker blocks are rejected, explicit revisions are honored, and Bob/Codex skills use their native locations.
 - Added installer regression checks, native plugin validation, docs builds on pull requests, and MCP CI coverage.
 - Hardened release input handling and validated package contracts before release creation.
+- Validate release ZIP contents, bundled references, matching metadata, and skill paths before uploading release assets.
 
 ### Added
+- A reproducible skills-only plugin ZIP and SHA-256 checksum attached to GitHub Releases, with no optional MCP runtime or repository metadata.
+- Publication instructions that separate JEStats marketplace distribution from official OpenAI and Anthropic directory review and publication.
 - `mcp/` package: `codebase-mentor-mcp`, a zero-intelligence MCP stdio server exposing the bundled protocol (`codebase_mentor_get_protocol`, `codebase_mentor_get_onboarding`, `codebase_mentor_get_template` tools), the five mentor prompts (`mentor`, `change_guide`, `reconcile`, `scan`, `onboard`), and `codebase-mentor://` resources — the client model does the reasoning.
 - `scripts/sync-adapters.sh` now generates byte-identical copies of the canonical sources into `mcp/bundled/`, covered by the `--check` drift gate.
 - New example: `onboarding/docling/ONBOARDING.md` for the Docling document conversion library — a mainstream, non-DataStax codebase, authored and verified against live source.
@@ -55,7 +60,7 @@ The shipping plugin manifests share a version. The optional MCP package is versi
 - Example scheduled GitHub Action for ONBOARDING.md freshness scanning.
 - Team rollout guide (`docs/TEAM_SETUP.md`) and `install.sh` fallback installer.
 
-[Unreleased]: https://github.com/jestatsio/codebase-mentor/compare/v1.1.1...HEAD
+[1.2.1]: https://github.com/jestatsio/codebase-mentor/releases/tag/v1.2.1
 [1.1.1]: https://github.com/jestatsio/codebase-mentor/releases/tag/v1.1.1
 [1.1.0]: https://github.com/jestatsio/codebase-mentor/releases/tag/v1.1.0
 [1.0.0]: https://github.com/jestatsio/codebase-mentor/releases/tag/v1.0.0

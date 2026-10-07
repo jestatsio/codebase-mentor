@@ -1,5 +1,5 @@
 ---
-description: Source-grounded codebase mentor — answers architecture questions and guides change tasks from ONBOARDING.md plus live source, with symbol-anchored evidence for every claim
+description: Explain code architecture, trace execution paths, and plan changes from current source, with file and symbol evidence. An ONBOARDING.md is optional.
 alwaysApply: false
 ---
 

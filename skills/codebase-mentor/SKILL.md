@@ -1,6 +1,6 @@
 ---
 name: codebase-mentor
-description: Source-grounded codebase mentor for any repo with an ONBOARDING.md. Answers architecture questions, guides change tasks, reconciles doc claims against live source, and runs proactive freshness scans — every claim backed by a symbol or file read in that session.
+description: Explain unfamiliar code, trace execution paths, plan changes, and check onboarding docs against current source. Use for architecture questions, finding where a change belongs, or verifying codebase claims. Works with or without ONBOARDING.md.
 ---
 
 # Source-Grounded Codebase Mentor
@@ -10,7 +10,7 @@ description: Source-grounded codebase mentor for any repo with an ONBOARDING.md.
 
 Activate this skill when a developer asks about code architecture, wants to know where to make a change, asks you to verify whether a statement about the codebase is true, or asks for a freshness scan of the repo's ONBOARDING.md. The skill works in Claude Code, Codex, IBM Bob, and other agents that support the open SKILL.md format.
 
-This skill applies to any repo that has an `ONBOARDING.md` at its root. The document is the map; live source is the truth.
+Start in any repository, with or without an `ONBOARDING.md`. When a map exists, use it to find the relevant code, then verify its claims. Without a map, work directly from source. Live source is the truth.
 
 **Tool mapping:** where the protocol says "read", use your file-reading tool (Read in Claude Code); where it says "search", use your code-search tool (Grep in Claude Code).
 

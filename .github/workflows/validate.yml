@@ -18,6 +18,9 @@ jobs:
       - name: Package contracts and generated files
         run: bash scripts/validate-package.sh
 
+      - name: Build and verify skills-only plugin archive
+        run: bash scripts/package-plugin.sh
+
       - name: Shellcheck
         run: shellcheck install.sh scripts/*.sh
 
@@ -32,10 +35,12 @@ jobs:
 
       - name: Claude plugin validate
         run: |
-          npm install -g @anthropic-ai/claude-code
+          npm install -g @anthropic-ai/claude-code@2.1.291
           claude plugin validate --strict .
           claude plugin validate --strict .claude-plugin/plugin.json
-          claude plugin validate --strict skills
+          VERSION="$(jq -r .version plugin.json)"
+          unzip -q "dist/codebase-mentor-${VERSION}.zip" -d "$RUNNER_TEMP/codebase-mentor-plugin"
+          claude plugin validate --strict "$RUNNER_TEMP/codebase-mentor-plugin"
 
       - name: Internal link check
         uses: lycheeverse/lychee-action@v2

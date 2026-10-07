@@ -1,27 +1,41 @@
 {
   "name": "codebase-mentor",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Understand unfamiliar code, plan your next change, and keep onboarding docs current with source-grounded guidance.",
-  "author": { "name": "JEStats", "url": "https://jestats.io" },
-  "homepage": "https://github.com/jestatsio/codebase-mentor",
+  "author": {
+    "name": "JEStats",
+    "url": "https://jestats.io"
+  },
+  "homepage": "https://jestatsio.github.io/codebase-mentor/",
   "repository": "https://github.com/jestatsio/codebase-mentor",
   "license": "MIT",
   "skills": "./skills/",
   "interface": {
     "displayName": "Codebase Mentor",
-    "shortDescription": "Find your way through any codebase with source-backed answers",
-    "longDescription": "Trace how your code works, find where a change belongs, generate a concise onboarding map, and catch documentation drift. Two skills, grounded in files and symbols your assistant actually reads. By JEStats.",
+    "shortDescription": "Understand unfamiliar code",
+    "longDescription": "Trace how code works, find where a change belongs, draft an onboarding map, and check documentation against current source. The codebase-mentor and onboard skills ask your coding agent to read relevant files, cite its evidence, and flag what it cannot verify. Start with or without ONBOARDING.md. Requires access to the source you want to understand. Review generated answers and drafts before acting.",
     "developerName": "JEStats",
     "category": "Developer Tools",
-    "capabilities": ["Read", "Write"],
-    "websiteURL": "https://github.com/jestatsio/codebase-mentor",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://jestatsio.github.io/codebase-mentor/",
+    "supportURL": "https://github.com/jestatsio/codebase-mentor/issues",
     "defaultPrompt": [
-      "Use onboard to create an ONBOARDING.md for this repository.",
-      "Use codebase-mentor to trace a request from entry point to response.",
-      "Use codebase-mentor to show me where to make my first change."
+      "Use codebase-mentor to trace one important execution path in this repository and cite the source.",
+      "Use codebase-mentor to find where my first change belongs and which existing tests to run.",
+      "Use onboard to draft an ONBOARDING.md for this repository and flag missing human context."
     ],
     "logo": "./site/docs/assets/logo.png",
     "composerIcon": "./site/docs/assets/logo.png",
     "brandColor": "#075966"
+  },
+  "extensions": {
+    "com.openai": {
+      "publication": {
+        "release_notes": "JEStats release with clearer first-run guidance, source-only discovery, native plugin metadata, and a verified skills-only distribution archive."
+      }
+    }
   }
 }

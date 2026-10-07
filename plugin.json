@@ -1,11 +1,48 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "codebase-mentor",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Understand unfamiliar code, plan your next change, and keep onboarding docs current with source-grounded guidance.",
-  "author": { "name": "JEStats", "url": "https://jestats.io" },
-  "homepage": "https://github.com/jestatsio/codebase-mentor",
+  "author": {
+    "name": "JEStats",
+    "url": "https://jestats.io"
+  },
+  "homepage": "https://jestatsio.github.io/codebase-mentor/",
   "repository": "https://github.com/jestatsio/codebase-mentor",
   "license": "MIT",
-  "keywords": ["onboarding", "architecture", "developer-tools", "documentation", "code-review"]
+  "keywords": [
+    "onboarding",
+    "architecture",
+    "developer-tools",
+    "documentation",
+    "code-review"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Codebase Mentor",
+        "shortDescription": "Understand unfamiliar code",
+        "longDescription": "Trace how code works, find where a change belongs, draft an onboarding map, and check documentation against current source. The codebase-mentor and onboard skills ask your coding agent to read relevant files, cite its evidence, and flag what it cannot verify. Start with or without ONBOARDING.md. Requires access to the source you want to understand. Review generated answers and drafts before acting.",
+        "developerName": "JEStats",
+        "category": "Developer Tools",
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
+        "websiteURL": "https://jestatsio.github.io/codebase-mentor/",
+        "supportURL": "https://github.com/jestatsio/codebase-mentor/issues",
+        "defaultPrompt": [
+          "Use codebase-mentor to trace one important execution path in this repository and cite the source.",
+          "Use codebase-mentor to find where my first change belongs and which existing tests to run.",
+          "Use onboard to draft an ONBOARDING.md for this repository and flag missing human context."
+        ],
+        "logo": "./site/docs/assets/logo.png",
+        "composerIcon": "./site/docs/assets/logo.png",
+        "brandColor": "#075966"
+      },
+      "publication": {
+        "release_notes": "JEStats release with clearer first-run guidance, source-only discovery, native plugin metadata, and a verified skills-only distribution archive."
+      }
+    }
+  }
 }

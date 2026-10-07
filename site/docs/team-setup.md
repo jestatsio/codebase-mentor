@@ -1,6 +1,6 @@
 # Share Codebase Mentor with your team
 
-Start with one repository, one reviewed `ONBOARDING.md`, and the installation method your team already uses. Pick one method per agent to avoid duplicate skills.
+Start with one repository and the installation method your team already uses. Add a reviewed `ONBOARDING.md` when you want to capture team context. Pick one method per agent to avoid duplicate skills.
 
 ## Claude Code: recommend the plugin in repo settings
 
@@ -9,28 +9,30 @@ Merge these keys into `.claude/settings.json`:
 ```json
 {
   "extraKnownMarketplaces": {
-    "codebase-mentor": {
+    "jestats-plugins": {
       "source": {
         "source": "github",
-        "repo": "jestatsio/codebase-mentor"
+        "repo": "jestatsio/screamingfrog-plugin"
       }
     }
   },
   "enabledPlugins": {
-    "codebase-mentor@codebase-mentor": true
+    "codebase-mentor@jestats-plugins": true
   }
 }
 ```
 
 Claude may prompt teammates to trust the workspace and install the plugin. Organization policy and client settings can affect availability and updates. Do not replace existing settings with this example.
 
+These settings use the shared **JEStats Plugins** marketplace. If your team used the original `codebase-mentor` marketplace or committed skill copies, follow [switching installation methods](install.md#switching-installation-methods) so each teammate loads one copy.
+
 ## Codex: use the native plugin
 
 Each teammate can install once:
 
 ```bash
-codex plugin marketplace add jestatsio/codebase-mentor
-codex plugin add codebase-mentor@codebase-mentor
+codex plugin marketplace add jestatsio/screamingfrog-plugin
+codex plugin add codebase-mentor@jestats-plugins
 ```
 
 For teams that prefer committed skills, use `--agent codex --project` below. That writes `.agents/skills/`, which supported Codex clients discover in the project.

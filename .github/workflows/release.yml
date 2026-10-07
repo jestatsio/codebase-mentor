@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version to release (must match plugin.json), e.g. 1.2.0"
+        description: "Version to release (must match plugin.json), e.g. 1.2.1"
         required: true
         type: string
 
@@ -34,7 +34,7 @@ jobs:
             VERSION="${GITHUB_REF_NAME#v}"
           fi
           if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "Expected a release version such as 1.2.0" >&2
+            echo "Expected a release version such as 1.2.1" >&2
             exit 1
           fi
           echo "VERSION=${VERSION}" >> "$GITHUB_ENV"
@@ -52,6 +52,15 @@ jobs:
             echo "Release version $VERSION does not match plugin.json version $PLUGIN_VERSION" >&2
             exit 1
           fi
+
+      - name: Build and verify plugin archive
+        run: bash scripts/package-plugin.sh
+
+      - name: Validate packaged Claude manifest
+        run: |
+          npm install -g @anthropic-ai/claude-code@2.1.291
+          unzip -q "dist/codebase-mentor-${VERSION}.zip" -d "$RUNNER_TEMP/codebase-mentor-plugin"
+          claude plugin validate --strict "$RUNNER_TEMP/codebase-mentor-plugin"
 
       - name: Extract CHANGELOG section
         run: |
@@ -74,6 +83,8 @@ jobs:
           # gh create it at the checked-out commit. On tag push the existing
           # tag is used and --target is ignored.
           gh release create "$TAG" \
+            "dist/codebase-mentor-${VERSION}.zip" \
+            "dist/codebase-mentor-${VERSION}.zip.sha256" \
             --target "$GITHUB_SHA" \
             --title "codebase-mentor $TAG" \
             --notes-file release-notes.md
