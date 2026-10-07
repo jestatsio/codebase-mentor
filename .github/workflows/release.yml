@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version to release (must match plugin.json), e.g. 1.2.1"
+        description: "Version to release (must match plugin.json), e.g. 1.2.2"
         required: true
         type: string
 
@@ -34,7 +34,7 @@ jobs:
             VERSION="${GITHUB_REF_NAME#v}"
           fi
           if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "Expected a release version such as 1.2.1" >&2
+            echo "Expected a release version such as 1.2.2" >&2
             exit 1
           fi
           echo "VERSION=${VERSION}" >> "$GITHUB_ENV"
@@ -55,6 +55,9 @@ jobs:
 
       - name: Build and verify plugin archive
         run: bash scripts/package-plugin.sh
+
+      - name: Verify generated directory submission
+        run: bash scripts/sync-plugin-directory.sh --check
 
       - name: Validate packaged Claude manifest
         run: |

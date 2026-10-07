@@ -21,6 +21,9 @@ jobs:
       - name: Build and verify skills-only plugin archive
         run: bash scripts/package-plugin.sh
 
+      - name: Verify generated directory submission
+        run: bash scripts/sync-plugin-directory.sh --check
+
       - name: Shellcheck
         run: shellcheck install.sh scripts/*.sh
 

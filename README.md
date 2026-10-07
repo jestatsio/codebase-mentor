@@ -115,6 +115,7 @@ This is an exploratory case study, not an independent benchmark. The first compa
 | [Roll out to a team](docs/TEAM_SETUP.md) | Share skills and a reviewed repo map |
 | [Write a useful map](template/AUTHORING_GUIDE.md) | Seven sections with worked examples |
 | [Optional MCP server](mcp/) | A local stdio bridge for MCP clients, built from this checkout |
+| [Privacy](PRIVACY.md) | Project-file access, generated docs, and your agent's data handling |
 | [Contribute](CONTRIBUTING.md) | Protocol changes, new adapters, examples, and checks |
 
 The MCP package is not currently published to npm. Use its documented local build. Native plugin and skill installs do not need it.
