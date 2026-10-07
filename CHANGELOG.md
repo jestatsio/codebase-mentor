@@ -5,6 +5,16 @@ All notable changes to this project are documented here. The format follows
 [Semantic Versioning](https://semver.org/). The shipping plugin manifests share
 a version. The optional MCP package is versioned independently.
 
+## [1.2.2] - 2026-10-07
+
+### Added
+- A privacy policy describing project-file access, generated documents, host-agent processing, and the absence of a JEStats backend or telemetry in the skills-only plugin.
+- Privacy links in the OpenAI and Claude metadata, with the policy included in the release ZIP and installed-user README.
+- A generated `plugins/codebase-mentor/` folder for directory submissions, containing exactly the release package files, with CI and release checks that reject drift.
+
+### Changed
+- Anthropic directory submissions now target the generated package folder, keeping repository development scripts and workflow examples outside the submitted plugin.
+
 ## [1.2.1] - 2026-10-07
 
 ### Changed
@@ -60,6 +70,7 @@ a version. The optional MCP package is versioned independently.
 - Example scheduled GitHub Action for ONBOARDING.md freshness scanning.
 - Team rollout guide (`docs/TEAM_SETUP.md`) and `install.sh` fallback installer.
 
+[1.2.2]: https://github.com/jestatsio/codebase-mentor/releases/tag/v1.2.2
 [1.2.1]: https://github.com/jestatsio/codebase-mentor/releases/tag/v1.2.1
 [1.1.1]: https://github.com/jestatsio/codebase-mentor/releases/tag/v1.1.1
 [1.1.0]: https://github.com/jestatsio/codebase-mentor/releases/tag/v1.1.0

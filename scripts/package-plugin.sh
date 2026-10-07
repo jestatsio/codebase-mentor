@@ -28,6 +28,7 @@ paths = [
     ".codex-plugin/plugin.json",
     ".claude-plugin/plugin.json",
     "LICENSE",
+    "PRIVACY.md",
     "site/docs/assets/logo.png",
     "skills/codebase-mentor/SKILL.md",
     "skills/codebase-mentor/ONBOARDING.template.md",
@@ -76,6 +77,7 @@ Review the cited evidence and any generated document before acting.
 - [Documentation](https://jestatsio.github.io/codebase-mentor/)
 - [Source and releases](https://github.com/jestatsio/codebase-mentor)
 - [Report an issue](https://github.com/jestatsio/codebase-mentor/issues)
+- [Privacy policy](PRIVACY.md)
 
 MIT licensed. See the bundled [LICENSE](LICENSE).
 """.encode()

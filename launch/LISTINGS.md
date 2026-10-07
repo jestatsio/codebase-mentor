@@ -9,11 +9,12 @@ been accepted or that a directory listing is live.
 
 - **Name:** Codebase Mentor
 - **Publisher:** JEStats
-- **Version:** 1.2.1
+- **Version:** 1.2.2
 - **Subtitle:** Understand unfamiliar code
 - **Repository:** https://github.com/jestatsio/codebase-mentor
 - **Documentation:** https://jestatsio.github.io/codebase-mentor/
 - **Support:** https://github.com/jestatsio/codebase-mentor/issues
+- **Privacy:** https://github.com/jestatsio/codebase-mentor/blob/main/PRIVACY.md
 - **Description:** Trace how code works, find where a change belongs, draft an onboarding map, and check documentation against current source. The codebase-mentor and onboard skills ask your coding agent to read relevant files, cite its evidence, and flag what it cannot verify. Start with or without ONBOARDING.md. Requires access to the source you want to understand. Review generated answers and drafts before acting.
 - **License:** MIT
 - **Category:** Developer Tools
@@ -27,14 +28,22 @@ From the repository root:
 bash scripts/validate-package.sh
 bash scripts/test-install.sh
 bash scripts/package-plugin.sh
+bash scripts/sync-plugin-directory.sh
 ```
 
-The package script writes `dist/codebase-mentor-1.2.1.zip` and its
+The package script writes `dist/codebase-mentor-1.2.2.zip` and its
 `.zip.sha256` checksum. It includes the portable, Codex, and Claude manifests,
 both skills with their references, the logo, a short installed-user README, and
-the license. It excludes the optional MCP server and development files.
-`scripts/validate-package.sh dist/codebase-mentor-1.2.1.zip` verifies the exact
+the license, and the privacy policy. It excludes the optional MCP server and development files.
+`scripts/validate-package.sh dist/codebase-mentor-1.2.2.zip` verifies the exact
 inventory, source bytes, manifest asset paths, skill discovery, and checksum.
+
+`plugins/codebase-mentor/` is the generated GitHub submission folder. Its 14 files
+match the release ZIP byte for byte. Edit the root source files, run
+`scripts/sync-plugin-directory.sh`, and commit the regenerated folder alongside
+the changes. CI and the release workflow run `scripts/sync-plugin-directory.sh
+--check` to reject drift. The check creates a temporary ZIP and never changes the
+generated folder or published release artifacts.
 
 The Release workflow checks the requested version, validates the distribution,
 builds the ZIP, validates the extracted Claude plugin, and attaches the ZIP and
@@ -77,9 +86,9 @@ Use the [Claude developer portal](https://claude.ai/directory/manage) and the
 [directory checklist](https://claude.com/docs/plugins/pre-submission-checklist)
 against the exact commit you submit.
 
-1. Select Plugin bundle. Use `jestatsio/codebase-mentor`, leave the plugin path empty for the repository root, and select the release branch or tag to track.
-2. Validate, then inspect the listing populated from `.claude-plugin/plugin.json` and the repository README. Push fixes and revalidate if the source changes.
-3. Complete data-handling questions and verify the submission contact email. The plugin has no server or telemetry. Its skills ask the host agent to read repository files and, when requested, write onboarding documentation. The host agent's own processing and retention are governed by that host. Answer personal-data and age questions for the actual intended use.
+1. Select Plugin bundle. Use `jestatsio/codebase-mentor`, plugin path `plugins/codebase-mentor`, and tracked branch `main`. Submit the generated package folder so the scan covers the same skills-only files as the release ZIP.
+2. Validate, then inspect the listing populated from the generated folder's `.claude-plugin/plugin.json` and README. Push fixes and revalidate if the source changes.
+3. Read the bundled privacy policy, complete data-handling questions, and verify the submission contact email. The plugin has no server or telemetry. Its skills ask the host agent to read repository files and, when requested, write onboarding documentation. The host agent's own processing and retention are governed by that host. Answer personal-data and age questions for the actual intended use.
 4. Review the compliance acknowledgements and update settings, then submit. A paid Claude plan and a connected GitHub account with repository push access are required.
 5. Follow the scan and reviewer outcome. Request publication when the version passes and verify the live listing separately.
 

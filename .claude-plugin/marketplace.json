@@ -9,7 +9,7 @@
       "name": "codebase-mentor",
       "source": "./",
       "description": "Understand unfamiliar code and draft onboarding docs from current source. Start with or without ONBOARDING.md.",
-      "version": "1.2.1"
+      "version": "1.2.2"
     }
   ]
 }

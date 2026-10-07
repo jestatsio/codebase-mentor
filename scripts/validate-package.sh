@@ -36,6 +36,7 @@ jq -e '
     (.shortDescription | type == "string" and length > 0 and length <= 30) and
     (.longDescription | type == "string" and length > 0 and length <= 4000) and
     .developerName == "JEStats" and .category == "Developer Tools" and
+    .privacyPolicyURL == "https://github.com/jestatsio/codebase-mentor/blob/main/PRIVACY.md" and
     (.capabilities | type == "array" and length <= 20) and
     (.defaultPrompt | type == "array" and length > 0 and length <= 3) and
     (all(.defaultPrompt[]; type == "string" and length > 0 and length <= 128))
@@ -44,8 +45,10 @@ jq -e '
 jq -e '
   .displayName == "Codebase Mentor" and .icon == "./site/docs/assets/logo.png" and
   .documentationUrl == "https://jestatsio.github.io/codebase-mentor/" and
-  .supportUrl == "https://github.com/jestatsio/codebase-mentor/issues"
+  .supportUrl == "https://github.com/jestatsio/codebase-mentor/issues" and
+  .privacyPolicyUrl == "https://github.com/jestatsio/codebase-mentor/blob/main/PRIVACY.md"
 ' .claude-plugin/plugin.json >/dev/null || fail 'Claude listing metadata is incomplete.'
+[[ -s PRIVACY.md ]] || fail 'Missing bundled privacy policy.'
 jq -e --arg version "$version" '
   .name == "codebase-mentor" and (.plugins | length == 1) and
   .plugins[0].name == "codebase-mentor" and .plugins[0].source == "./" and
@@ -93,7 +96,7 @@ import zipfile
 root, archive = map(pathlib.Path, sys.argv[1:])
 expected = {
     "plugin.json", ".codex-plugin/plugin.json", ".claude-plugin/plugin.json",
-    "README.md", "LICENSE", "site/docs/assets/logo.png",
+    "README.md", "LICENSE", "PRIVACY.md", "site/docs/assets/logo.png",
     "skills/codebase-mentor/SKILL.md", "skills/codebase-mentor/ONBOARDING.template.md",
     "skills/codebase-mentor/AUTHORING_GUIDE.md", "skills/onboard/SKILL.md",
     "skills/onboard/ONBOARDING.template.md", "skills/onboard/AUTHORING_GUIDE.md",
@@ -128,6 +131,8 @@ with zipfile.ZipFile(archive) as bundle:
     require(codex["skills"] == "./skills/", "unexpected skill discovery path")
     require(f"Version {portable['version']}" in bundle.read("README.md").decode(),
             "bundled README version differs")
+    require("[Privacy policy](PRIVACY.md)" in bundle.read("README.md").decode(),
+            "bundled README does not link the privacy policy")
 
 checksum = archive.with_suffix(".zip.sha256")
 actual = hashlib.sha256(archive.read_bytes()).hexdigest()
