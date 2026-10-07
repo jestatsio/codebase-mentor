@@ -49,19 +49,18 @@ The Release workflow checks the requested version, validates the distribution,
 builds the ZIP, validates the extracted Claude plugin, and attaches the ZIP and
 checksum to the GitHub Release. Publish the release at the tested commit.
 
-## JEStats marketplaces
+## Repository marketplaces
 
-The shared `jestats-plugins` catalog currently lives in
-[jestatsio/screamingfrog-plugin](https://github.com/jestatsio/screamingfrog-plugin).
-Add the Codebase Mentor release there without replacing its existing entries:
+Codebase Mentor’s repository contains its own `codebase-mentor` catalogs. Users
+add `jestatsio/codebase-mentor` and install
+`codebase-mentor@codebase-mentor` in either agent.
 
-- Codex: `.agents/plugins/marketplace.json`, using a Git source pinned to the tested release commit, `AVAILABLE` installation, `ON_USE` authentication, and the Developer Tools category.
-- Claude: `.claude-plugin/marketplace.json`, using a GitHub source pinned to the same commit or the release ZIP with its SHA-256.
+- Codex: `.agents/plugins/marketplace.json` points to the local plugin root (`./`), with `AVAILABLE` installation, `ON_USE` authentication, and the Developer Tools category.
+- Claude: `.claude-plugin/marketplace.json` points to the local plugin root (`./`). Keep its version aligned with the plugin manifests.
 
-Keep this repository's `codebase-mentor` catalogs as the existing installation
-route. Verify a fresh install from the public JEStats catalog before describing
-`codebase-mentor@jestats-plugins` as available. A published catalog entry is
-independent of official directory review.
+Publish the tested repository changes, then verify a fresh install from the
+public repository before describing the catalog entry as available. These
+catalogs are independent of official directory review.
 
 ## OpenAI directory
 

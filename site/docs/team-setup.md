@@ -9,30 +9,30 @@ Merge these keys into `.claude/settings.json`:
 ```json
 {
   "extraKnownMarketplaces": {
-    "jestats-plugins": {
+    "codebase-mentor": {
       "source": {
         "source": "github",
-        "repo": "jestatsio/screamingfrog-plugin"
+        "repo": "jestatsio/codebase-mentor"
       }
     }
   },
   "enabledPlugins": {
-    "codebase-mentor@jestats-plugins": true
+    "codebase-mentor@codebase-mentor": true
   }
 }
 ```
 
 Claude may prompt teammates to trust the workspace and install the plugin. Organization policy and client settings can affect availability and updates. Do not replace existing settings with this example.
 
-These settings use the shared **JEStats Plugins** marketplace. If your team used the original `codebase-mentor` marketplace or committed skill copies, follow [switching installation methods](install.md#switching-installation-methods) so each teammate loads one copy.
+These settings use the `codebase-mentor` marketplace in Codebase Mentor’s own repository. If your team used `codebase-mentor@jestats-plugins` or committed skill copies, follow [switching installation methods](install.md#switching-installation-methods) so each teammate loads one copy. Remove the old `codebase-mentor@jestats-plugins` entry from `enabledPlugins`, while keeping the `jestats-plugins` marketplace and any other plugin settings your team uses.
 
 ## Codex: use the native plugin
 
 Each teammate can install once:
 
 ```bash
-codex plugin marketplace add jestatsio/screamingfrog-plugin
-codex plugin add codebase-mentor@jestats-plugins
+codex plugin marketplace add jestatsio/codebase-mentor
+codex plugin add codebase-mentor@codebase-mentor
 ```
 
 For teams that prefer committed skills, use `--agent codex --project` below. That writes `.agents/skills/`, which supported Codex clients discover in the project.
