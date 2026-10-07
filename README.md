@@ -18,15 +18,15 @@ Give your coding agent a repeatable way to answer **“How does this work?”** 
 
 ## Install
 
-Install from **JEStats Plugins**, our shared marketplace for coding tools. Its GitHub source is `jestatsio/screamingfrog-plugin`.
+Install directly from [Codebase Mentor’s repository](https://github.com/jestatsio/codebase-mentor). It includes the `codebase-mentor` marketplace for both Claude Code and Codex.
 
 ### Claude Code
 
 Run in Claude Code:
 
 ```text
-/plugin marketplace add jestatsio/screamingfrog-plugin
-/plugin install codebase-mentor@jestats-plugins
+/plugin marketplace add jestatsio/codebase-mentor
+/plugin install codebase-mentor@codebase-mentor
 ```
 
 ### Codex
@@ -34,13 +34,13 @@ Run in Claude Code:
 Run in your terminal with a current Codex CLI:
 
 ```bash
-codex plugin marketplace add jestatsio/screamingfrog-plugin
-codex plugin add codebase-mentor@jestats-plugins
+codex plugin marketplace add jestatsio/codebase-mentor
+codex plugin add codebase-mentor@codebase-mentor
 ```
 
-In the Codex app, add `jestatsio/screamingfrog-plugin` as the JEStats plugin marketplace and install **Codebase Mentor**. If your version does not support plugins, use the [skills fallback](docs/INSTALL.md#codex).
+In the Codex app, add `jestatsio/codebase-mentor` as a plugin marketplace and install **Codebase Mentor**. If your version does not support plugins, use the [skills fallback](docs/INSTALL.md#codex).
 
-Already installed from the standalone `codebase-mentor` marketplace or as direct skills? Keep one copy per agent. See [switching installation methods](docs/INSTALL.md#switching-installation-methods) before changing sources.
+Already installed from `jestats-plugins` or as direct skills? Keep one copy per agent. See [switching installation methods](docs/INSTALL.md#switching-installation-methods) before changing sources.
 
 ### IBM Bob
 
