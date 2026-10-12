@@ -5,10 +5,10 @@
 # current source, Claude opens — or updates — a GitHub issue with the scan report.
 #
 # Setup:
-#   1. Add an ANTHROPIC_API_KEY secret to your repo (Settings → Secrets → Actions).
-#   2. Commit this file as .github/workflows/onboarding-freshness.yml.
-# The default GITHUB_TOKEN plus the `issues: write` permission below is all the
-# GitHub access it needs.
+#   1. Install the Claude GitHub App for your repo: https://github.com/apps/claude.
+#   2. Add an ANTHROPIC_API_KEY secret to your repo (Settings → Secrets → Actions).
+#   3. Commit this file as .github/workflows/onboarding-freshness.yml.
+# The action uses OIDC to obtain a Claude GitHub App token.
 
 name: ONBOARDING.md Freshness Scan
 
@@ -20,6 +20,7 @@ on:
 permissions:
   contents: read
   issues: write
+  id-token: write # Required for Claude GitHub App authentication.
 
 jobs:
   freshness-scan:
