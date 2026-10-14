@@ -1,3 +1,5 @@
+<p align="center"><img src="site/docs/assets/logo.png" alt="Codebase Mentor: an open book, code brackets, and a guiding path" width="112" height="112"></p>
+
 <h1 align="center">Codebase Mentor</h1>
 
 <p align="center"><strong>Find your way through unfamiliar code.</strong><br>
