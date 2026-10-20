@@ -30,7 +30,7 @@ assert_mode 640 .github/copilot-instructions.md
 assert_mode 644 .bob/skills/onboard/SKILL.md
 for agent_dir in .claude .agents .bob; do
   for skill in codebase-mentor onboard; do
-    diff -r "$ROOT/skills/$skill" "$agent_dir/skills/$skill"
+    diff -r -x __pycache__ "$ROOT/skills/$skill" "$agent_dir/skills/$skill"
   done
 done
 cmp "$ROOT/adapters/cursor/codebase-mentor.mdc" .cursor/rules/codebase-mentor.mdc

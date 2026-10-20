@@ -38,11 +38,18 @@ For protocol and packaging changes, start with:
 scripts/sync-adapters.sh --check   # generated files up to date
 bash scripts/validate-package.sh  # plugin identities and required bundles
 bash scripts/test-install.sh      # isolated installation smoke checks
+python3 -m unittest discover -s tests -p 'test_*.py' -v # repo setup helper checks
 shellcheck install.sh scripts/*.sh # shell hygiene
 claude plugin validate --strict . # Claude marketplace validation
 ```
 
 For MCP changes, run `npm ci` and `npm test` in `mcp/` and verify the packed package. For site changes, run `mkdocs build --strict`. The current validation workflow is the reference for required CI checks.
+
+The setup helper is handwritten in `skills/onboard/setup_repo.py`. Keep it usable
+with Python 3.9+ and its standard library, and keep the native file-edit fallback
+in `skills/onboard/SETUP.md` aligned. Templates, the helper, and setup references
+must ship in standalone skill installs and the plugin archive. Configuration tests
+do not establish actual context use; record fresh-session client acceptance separately.
 
 ## Releases
 

@@ -9,6 +9,10 @@
   Read relevant bodies before describing behavior. Label proposed new names.
   Attribute human rationale and leave unsupported context as explicit TODOs.
   Target length: 400–800 words total. Brevity beats completeness.
+  Keep these seven sections; link deeper subsystem context from Section 2.
+  Existing longer maps remain valid and need no format migration.
+  Reuse existing docs instead of repeating them. New guides may use
+  docs/mentor/<subsystem>.md; see template/SUBSYSTEM_GUIDE.md.
   See template/AUTHORING_GUIDE.md for section-by-section guidance and worked examples.
 -->
 
@@ -24,6 +28,8 @@
 **Owner:** [RESPONSIBLE PERSON OR TEAM]
 **Review cadence:** [e.g., "every 6 months, or after any major architectural change"]
 **Last reviewed:** [YYYY-MM]
+**Verification scope:** [ENTRIES AND SOURCE CHECKED; unresolved areas remain visible]
+**Source revision:** [COMMIT, plus relevant uncommitted changes if any; omit if unavailable]
 
 ---
 
@@ -57,6 +63,19 @@ The codebase is organized into the following layers, outermost first:
 | [LAYER NAME] | [WHAT THIS LAYER DOES] | `[ClassName or InterfaceName]` |
 
 <!-- TODO: Add or remove rows to match this project. A flat project may need only a few. -->
+
+### Subsystem guides
+
+<!-- TODO: Optional. List only explicit guides worth reading for particular tasks.
+     Reuse useful existing docs at their current paths. Resolve links relative to
+     this map. Select by scope, not just directory nesting. A small repo may need none.
+     For initial setup, draft at most three new guides and list important uncovered areas. -->
+
+| Scope and relevant paths | Read for these changes | Guide |
+|---|---|---|
+| [SUBSYSTEM; PATHS] | [BEHAVIOR OR CHANGE TYPES; relevant cross-subsystem boundaries] | `[GUIDE TITLE](RELATIVE-GUIDE-PATH.md)` |
+
+**Not yet covered:** [IMPORTANT AREAS without a guide, or "No additional guide needed for the current scope"]
 
 ---
 
@@ -106,6 +125,9 @@ The codebase is organized into the following layers, outermost first:
      classes/methods to touch, in the order they should be touched.
      Write these as imperative steps: "Add X to Y", "Implement Z in W".
      Cite existing examples or extension points. Label new names as proposed.
+     State where the example is valid and where a similar pattern is inappropriate.
+     Include tests, an exact command and working directory, and its prerequisites.
+     Link a subsystem guide for details that would make the root map too long.
      Put unsupported steps under unresolved questions instead of claiming they are verified. -->
 
 ### Recipe A — [TASK NAME, e.g., "Add a new command"]
@@ -115,6 +137,10 @@ The codebase is organized into the following layers, outermost first:
 3. [IMPERATIVE STEP — name the class/method to update]
 4. [IMPERATIVE STEP — name the class/method to update]
 
+**Example and limits:** [EXISTING SYMBOL AND FILE; where this pattern does and does not apply]
+**Verify:** [EXACT COMMAND, working directory, and test files or names]
+**Requires:** [DEPENDENCIES, fixtures, services, or "No additional prerequisites"; no credentials]
+
 ### Recipe B — [TASK NAME, e.g., "Add a new sort type"]
 
 1. [IMPERATIVE STEP]
@@ -122,11 +148,19 @@ The codebase is organized into the following layers, outermost first:
 3. [IMPERATIVE STEP]
 4. [IMPERATIVE STEP]
 
+**Example and limits:** [EXISTING SYMBOL AND FILE; applicability]
+**Verify:** [EXACT COMMAND, working directory, and tests]
+**Requires:** [PREREQUISITES]
+
 ### Recipe C — [TASK NAME, e.g., "Add a new error code"]
 
 1. [IMPERATIVE STEP]
 2. [IMPERATIVE STEP]
 3. [IMPERATIVE STEP]
+
+**Example and limits:** [EXISTING SYMBOL AND FILE; applicability]
+**Verify:** [EXACT COMMAND, working directory, and tests]
+**Requires:** [PREREQUISITES]
 
 <!-- TODO: Add Recipe D, Recipe E etc. as needed.
      If a recipe has more than 8 steps, consider splitting it into two recipes. -->
@@ -160,30 +194,38 @@ The codebase is organized into the following layers, outermost first:
 
      Format each gotcha as: what the rule is, why it exists, what breaks if you violate it.
      If there is a key class that enforces or embodies the rule, name it.
+     Give its scope and evidence. Separate source-observed behavior, documented decisions,
+     developer-confirmed rationale, and open questions. Never infer intent from code alone.
 
      Do NOT just list "be careful with X". Explain the consequence. -->
 
 ### [Gotcha title — e.g., "Renaming a resolver class breaks saved client flows"]
 
 **Rule:** [STATE THE INVARIANT — what must never change, or what must always be done together]
-**Why:** [EXPLAIN THE REASON — one or two sentences]
+**Scope:** [PATHS OR BEHAVIORS WHERE THIS RULE APPLIES; exceptions]
+**Why:** [ATTRIBUTED DECISION DOCUMENT OR DEVELOPER-CONFIRMED REASON; otherwise an open question]
 **What breaks:** [NAME THE CONSEQUENCE — be specific]
+**Evidence:** [SOURCE/TEST SYMBOL AND FILE for observed behavior; unresolved claims labeled]
 
 ---
 
 ### [Gotcha title — e.g., "Collection and table paths are intentionally separate"]
 
 **Rule:** [STATE THE INVARIANT]
-**Why:** [EXPLAIN THE REASON]
+**Scope:** [APPLICABLE AREA AND EXCEPTIONS]
+**Why:** [ATTRIBUTED RATIONALE OR OPEN QUESTION]
 **What breaks:** [NAME THE CONSEQUENCE]
+**Evidence:** [SOURCE/TEST ANCHOR; attribution or uncertainty]
 
 ---
 
 ### [Gotcha title — e.g., "Task-level retry and driver-level retry are independent"]
 
 **Rule:** [STATE THE INVARIANT]
-**Why:** [EXPLAIN THE REASON]
+**Scope:** [APPLICABLE AREA AND EXCEPTIONS]
+**Why:** [ATTRIBUTED RATIONALE OR OPEN QUESTION]
 **What breaks:** [NAME THE CONSEQUENCE]
+**Evidence:** [SOURCE/TEST ANCHOR; attribution or uncertainty]
 
 ---
 

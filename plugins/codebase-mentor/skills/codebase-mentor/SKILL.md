@@ -1,6 +1,6 @@
 ---
 name: codebase-mentor
-description: Explain unfamiliar code, trace execution paths, plan changes, and check onboarding docs against current source. Use for architecture questions, finding where a change belongs, or verifying codebase claims. Works with or without ONBOARDING.md.
+description: Use repository design context when implementing changes, explaining code, or checking documentation. Read the relevant subsystem guide, verify current source, and respect design constraints. Works with or without ONBOARDING.md.
 ---
 
 # Source-Grounded Codebase Mentor
@@ -8,13 +8,13 @@ description: Explain unfamiliar code, trace execution paths, plan changes, and c
 <!-- GENERATED FILE — do not edit the protocol body by hand.
      Canonical source: core/mentor-protocol.md. Regenerate with scripts/sync-adapters.sh. -->
 
-Activate this skill when a developer asks about code architecture, wants to know where to make a change, asks you to verify whether a statement about the codebase is true, or asks for a freshness scan of the repo's ONBOARDING.md. The skill works in Claude Code, Codex, IBM Bob, and other agents that support the open SKILL.md format.
+Activate this skill for repository changes where design context matters, architecture questions, change planning, claim checks, and freshness scans. For ordinary coding tasks, prepare relevant context and then do the requested work; do not force a separate mentoring report. The skill works in Claude Code, Codex, IBM Bob, and other agents that support the open SKILL.md format.
 
 Start in any repository, with or without an `ONBOARDING.md`. When a map exists, use it to find the relevant code, then verify its claims. Without a map, work directly from source. Live source is the truth.
 
 **Tool mapping:** where the protocol says "read", use your file-reading tool (Read in Claude Code); where it says "search", use your code-search tool (Grep in Claude Code).
 
-**Companions:** generate a missing ONBOARDING.md with the `onboard` skill (`/codebase-mentor:onboard` in a Claude Code plugin install). The authoring template and guide sit alongside this SKILL.md in any install: `ONBOARDING.template.md` and `AUTHORING_GUIDE.md`. Resolve these files relative to this skill's directory, not the user's repository.
+**Companions:** use `onboard` to set up a repository, draft a map and subsystem guides, check setup status, or remove managed context entries (`/codebase-mentor:onboard` in a Claude Code plugin install). The authoring references sit alongside this SKILL.md: `ONBOARDING.template.md`, `SUBSYSTEM_GUIDE.md`, and `AUTHORING_GUIDE.md`. Resolve these files relative to this skill's directory, not the user's repository. Installing the skill alone does not configure automatic use; ask to set up the repo.
 
 ---
 
@@ -26,7 +26,7 @@ Do not answer from pre-training knowledge about what a codebase "typically" look
 
 Answers are regenerated from current source, not from a persistent index. If a relevant source artifact cannot be located, say so explicitly — do not fill the gap with inference.
 
-Distinguish observed behavior from proposed changes and human-provided rationale. A proposed new name is not an existing symbol. Attribute rationale supplied by a developer or document, and do not present it as a source-verified fact. Source reads establish what the checked-out code says, not what is deployed or enabled at runtime.
+Distinguish observed behavior, documented decisions, developer-confirmed rationale, and unresolved assumptions. A proposed new name is not an existing symbol. Attribute rationale to its document or the developer who confirmed it; code alone cannot establish historical intent. Source reads establish what the checked-out code says, not what is deployed or enabled at runtime. If a documented constraint conflicts with current behavior, identify both and resolve the relevant uncertainty before relying on either as settled.
 
 **Source is the truth. ONBOARDING.md is the map.**
 
@@ -45,6 +45,20 @@ Do not rely on bare line numbers as durable anchors. A current file link with a 
 
 ## Operating Modes
 
+### Everyday Work — Prepare, Then Continue
+
+For an ordinary implementation, debugging, or review request, use the following preparation quietly, then carry out the requested work:
+
+1. Read the authoritative entry map once, following discovery below. Use its explicit scope descriptions and links to select only the subsystem guides relevant to the task. Read multiple guides when the change crosses their boundaries.
+2. Establish the owning subsystem, the closest valid existing example, applicable constraints and exceptions, and the source and tests that support the approach. Check where an example applies before copying a sibling subsystem's pattern.
+3. Identify the appropriate verification command, its working directory, and prerequisites from the recipe or project tooling. Read the relevant source to verify claims before changing it.
+4. Continue the user's task. Mention a design constraint when it changes the implementation decision; do not add a separate architecture report or checklist unless requested.
+5. At completion, check the context entries actually consulted against the relevant changed source and follow Focused Maintenance below.
+
+Scale preparation to the task. An isolated edit needs only its relevant context; do not run a full scan, read every guide, or reread unchanged evidence before each action. Existing maps without subsystem links work as before. Missing context does not prevent supported source-based work.
+
+The explicit modes below remain available when the developer requests their output.
+
 ### Mode 1 — Mentor
 
 **Trigger:** Developer asks an architecture question ("How does X work?", "What handles Y?", "Why does Z exist?", "Walk me through the pipeline for…").
@@ -53,7 +67,7 @@ Do not rely on bare line numbers as durable anchors. A current file link with a 
 
 **Steps:**
 
-1. Locate and read `ONBOARDING.md` using the discovery rules below. Identify which section — layer map, request lifecycle, domain vocabulary, or high-signal files — is most relevant to the question. If none exists, locate entry points directly in source.
+1. Locate and read `ONBOARDING.md` using the discovery rules below. Identify the relevant section and follow any explicitly listed subsystem guides whose scope matches the question. If no map exists, locate entry points directly in source.
 
 2. From the relevant ONBOARDING.md section, extract one to three symbol or file anchors that point toward the answer.
 
@@ -72,13 +86,13 @@ Do not rely on bare line numbers as durable anchors. A current file link with a 
 
 ### Mode 2 — Change Guide
 
-**Trigger:** Developer describes a task ("I need to add X", "I want to change how Y works", "Where do I start to implement Z?").
+**Trigger:** Developer requests guidance for a change ("Where do I start to implement Z?", "Plan how to add X"). For a request to implement the change, use Everyday Work and continue through implementation rather than stopping at a checklist.
 
 **Your job:** Find the nearest existing example of the same type of change in the live source, then produce an ordered checklist of files and methods to touch.
 
 **Steps:**
 
-1. Read `ONBOARDING.md` — specifically the "common change recipes" section if present. Extract the recipe that most closely matches the requested change.
+1. Read `ONBOARDING.md` and the relevant explicitly linked subsystem guides, especially their change recipes and constraints. Extract the recipe that most closely matches the requested change.
 
 2. If a matching recipe exists, use its symbol anchors to locate the relevant files and classes. Open them in the live source.
 
@@ -98,6 +112,8 @@ Do not rely on bare line numbers as durable anchors. A current file link with a 
 6. After the checklist, note any gotchas called out in the ONBOARDING.md "known gotchas" section that apply to this change type. If ONBOARDING.md has no entry for this change type, say so — do not invent gotchas.
 
 7. Anchor every actionable step to an existing symbol, file, or configuration key read this session. Label new names **Proposed** and cite the verified example or extension point that supports them. Put doc-only suggestions and missing evidence under **Unresolved questions**, not in the verified checklist. Explain what must be inspected or clarified before those steps can be recommended.
+
+8. Include the relevant tests, exact verification command and working directory, and prerequisites. Distinguish a command identified from project configuration from a command actually run successfully.
 
 ---
 
@@ -121,7 +137,7 @@ Do not rely on bare line numbers as durable anchors. A current file link with a 
    - **Stale:** The source contradicts the claim. State the discrepancy precisely: what the claim says vs. what the source actually does. Cite the symbol that contradicts it. Do not smooth over the contradiction.
    - **Indeterminate:** The claim is about runtime behavior or configuration that cannot be determined by reading source alone (e.g., a threading policy set at deployment time). State why the claim cannot be confirmed from source.
 
-5. If the claim is **Stale**, propose a correction. Apply it when the developer has requested corrections, otherwise ask before changing the document.
+5. If the claim is **Stale**, follow Focused Maintenance: propose a small correction with evidence, including any affected root routing entry. Apply it only when the developer has authorized that correction.
 
 ---
 
@@ -129,32 +145,36 @@ Do not rely on bare line numbers as durable anchors. A current file link with a 
 
 **Trigger:** Developer asks for a freshness check ("Is the ONBOARDING.md still accurate?", "Has anything drifted?", "Run a scan").
 
-**Your job:** Walk every structural claim in ONBOARDING.md, verify each against current source structure, and report divergences.
+**Your job:** Verify the entry map and the subsystem guides it explicitly lists against current source, and report divergences and coverage.
 
 **Steps:**
 
-1. Read `ONBOARDING.md` in full. Extract every structural claim — every statement that asserts a class exists, a method does X, a layer is named Y, a pattern works a certain way. Ignore prose rationale and author notes; focus on factual assertions.
+1. Establish the document set: by default, the entry map plus every subsystem guide explicitly listed by it, including reused guides at custom paths. A request explicitly limited to one document checks only that document. Do not recursively crawl every linked document. List missing or inaccessible guides as uninspected, rather than silently excluding them.
 
-2. Group the claims by source area (e.g., "resolver layer claims", "pipeline claims", "error handling claims").
+2. Read the selected documents in full. Extract every structural or behavioral claim, including routing paths, examples, test commands, and cross-subsystem contracts. Attribute rationale and human context separately; do not claim source proves historical intent.
 
-3. For each group, open the relevant source files and verify the claims. Read the file to check class structure efficiently before reading bodies. Read bodies only when a claim is about behavior, not just existence.
+3. Group the claims by source area (e.g., "resolver layer claims", "pipeline claims", "error handling claims"), retaining each document and section.
 
-4. Classify each claim:
+4. For each group, open the relevant source files and verify the claims. Read the file to check class structure efficiently before reading bodies. Read bodies when a claim is about behavior, not just existence.
+
+5. Classify each claim:
    - ✅ **Current** — source matches the claim.
    - ⚠️ **Stale** — source contradicts or no longer contains the described construct.
    - ❓ **Unverifiable** — the required source is unavailable or the claim depends on runtime state, configuration, or human context that was not established.
 
-5. Produce a scan report in this format:
+6. Produce a scan report in this format:
    ```
    ## ONBOARDING.md Freshness Scan
 
    **Scanned:** <date or "current session">
    **Source root:** <path>
+   **Source revision:** <commit and working-tree changes, when available>
+   **Documents:** <checked, skipped, missing, or inaccessible documents>
    **Coverage:** <claims checked / claims identified, plus any areas not inspected>
 
    ### Divergences
 
-   | Section | Claim summary | Status | Evidence |
+   | Document / section | Claim summary | Status | Evidence |
    |---|---|---|---|
    | Execution Lifecycle | "sort validation runs in SortClause.validate() before the resolver" | ⚠️ Stale | Source: `FindOneCommandResolver.resolveCollectionCommand()` calls `sortClause.validate()` inside the resolver, not before it |
    | ... | ... | ... | ... |
@@ -166,7 +186,23 @@ Do not rely on bare line numbers as durable anchors. A current file link with a 
    For each ⚠️ Stale entry, describe the corrected statement in one sentence.
    ```
 
-6. Report incomplete coverage and unverifiable claims explicitly. Only call the scan fully current when every identified structural claim was checked and confirmed. Apply corrections when already requested by the developer, otherwise present the report and ask before editing.
+7. Report incomplete coverage and unverifiable claims explicitly, including any document whose claims could not be enumerated. Only call the scan fully current when every document in scope was read and every identified claim was checked and confirmed. State the scope of any all-clear result. Apply corrections when already requested by the developer; otherwise present the report and proposed updates for approval.
+
+---
+
+## Focused Maintenance
+
+While using context, verify claims relevant to the task. At completion, compare the consulted root and subsystem entries with the source affected by the work. A stale anchor should trigger a source search, not repetition of an unverified claim.
+
+When relevant drift exists:
+
+- Explain the discrepancy with current source evidence and propose a small diff for the affected context.
+- If a subsystem's paths or boundaries changed, propose the affected guide and root routing entry together.
+- Preserve human rationale and unrelated text. Changed implementation does not by itself invalidate a documented reason for the design.
+- Name the documents and entries checked. A focused check cannot mark the whole map or all subsystem guides current.
+- Wait for approval before applying maintenance edits unless the developer already authorized them. A coding request alone does not authorize rewriting persistent context.
+
+Stay quiet when no relevant drift is found. Do not create a routine freshness report for every task. Comprehensive checks remain available through Scan mode.
 
 ---
 
@@ -194,7 +230,7 @@ Never say "typically", "likely", "probably" or similar hedges when you mean "I h
 
 ## ONBOARDING.md Discovery
 
-Use an explicit document path supplied by the developer. Otherwise, check these locations relative to the selected project root:
+Use an explicit document path supplied by the developer. Otherwise, use the map selected by the project's effective Mentor setup instructions, including a custom path. If neither selects a map, check these locations relative to the selected project root:
 1. `./ONBOARDING.md`
 2. `./docs/ONBOARDING.md`
 3. `./doc/ONBOARDING.md`
@@ -204,6 +240,16 @@ If more than one exists, identify the alternatives and use the one whose scope m
 If none exist, tell the developer: "No ONBOARDING.md found. I can still answer questions from live source, but the doc's rationale and gotcha context is unavailable. Generate a draft with the companion `onboard` skill if your agent supports skills, or use the template at https://github.com/jestatsio/codebase-mentor/blob/main/template/ONBOARDING.md."
 
 Proceed in source-only mode: read and search the source to explore structure before answering, and rely on ONBOARDING.md guidance only when the file exists.
+
+### Subsystem Guide Routing
+
+The entry map is the index. Follow its explicit subsystem-guide links and scope descriptions for relevant paths and kinds of changes. Resolve relative links from the document containing them. Existing useful documentation and custom guide locations are valid; new guides conventionally live at `docs/mentor/<subsystem>.md`.
+
+If a relevant guide link is broken, search existing documentation for a moved or renamed guide before editing. Use the intended scope and path to keep the search focused. Verify a replacement's scope and source anchors before relying on it, and propose corrections for both the root routing entry and any stale claims in the recovered guide. If no replacement can be identified, state the context gap and continue from available source without claiming the guide was checked.
+
+Do not discover arbitrary nested maps or treat a nested guide as overriding broader guidance by its location. Root and subsystem context complement the project's effective instructions and never override the user's instructions. When guidance conflicts, verify the relevant source and ask for clarification if the design decision remains unresolved.
+
+Keep the entry map short and use guides for local detail. Existing longer maps and the seven-section format remain supported without migration.
 
 ---
 

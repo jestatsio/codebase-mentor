@@ -19,6 +19,39 @@ Start with one execution path and the changes your team makes most often. The `o
 
 ---
 
+## Draft From Source, Then Resolve Consequential Gaps
+
+Read the project's effective instructions, existing map, linked documentation, representative source, and tests before drafting. Preserve useful human-written content and reuse the map's existing location. Setup should produce a useful draft before asking questions.
+
+Ask at most three targeted questions across the entire setup, including subsystem guides. Prioritize unknowns that could change an implementation decision: conflicting validation paths, an unexplained compatibility constraint, or the boundary between similar subsystems. Do not spend questions on facts the source already establishes. If the developer skips a question, keep a specific open question in the draft and continue with supported content.
+
+Distinguish these kinds of claims in prose:
+
+| Kind | How to record it |
+|---|---|
+| Observed behavior | Name the source or test symbol and file read. Separate code inspection from an executed test result. |
+| Documented decision | Attribute the rationale to the decision document and heading. Verify associated observable behavior separately. |
+| Developer-confirmed rationale | Name who confirmed the reason and the relevant scope. Do not invent an owner or attribute an inference to the developer. |
+| Open question | State what remains unknown and why it matters. Code alone cannot establish historical intent. |
+
+If current implementation contradicts a documented design constraint, record the conflict. Neither silently rewriting the rationale nor repeating stale behavior resolves it.
+
+## A Short Entry Map and Focused Guides
+
+Keep the root's seven sections and 400–800 word target. Existing longer maps remain valid; do not migrate them simply to meet the target. The root should route ordinary work to the relevant source and deeper context without requiring every guide to be read.
+
+Use the optional **Subsystem guides** table in Section 2 to explicitly name each guide, relevant paths, and kinds of changes. Choose subsystems by responsibilities and contracts, not by creating one document per directory. A small repository may need no guides. A first setup should draft at most three new guides for the areas with the most consequential design constraints, and list important areas not yet covered. Existing useful guides may be linked without counting against that initial drafting budget.
+
+Reuse existing documentation at its current path when it supplies the needed context. For a new guide, `docs/mentor/<subsystem>.md` is a suggested location; custom locations are valid. The bundled `SUBSYSTEM_GUIDE.md` provides a starting format, not a required schema. Resolve links relative to the map or guide containing them.
+
+Each guide should cover its scope, responsibilities, boundaries, local constraints, attributed rationale, a valid example and its limits, verification commands with prerequisites, and known traps. Record which source and tests were checked and the source revision when available. Aim for 300–600 focused words; omit empty sections and avoid repeating the root overview. A cross-subsystem contract belongs with the relevant guides and should be visible from their scope descriptions.
+
+Root routing is explicit. An ordinary task reads only the guides relevant to its paths and behavior; a cross-boundary change may need more than one. Do not imply that deeper documents automatically override broader guidance. Conflicts need source verification or human clarification, and context documents never override user instructions.
+
+On repeat setup, preserve edits and improve the existing documents rather than replacing them or creating duplicates. During ordinary work, propose small maintenance diffs for approval unless already authorized. If paths or boundaries move, include both the affected guide and root routing entry. State the checked entries; a focused check does not certify every document.
+
+---
+
 ## Use Durable Anchors
 
 Use **symbols together with file paths**. Functions, classes, methods, workflow jobs, and configuration keys all make useful anchors. For documentation, name the file and section heading.
@@ -42,6 +75,8 @@ Names are often repeated across packages. Include the file path or qualified sym
 **Why it matters:** documents without owners drift silently. When an architectural change lands and nobody updates the ONBOARDING.md, the document becomes a trap. A named owner with a scheduled review turns maintenance into a calendar event, not a hope.
 
 **How to fill it in:** name a responsible person or an accountable team with a clear review process. Record a time-based or event-based review cadence, ideally both. Confirm ownership with the developer rather than inventing an assignment.
+
+Record verification scope separately from ownership: which entries and source were checked, the source revision when available, and anything unresolved. A date alone must not imply that every claim was verified. An unresolved owner can remain a TODO when setup's three questions are better used on consequential design gaps.
 
 **Worked example (Stargate Data API):**
 
@@ -74,6 +109,8 @@ Last reviewed: 2025-01
 **Why it matters:** without a layer map, a new engineer opens the codebase and sees a flat wall of files. The layer map gives them the first organizing principle: "I'm looking at layer N, which means the contract I need to satisfy is defined by `[ClassName]`."
 
 **How detailed to be:** one row per layer. Name the class or interface that defines that layer's contract. Do not list every class in the layer — just the one that best describes what the layer does. For a pipeline codebase, "outermost first" means "what runs first in the execution graph" — use whichever ordering makes the execution flow obvious.
+
+If a layer or responsibility needs deeper context, add a scoped link in the subsystem-guide table below the layer map. Include relevant paths and change types so an agent can choose the right guide without opening all of them.
 
 **Worked example (Stargate Data API — request/response service):**
 
@@ -169,6 +206,8 @@ Note that for a pipeline, the "layers" are execution stages rather than request-
 
 **How detailed to be:** use short imperative steps. Distinguish proposed new names from existing symbols, and cite the existing example or extension point supporting each step. Read relevant bodies before describing behavior. Put unsupported steps under unresolved questions. If a step has a non-obvious constraint, add a short note.
 
+For each recipe, include the nearest existing example and where it applies, the relevant tests, an exact verification command and working directory, and prerequisites such as tools, fixtures, or services. Identify whether a command was read from project tooling or actually run, with its observed result. Do not put credentials in the document. Link detailed subsystem recipes instead of expanding the root into an implementation manual.
+
 **Worked example (Stargate Data API — adding a new command):**
 
 1. Create a new `[CommandName]Command` class as a POJO implementing the `Command` interface.
@@ -239,6 +278,8 @@ Note that for a pipeline, the "layers" are execution stages rather than request-
 
 **How detailed to be:** state the rule, explain why it exists, name the consequence of violating it. One to three sentences per gotcha. If there is a key class that enforces or embodies the rule, name it.
 
+State the scope and exceptions. Attribute reasons to a decision document or developer confirmation, and support observable consequences with source or tests. An observed separation between two code paths does not by itself prove that they were intentionally designed to remain separate. Keep the reason unknown until supported.
+
 **Finding material:** if you cannot think of any gotchas, interview a senior engineer who reviews PRs on this codebase. Ask: "What mistakes do you keep catching in review?" That answer is this section.
 
 **Worked example (Stargate Data API):**
@@ -294,8 +335,12 @@ Before committing your completed `ONBOARDING.md`, run through this checklist:
 - [ ] **Anchors are durable.** Cite symbols with file paths, or file headings and keys. Line links are optional navigation.
 - [ ] **Existing names and behavior are verified.** Read the relevant source, including bodies for behavioral claims.
 - [ ] **Proposed names are labeled.** Recipes point to existing examples or extension points and declare unresolved dependencies.
+- [ ] **Routes are useful.** Explicit subsystem links name relevant paths and changes; important uncovered areas remain visible. No guide is required for its own sake.
+- [ ] **Examples have limits.** Explain when a nearby pattern is appropriate and when a similar subsystem follows a different contract.
+- [ ] **Verification is usable.** Include tests, exact commands, working directories, and prerequisites; separate commands identified from commands actually run.
 - [ ] **A new engineer can follow Section 3.** Each hop is findable in source, configuration, or the build workflow.
 - [ ] **Gotchas are supported.** Attribute human rationale and check observable failure modes. Leave an explicit TODO for missing context rather than inventing a quota of gotchas.
 - [ ] **Ownership and cadence are agreed.** Record a responsible person or team and how reviews happen.
 - [ ] **Placeholders are resolved.** Replace generic placeholders with verified content or specific TODOs that remain visible for human review.
 - [ ] **Scan coverage is reported.** Separate current, stale, and unverifiable claims. Do not mark a partial check fully current.
+- [ ] **Maintenance preserves context.** Propose focused updates for approval unless already authorized; include affected root routes and guides together. A default full scan covers the root and explicitly listed subsystem guides, not every recursively linked document.

@@ -5,6 +5,23 @@ All notable changes to this project are documented here. The format follows
 [Semantic Versioning](https://semver.org/). The shipping plugin manifests share
 a version. The optional MCP package is versioned independently.
 
+## [1.3.0] - 2026-10-20
+
+### Added
+- A conversational repo setup flow with a source-based draft, up to three targeted questions, and native context entries for selected Codex, Claude Code, and IBM Bob clients.
+- Focused subsystem guides with explicit scope, design constraints, attributed rationale, valid examples, and verification recipes; initial setup drafts up to three guides and records uncovered areas.
+- An optional Python 3.9+ setup helper for read-only status, repeatable instruction updates, and removal that preserves project documentation and unrelated instructions. Native file-edit instructions remain available without Python.
+- Behavioral acceptance fixtures and a five-scenario rubric for each of the three priority clients. Fresh-session results are tracked separately from file and package checks.
+
+### Changed
+- Ordinary coding tasks now use relevant repo and subsystem context before implementation, with current source verification and proportionate reading.
+- Focused maintenance proposes reviewed corrections for affected context; full scans cover the entry map and explicitly listed subsystem guides with coverage reporting.
+- Standalone skill installs and plugin archives include setup references, the optional helper, and the subsystem template.
+- Setup, status, maintenance, and removal guidance now appear in the README, docs, site, and privacy policy.
+
+### Fixed
+- This repository's onboarding map now names the current installer functions and both generated-distribution paths.
+
 ## [1.2.2] - 2026-10-07
 
 ### Added
@@ -70,6 +87,7 @@ a version. The optional MCP package is versioned independently.
 - Example scheduled GitHub Action for ONBOARDING.md freshness scanning.
 - Team rollout guide (`docs/TEAM_SETUP.md`) and `install.sh` fallback installer.
 
+[1.3.0]: https://github.com/jestatsio/codebase-mentor/releases/tag/v1.3.0
 [1.2.2]: https://github.com/jestatsio/codebase-mentor/releases/tag/v1.2.2
 [1.2.1]: https://github.com/jestatsio/codebase-mentor/releases/tag/v1.2.1
 [1.1.1]: https://github.com/jestatsio/codebase-mentor/releases/tag/v1.1.1

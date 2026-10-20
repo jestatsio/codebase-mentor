@@ -1,6 +1,6 @@
 # Install Codebase Mentor
 
-Pick the agent you already use. Native plugins and direct skill installs include **codebase-mentor** for questions, change guidance, and scans, plus **onboard** for drafting a repo map. You do not need an `ONBOARDING.md` to get started.
+Pick the agent you already use. Native plugins and direct skill installs include **codebase-mentor** for task context, questions, and scans, plus **onboard** for repo setup, maps, subsystem guides, and setup status. You do not need an `ONBOARDING.md` to get started.
 
 Install directly from [Codebase Mentor’s repository](https://github.com/jestatsio/codebase-mentor). Its `codebase-mentor` marketplace includes the native plugin for both Claude Code and Codex.
 
@@ -172,12 +172,31 @@ This adds or replaces a marked compact mentor block in `AGENTS.md`. Existing ins
 
 You do not need MCP for the native plugins or skills. For another MCP client, see the [local build and configuration guide](../mcp/README.md). The npm package is not currently published, so `npx codebase-mentor-mcp` is not a supported install path.
 
+## Configure a repository once
+
+After installing, ask **“Set up Codebase Mentor for this repo.”** The onboard skill:
+
+1. Reads your current instructions, docs, source, and tests before drafting.
+2. Reuses or drafts a short map and up to three new subsystem guides initially, listing uncovered areas.
+3. Asks at most three targeted questions across the whole setup about rationale and consequential unknowns.
+4. Configures only the agents you select, preserving existing instructions and documents.
+
+The default native entries are a managed block in the effective root `AGENTS.md` or `AGENTS.override.md` for Codex, `.claude/rules/codebase-mentor.md` for Claude Code, and `.bob/rules/codebase-mentor.md` for Bob. Setup checks for existing entries and conflicting maps before writing. Existing manual or older adapter entries may need review to avoid loading duplicate guidance.
+
+You can keep an existing map in place, including a custom path. If several maps are candidates, choose the authoritative one. Subsystem guides can use existing docs; new ones default to `docs/mentor/`. They remain ordinary project documents that you can review and edit.
+
+Setup may use the bundled `setup_repo.py` helper with Python 3.9+. If Python is unavailable, the skill follows the same procedure with the agent's native file tools. It does not install Python, start a service, change global settings, or run automatically when you install the plugin.
+
+Ask **“Is Mentor set up correctly here?”** for a read-only report. It distinguishes configuration from observed activation and identifies conflicts or missing context. Host settings, nested instruction overrides, and client versions can affect loading; confirm behavior in a fresh session.
+
+To draft documentation without configuring automatic use, ask **“Use onboard to draft ONBOARDING.md only.”**
+
 ## Confirm it works
 
 1. Open your target repository and start a fresh agent session.
-2. Ask it to use Codebase Mentor to trace a concrete feature.
+2. After repo setup, ask for an ordinary change without mentioning Mentor. For explicit skill use without setup, ask it to use Codebase Mentor to trace a concrete feature.
 3. Check that it actually reads source and cites files plus symbols. A confident answer without reads is not evidence that the skill ran.
-4. If a map exists, ask it to verify one specific claim against source. If no map exists, it should proceed from source and explain the missing context.
+4. Confirm it reads the relevant map/subsystem guide, checks source, and applies any consequential design constraint. If no map exists, it should proceed from source and explain the missing context.
 
 ## Troubleshooting
 
@@ -188,10 +207,14 @@ You do not need MCP for the native plugins or skills. For another MCP client, se
 | Two copies of the same skill appear | Keep one installation method. Remove only the old copies you installed, or uninstall the duplicate plugin. |
 | Agent cannot verify a claim | Give it access to the relevant source. Runtime or deployment facts may still be unverifiable from code. |
 | `ONBOARDING.md` is not found | Supported locations are the repo root, `docs/`, then `doc/`. The agent can still answer from source. |
+| Context is configured but unused | Start a fresh session; inspect effective native instructions, client settings, and overrides. Ask for setup status. File presence is not proof of activation. |
+| Several maps or managed entries are found | Choose the authoritative map and reconcile duplicate entries before setup. Existing files are preserved on conflicts. |
 | Download fails | Check GitHub access. Use a local checkout and run its installer. |
 
 ## Update or remove
 
 For plugins, use your agent's plugin manager to update or uninstall **Codebase Mentor**. For direct skills, rerun the same installer to update. To remove, delete only its `codebase-mentor` and `onboard` directories from the chosen skills location.
+
+Before uninstalling the skills, ask **“Remove Codebase Mentor's setup entries for this repo.”** Select the agents to remove. This removes only the setup-managed spans, preserving your map, subsystem guides, and other instructions. Removing the plugin alone does not remove project context entries. To update entries after a map move or plugin update, rerun repo setup with the correct map.
 
 For Cursor, remove `codebase-mentor.mdc`. For Copilot or AGENTS.md, remove the block from `<!-- codebase-mentor:begin -->` through `<!-- codebase-mentor:end -->`, leaving your other instructions intact. Your `ONBOARDING.md` remains yours.

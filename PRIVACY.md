@@ -1,10 +1,10 @@
 # Codebase Mentor privacy policy
 
-Last updated: October 7, 2026
+Last updated: October 20, 2026
 
 This policy describes the Codebase Mentor skills-only plugin published by
 JEStats. The plugin contains the **codebase-mentor** and **onboard** instructions,
-reference documents, and listing assets. It does not include the optional MCP
+reference documents, an optional local setup helper, and listing assets. It does not include the optional MCP
 server available separately in the source repository.
 
 ## Project files and generated documents
@@ -16,7 +16,10 @@ personal data, such as contributor names and email addresses. You choose the
 project and control access through your agent's permissions.
 
 When requested, the onboard skill asks the agent to write or update an
-ONBOARDING.md in your project. Other skill workflows may propose or apply
+ONBOARDING.md and focused subsystem guides in your project. Repo setup can also
+add or remove marked context entries in the selected agents' project instruction
+files. The optional Python setup helper reads local setup files and performs those
+file edits; it makes no network requests or model calls. Other skill workflows may propose or apply
 documentation corrections that you authorize. Those files remain in the project
 until you change or delete them. The plugin does not maintain a separate index,
 database, account, or background storage service.
