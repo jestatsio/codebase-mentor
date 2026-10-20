@@ -9,13 +9,13 @@ been accepted or that a directory listing is live.
 
 - **Name:** Codebase Mentor
 - **Publisher:** JEStats
-- **Version:** 1.2.2
+- **Version:** 1.3.0
 - **Subtitle:** Understand unfamiliar code
 - **Repository:** https://github.com/jestatsio/codebase-mentor
 - **Documentation:** https://jestatsio.github.io/codebase-mentor/
 - **Support:** https://github.com/jestatsio/codebase-mentor/issues
 - **Privacy:** https://github.com/jestatsio/codebase-mentor/blob/main/PRIVACY.md
-- **Description:** Trace how code works, find where a change belongs, draft an onboarding map, and check documentation against current source. The codebase-mentor and onboard skills ask your coding agent to read relevant files, cite its evidence, and flag what it cannot verify. Start with or without ONBOARDING.md. Requires access to the source you want to understand. Review generated answers and drafts before acting.
+- **Description:** Set up reusable repository context for Codex, Claude Code, and IBM Bob. Draft a concise repo map and focused subsystem guides, connect selected agents to that context, and propose corrections when relevant documentation drifts. The codebase-mentor and onboard skills ask your agent to verify design constraints against current source, cite evidence, and flag what it cannot establish. Start with or without ONBOARDING.md. Review generated answers and drafts before acting.
 - **License:** MIT
 - **Category:** Developer Tools
 - **Logo:** [logo.png](../site/docs/assets/logo.png)
@@ -27,18 +27,19 @@ From the repository root:
 ```bash
 bash scripts/validate-package.sh
 bash scripts/test-install.sh
+python3 -m unittest discover -s tests -p 'test_*.py'
 bash scripts/package-plugin.sh
 bash scripts/sync-plugin-directory.sh
 ```
 
-The package script writes `dist/codebase-mentor-1.2.2.zip` and its
+The package script writes `dist/codebase-mentor-1.3.0.zip` and its
 `.zip.sha256` checksum. It includes the portable, Codex, and Claude manifests,
 both skills with their references, the logo, a short installed-user README, and
 the license, and the privacy policy. It excludes the optional MCP server and development files.
-`scripts/validate-package.sh dist/codebase-mentor-1.2.2.zip` verifies the exact
+`scripts/validate-package.sh dist/codebase-mentor-1.3.0.zip` verifies the exact
 inventory, source bytes, manifest asset paths, skill discovery, and checksum.
 
-`plugins/codebase-mentor/` is the generated GitHub submission folder. Its 14 files
+`plugins/codebase-mentor/` is the generated GitHub submission folder. Its 18 files
 match the release ZIP byte for byte. Edit the root source files, run
 `scripts/sync-plugin-directory.sh`, and commit the regenerated folder alongside
 the changes. CI and the release workflow run `scripts/sync-plugin-directory.sh
@@ -87,7 +88,7 @@ against the exact commit you submit.
 
 1. Select Plugin bundle. Use `jestatsio/codebase-mentor`, plugin path `plugins/codebase-mentor`, and tracked branch `main`. Submit the generated package folder so the scan covers the same skills-only files as the release ZIP.
 2. Validate, then inspect the listing populated from the generated folder's `.claude-plugin/plugin.json` and README. Push fixes and revalidate if the source changes.
-3. Read the bundled privacy policy, complete data-handling questions, and verify the submission contact email. The plugin has no server or telemetry. Its skills ask the host agent to read repository files and, when requested, write onboarding documentation. The host agent's own processing and retention are governed by that host. Answer personal-data and age questions for the actual intended use.
+3. Read the bundled privacy policy, complete data-handling questions, and verify the submission contact email. The plugin has no server or telemetry. Its skills ask the host agent to read repository files and, when requested, write repo context and project instruction entries. The host agent's own processing and retention are governed by that host. Answer personal-data and age questions for the actual intended use.
 4. Review the compliance acknowledgements and update settings, then submit. A paid Claude plan and a connected GitHub account with repository push access are required.
 5. Follow the scan and reviewer outcome. Request publication when the version passes and verify the live listing separately.
 

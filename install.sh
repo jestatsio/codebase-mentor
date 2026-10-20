@@ -13,10 +13,14 @@ SKILL_FILES=(
   skills/codebase-mentor/SKILL.md
   skills/codebase-mentor/ONBOARDING.template.md
   skills/codebase-mentor/AUTHORING_GUIDE.md
+  skills/codebase-mentor/SUBSYSTEM_GUIDE.md
   skills/onboard/SKILL.md
   skills/onboard/ONBOARDING.template.md
   skills/onboard/AUTHORING_GUIDE.md
   skills/onboard/mentor-protocol.md
+  skills/onboard/SUBSYSTEM_GUIDE.md
+  skills/onboard/SETUP.md
+  skills/onboard/setup_repo.py
 )
 
 usage() {
@@ -186,7 +190,9 @@ printf '  "Use Codebase Mentor to trace one important execution path in this rep
 printf '   Cite the files and symbols you read, and flag anything you cannot verify."\n'
 case "$AGENT" in
   claude|codex|bob|all)
-    printf '\nWhen you want an onboarding map, ask:\n'
+    printf '\nTo configure context for future sessions, ask:\n'
+    printf '  "Set up Codebase Mentor for this repo."\n'
+    printf 'To draft a map without configuring automatic use, ask:\n'
     printf '  "Use onboard to draft ONBOARDING.md. Ask me about the gotchas source cannot explain."\n' ;;
 esac
 printf '\nInstall guide: https://github.com/%s#install\n' "$REPO"

@@ -7,3 +7,6 @@
 # MCP server
 mcp/node_modules/
 mcp/build/
+
+# Python helper test caches
+__pycache__/

@@ -1,7 +1,7 @@
 {
   "name": "codebase-mentor",
-  "version": "1.2.2",
-  "description": "Understand unfamiliar code, plan your next change, and keep onboarding docs current with source-grounded guidance.",
+  "version": "1.3.0",
+  "description": "Set up repo design context once, use focused subsystem guides during changes, and keep documentation grounded in source.",
   "author": {
     "name": "JEStats",
     "url": "https://jestats.io"
@@ -13,7 +13,7 @@
   "interface": {
     "displayName": "Codebase Mentor",
     "shortDescription": "Understand unfamiliar code",
-    "longDescription": "Trace how code works, find where a change belongs, draft an onboarding map, and check documentation against current source. The codebase-mentor and onboard skills ask your coding agent to read relevant files, cite its evidence, and flag what it cannot verify. Start with or without ONBOARDING.md. Requires access to the source you want to understand. Review generated answers and drafts before acting.",
+    "longDescription": "Set up a repository once so agents can use its design context during ordinary work. Onboard drafts or reuses a short map and focused subsystem guides, asks up to three targeted questions, and configures selected clients. Mentor checks current source, applies relevant design constraints, and proposes focused documentation corrections for review. Configuration and observed client use are reported separately.",
     "developerName": "JEStats",
     "category": "Developer Tools",
     "capabilities": [
@@ -23,9 +23,9 @@
     "websiteURL": "https://jestatsio.github.io/codebase-mentor/",
     "supportURL": "https://github.com/jestatsio/codebase-mentor/issues",
     "defaultPrompt": [
-      "Use codebase-mentor to trace one important execution path in this repository and cite the source.",
-      "Use codebase-mentor to find where my first change belongs and which existing tests to run.",
-      "Use onboard to draft an ONBOARDING.md for this repository and flag missing human context."
+      "Set up Codebase Mentor for this repo. Draft from source and ask about important design decisions.",
+      "Use codebase-mentor to find the design constraints, relevant examples, and tests for my next change.",
+      "Is Codebase Mentor set up correctly here? Report configuration and anything still unverified."
     ],
     "logo": "./site/docs/assets/logo.png",
     "composerIcon": "./site/docs/assets/logo.png",
@@ -35,7 +35,7 @@
   "extensions": {
     "com.openai": {
       "publication": {
-        "release_notes": "Adds a bundled privacy policy with directory listing links and a generated skills-only GitHub submission folder. Keeps source guidance and the two existing skills unchanged."
+        "release_notes": "Adds repo setup and status, focused subsystem guides, ordinary-task context preparation, and reviewed drift corrections."
       }
     }
   }

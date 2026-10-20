@@ -69,11 +69,14 @@ done < <(jq -er '.interface | .logo, .composerIcon' .codex-plugin/plugin.json)
 for skill in codebase-mentor onboard; do
   grep -q "^name: $skill$" "skills/$skill/SKILL.md" || fail "Missing skill name: $skill"
   grep -q '^description: .' "skills/$skill/SKILL.md" || fail "Missing skill description: $skill"
-  for file in ONBOARDING.template.md AUTHORING_GUIDE.md; do
+  for file in ONBOARDING.template.md AUTHORING_GUIDE.md SUBSYSTEM_GUIDE.md; do
     [[ -s "skills/$skill/$file" ]] || fail "Missing bundled reference: $skill/$file"
   done
 done
 [[ -s skills/onboard/mentor-protocol.md ]] || fail 'Missing standalone onboard protocol.'
+for file in SETUP.md setup_repo.py; do
+  [[ -s "skills/onboard/$file" ]] || fail "Missing standalone setup companion: $file"
+done
 python3 - <<'PY'
 from pathlib import Path
 
@@ -99,8 +102,10 @@ expected = {
     "README.md", "LICENSE", "PRIVACY.md", "site/docs/assets/logo.png",
     "skills/codebase-mentor/SKILL.md", "skills/codebase-mentor/ONBOARDING.template.md",
     "skills/codebase-mentor/AUTHORING_GUIDE.md", "skills/onboard/SKILL.md",
+    "skills/codebase-mentor/SUBSYSTEM_GUIDE.md", "skills/onboard/SUBSYSTEM_GUIDE.md",
     "skills/onboard/ONBOARDING.template.md", "skills/onboard/AUTHORING_GUIDE.md",
     "skills/onboard/mentor-protocol.md",
+    "skills/onboard/SETUP.md", "skills/onboard/setup_repo.py",
 }
 
 def require(condition, message):

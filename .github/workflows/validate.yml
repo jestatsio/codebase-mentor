@@ -60,3 +60,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Installer integration checks
         run: bash scripts/test-install.sh
+
+      - name: Repository setup checks
+        run: python3 -m unittest discover -s tests -p 'test_*.py' -v

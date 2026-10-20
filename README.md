@@ -3,7 +3,7 @@
 <h1 align="center">Codebase Mentor</h1>
 
 <p align="center"><strong>Find your way through unfamiliar code.</strong><br>
-Architecture answers, change plans, and onboarding docs grounded in the source your agent actually reads.</p>
+Repo design context your agent can use during everyday work, grounded in current source.</p>
 
 <p align="center">
   <a href="https://github.com/jestatsio/codebase-mentor/actions/workflows/validate.yml"><img src="https://github.com/jestatsio/codebase-mentor/actions/workflows/validate.yml/badge.svg" alt="Validation"></a>
@@ -14,7 +14,7 @@ Architecture answers, change plans, and onboarding docs grounded in the source y
 
 <p align="center"><a href="#install">Install</a> · <a href="#try-it">Try it</a> · <a href="docs/INSTALL.md">Setup help</a> · <a href="https://jestatsio.github.io/codebase-mentor/">Docs</a></p>
 
-Give your coding agent a repeatable way to answer **“How does this work?”** and **“Where do I make this change?”** Codebase Mentor asks it to read current source, cite the relevant files and symbols, and call out missing evidence. A short `ONBOARDING.md` adds the rationale and gotchas your team knows.
+Set up a repository once so your coding agent can find the design context behind its next change. A short `ONBOARDING.md` routes it to focused subsystem guides, relevant source, and tests. Codebase Mentor asks the agent to check current behavior and respect the rationale, boundaries, and gotchas that a generic solution might miss.
 
 **Start in any repo.** An onboarding doc is optional. The skills need no API key, database, background service, or separate runtime beyond your coding agent.
 
@@ -58,7 +58,17 @@ This installs both skills in `.bob/skills/`. Reopen your workspace if they do no
 
 ## Try it
 
-Open a repo in your agent and paste:
+After installation, open a repo and ask:
+
+```text
+Set up Codebase Mentor for this repo.
+```
+
+The **onboard** skill reuses existing docs, drafts from source, and asks up to three targeted questions. For larger repos, it drafts up to three focused subsystem guides initially and lists uncovered areas. Setup adds small context entries for your selected agents. In future sessions, those entries guide the agent to relevant context during ordinary work.
+
+Ask **“Is Mentor set up correctly here?”** to check configuration. Start a fresh session with a normal coding request and inspect its source reads to verify actual use. Configured files alone do not prove activation. [Setup, status, and removal →](docs/INSTALL.md#configure-a-repository-once)
+
+You can also start without setup:
 
 ```text
 Use Codebase Mentor to trace one important execution path in this repo.
@@ -75,6 +85,8 @@ Then put it to work:
 | Check an assumption | “Our docs say validation happens before dispatch. Is that still true?” |
 | Catch stale documentation | “Scan ONBOARDING.md against current source. Show what changed and what you could not verify.” |
 | Create a map for your team | “Use the onboard skill to draft ONBOARDING.md. Ask me about the gotchas source cannot explain.” |
+| Capture subsystem nuance | “Use onboard to add a focused guide for our storage layer, including its boundaries, rationale, and tests.” |
+| Check repo setup | “Is Mentor set up correctly here?” |
 
 In Claude Code, invoke the generator directly with `/codebase-mentor:onboard`. In other agents, select **onboard** from their skills menu or ask for it by name.
 
@@ -88,12 +100,14 @@ The protocol is an instruction set, not a correctness guarantee. Results depend 
 
 ## A map your team can maintain
 
-`ONBOARDING.md` is a short, human-owned guide: purpose, layers, execution path, vocabulary, change recipes, useful files, and known gotchas. The agent uses it to find the code, then checks what the code actually does.
+`ONBOARDING.md` is a short, human-owned guide: purpose, layers, execution path, vocabulary, change recipes, useful files, and known gotchas. It links to deeper subsystem guides when needed. Each guide records scope, design constraints, attributed rationale, valid examples, and tests. The agent follows relevant links and checks current source.
 
 1. **Draft:** use the onboard skill, or start with the [template](template/ONBOARDING.md).
 2. **Review:** add the design decisions and pitfalls only your team knows.
 3. **Share:** commit it alongside your code. Follow the [team setup guide](docs/TEAM_SETUP.md).
-4. **Maintain:** ask for a freshness scan after refactors, or opt into the [scheduled scan](examples/github-actions/onboarding-freshness.yml).
+4. **Maintain:** the agent proposes focused corrections when it notices relevant drift. Ask for a full scan after refactors, or opt into the [scheduled scan](examples/github-actions/onboarding-freshness.yml).
+
+The optional setup helper uses Python 3.9+ for safe, repeatable file edits. The skill also supports your agent's native file tools when Python is unavailable. Ordinary plugin installation does not run setup or change your repo instructions.
 
 Browse [real example maps](onboarding/) for Python libraries, Java services, and a Python/React application. Examples are snapshots, so verify their anchors against the version you use.
 

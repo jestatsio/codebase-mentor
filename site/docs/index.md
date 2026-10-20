@@ -10,10 +10,10 @@ hide:
 
 <p class="mentor-eyebrow">CODEBASE MENTOR <span>BY JESTATS</span></p>
 
-# New codebase.<br>A clearer way in.
+# Your repo's design.<br>In your agent's context.
 
-Understand the architecture. Find the right place to change it.<br>
-Ask your coding agent for answers grounded in the source it actually reads.
+Set up once. Give your agent the design constraints, examples, and tests<br>
+it needs to make changes that fit your repository.
 
 [Get started](install.md){ .md-button .md-button--primary }
 [View on GitHub](https://github.com/jestatsio/codebase-mentor){ .md-button }
@@ -26,39 +26,41 @@ Ask your coding agent for answers grounded in the source it actually reads.
 
 <div class="mentor-card" markdown>
 
-### Find your bearings
+### Capture the important context
 
-“How does this request reach the database?” Follow an execution path with links to the files and symbols that matter.
-
-</div>
-<div class="mentor-card" markdown>
-
-### Plan your next change
-
-“Where do I add a new endpoint?” Find the closest working example, relevant tests, and the gotchas your team knows.
+Draft a short repo map from source, then answer up to three questions about the design decisions source cannot explain.
 
 </div>
 <div class="mentor-card" markdown>
 
-### Check what changed
+### Guide everyday changes
 
-“Is our onboarding doc still true?” Compare its claims with current source and get a report of drift and missing evidence.
+Native project instructions point agents to the relevant subsystem guide, valid examples, and constraints before substantive work.
+
+</div>
+<div class="mentor-card" markdown>
+
+### Keep context useful
+
+When relevant claims drift, review a focused correction. Existing documents and human rationale stay under your control.
 
 </div>
 
 </div>
 
-## Start with one question
+## Set up your repository
 
-Install for [your agent](install.md), open any repository, and paste:
+Install for [your agent](install.md), open your repository, and ask:
 
 ```text
-Use Codebase Mentor to trace one important execution path in this repo.
-Explain it to a new contributor. Cite the files and symbols you read,
-and flag anything you cannot verify.
+Set up Codebase Mentor for this repo.
 ```
 
-You can start without an `ONBOARDING.md`. The mentor works from source. When you want to capture the design decisions and pitfalls source does not explain, ask the **onboard** skill to [draft your team's map](authoring.md).
+Mentor reads existing instructions, documentation, source, and tests. It reuses or drafts an `ONBOARDING.md`, adds up to three focused guides where deeper context is missing, and connects your selected agents through small project instruction entries. It asks up to three targeted questions across the whole setup.
+
+Then start a fresh session and ask for an ordinary change. Check that your agent reads the relevant context and verifies its claims against source. **“Is Mentor set up correctly here?”** reports configured files separately from observed use; configuration alone does not prove activation.
+
+You can also use the mentor directly without setup or a map: **“Use Codebase Mentor to trace one important execution path in this repo.”** To [draft documents](authoring.md) without changing project instructions, ask for a draft only.
 
 ## Install where you already work
 
@@ -100,13 +102,13 @@ Already installed from `jestats-plugins` or as direct skills? Follow [switching 
 
 ## The doc is the map. Source is the truth.
 
-A short `ONBOARDING.md` points your agent toward the right code and records the context your team cares about. The mentor protocol asks it to read those anchors, verify behavior, and distinguish facts from unresolved questions.
+A short `ONBOARDING.md` points your agent toward the right source and scoped subsystem guides. It records constraints, examples, tests, and attributed rationale. The mentor protocol asks the agent to verify behavior and distinguish documented decisions from unresolved questions.
 
 <div class="mentor-evidence" markdown>
 
-**Every architecture or change-guidance claim must be backed by a symbol or file read in the current session.**
+**Architecture and change guidance require source evidence read in the current session.**
 
-Missing evidence should be visible. A stale doc should be corrected with evidence. A proposed new symbol should be clearly labeled as a proposal.
+Missing evidence stays visible. Proposed maintenance changes need review unless already authorized. A small task should need only the context relevant to that task.
 
 </div>
 
@@ -114,7 +116,7 @@ These are instructions to your agent, not a guarantee of correctness. Review the
 
 ## Built to share with your team
 
-- [Create an onboarding map](authoring.md) with seven concise sections and a named owner.
+- [Create a repo map and focused guides](authoring.md) that preserve the nuances of your design.
 - [Roll it out](team-setup.md) through native plugins or committed project skills.
 - [Review real examples](examples.md) from services, libraries, and a workflow application.
 - [Catch doc drift in CI](ci.md) with an optional scheduled scan.
