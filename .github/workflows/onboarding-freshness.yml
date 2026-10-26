@@ -5,8 +5,6 @@
 name: ONBOARDING.md Freshness Scan
 
 on:
-  schedule:
-    - cron: "0 9 * * 1" # every Monday 09:00 UTC
   workflow_dispatch:
 
 permissions:
